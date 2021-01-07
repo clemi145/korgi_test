@@ -1,0 +1,198 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap");
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: all 0.15s ease;
+}
+
+:root {
+    --primary: #ffa88e;
+    --primary-darker: #ff8f6e;
+
+    --secondary-lighter: #ffdbb1;
+    --secondary: #ffcb8e;
+    --secondary-darker: #ffb561;
+
+    --warn: #fc6b6b;
+    --warn-darker: #ef5252;
+
+    --black: #000000;
+    --dark-grey: #2c2f33;
+    --semi-dark-grey: #505050;
+    --mid-grey: #e1e1e1;
+    --light-grey: #f3f3f3;
+    --white: #ffffff;
+}
+
+html {
+    --background-color: var(--white);
+    --background-color-alternate: var(--light-grey);
+    --font-color: var(--black);
+    --font-color-alternate: var(--white);
+    --header-color: var(--dark-grey);
+}
+
+body {
+    height: 100vh;
+}
+
+html.darkmode {
+    --background-color: var(--semi-dark-grey);
+    --background-color-alternate: var(--dark-grey);
+    --font-color: var(--white);
+    --font-color-alternate: var(--black);
+    --header-color: var(--white);
+}
+
+#app-window {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    height: 100vh;
+
+    font-family: "Montserrat", sans-serif;
+}
+
+.headline {
+    color: #707070;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.title {
+    color: #ffcb8e;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.round-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    border-radius: 1.5rem;
+    outline: 0;
+}
+
+.round-btn.mini {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+}
+
+.btn {
+    width: 100%;
+    /*flex-grow: 1;*/
+    height: 3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    user-select: none;
+}
+
+.btn i {
+    font-size: 1.5rem;
+}
+
+.input {
+    font-size: 1rem;
+    outline: 0;
+    border-radius: 1.5rem;
+    color: #707070;
+    font-weight: 600;
+
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    height: 3rem;
+    background-color: #e1e1e1;
+}
+
+.input::placeholder {
+    color: #707070;
+}
+
+.input.disabled {
+    cursor: default;
+    pointer-events: none;
+}
+
+.warn-background {
+    background-color: var(--warn);
+    transition: 0.2s ease;
+    cursor: pointer;
+    color: white;
+}
+
+.primary-background {
+    background-color: var(--primary);
+    transition: 0.2s ease;
+    cursor: pointer;
+    color: white;
+}
+
+.secondary-background {
+    background-color: var(--secondary);
+    transition: 0.2s ease;
+    cursor: pointer;
+    color: white;
+}
+
+.warn-background.disabled {
+    pointer-events: none;
+    cursor: default;
+    filter: saturate(0.3);
+}
+
+.primary-background.disabled {
+    pointer-events: none;
+    cursor: default;
+    filter: saturate(0.3);
+}
+
+.secondary-background.disabled {
+    pointer-events: none;
+    cursor: default;
+    filter: saturate(0.3);
+}
+
+.warn-background:hover {
+    background-color: var(--warn-darker);
+}
+
+.primary-background:hover {
+    background-color: var(--primary-darker);
+}
+
+.secondary-background:hover {
+    background-color: var(--secondary-darker);
+}
+
+@media (max-width: 576px) {
+    #app {
+        flex-direction: column;
+    }
+
+    .btn i {
+        display: none;
+    }
+    .btn {
+        justify-content: center;
+    }
+}
