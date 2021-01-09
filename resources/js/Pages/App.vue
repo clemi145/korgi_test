@@ -39,7 +39,7 @@ export default {
       group_obj: this.getGroups(),
     };
   },
-  created() {
+  mounted() {
     this.initStore();
     this.pubnubAddListener();
     this.pubnubSubscribe();
@@ -67,7 +67,7 @@ export default {
     pubnubAddListener() {
       this.$store.state.pubnub.addListener({
         message: (event) => {
-          console.log("Message received");
+          console.log("Received message Event from PubNub!");
           this.$store.commit("addMessage", {
             message: event,
           });
@@ -75,7 +75,6 @@ export default {
       });
     },
     pubnubSubscribe() {
-      console.log(this.$store.state);
       this.$store.state.pubnub.subscribe({
         channels: this.$store.getters.getAllChannelUuids,
         withPresence: true,

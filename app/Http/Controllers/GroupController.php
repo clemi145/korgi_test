@@ -88,18 +88,16 @@ class GroupController extends Controller
         $general_chat = Chat::create([
             "fk_team_id" => $team->id,
             "type" => false,
-            "url" => route("chat.show", [
-                "id" => $team->id,
-                "type" => "allgemein"
+            "url" => route("group.show", [
+                "name" => $team->name
             ])
         ]);
 
         $important_chat = Chat::create([
             "fk_team_id" => $team->id,
             "type" => true,
-            "url" => route("chat.show", [
-                "id" => $team->id,
-                "type" => "wichtig"
+            "url" => route("group.show", [
+                "name" => $team->name
             ])
         ]);
 
@@ -122,9 +120,12 @@ class GroupController extends Controller
             $chatsObject = Chat::where("fk_team_id", $team->id)->get();
             $uuids = [];
 
+            Log::info($chatsObject);
+
             foreach ($chatsObject as $chat) {
                 array_push($chats, $chat);
                 array_push($uuids, $chat->uuid);
+                Log::info($chat->uuid);
             }
 
             array_push($groups, [

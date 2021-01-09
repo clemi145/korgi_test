@@ -20,6 +20,20 @@ Vue.use(Vuex);
 
 const app = document.getElementById("app");
 
+function forceRerender(elem) {
+    // Remove my-component from the DOM
+    //this.renderComponent = false;
+    elem.style.display = "none";
+    console.log("messages hidden!");
+
+    // this.$nextTick(() => {
+    // Add the component back in
+    // this.renderComponent = true;
+    elem.style.display = "block";
+    console.log("messages shown!");
+    // });
+}
+
 const store = new Vuex.Store({
     state: {
         pubnub: {},
@@ -49,18 +63,21 @@ const store = new Vuex.Store({
         },
         publishMessage(state, payload) {
             console.log("publish Message");
-            state.pubnub.publish({
-                channel: payload.channel,
-                message: {
-                    text: payload.message,
-                    user: state.user,
-                    group: payload.group,
-                    chat: payload.chat,
-                    messageType: "message"
+            state.pubnub.publish(
+                {
+                    channel: payload.channel,
+                    message: {
+                        text: payload.message,
+                        user: state.user,
+                        group: payload.group,
+                        chat: payload.chat,
+                        messageType: "message"
+                    }
+                },
+                (status, response) => {
+                    // console.log(status, response);
                 }
-            }, function (status, response) {
-                // console.log(status, response);
-            });
+            );
         },
         publishFile(state, payload) {
             state.pubnub.publish({
@@ -111,7 +128,6 @@ const store = new Vuex.Store({
             });
         },
         addMessage(state, payload) {
-            console.log("add Message");
             Vue.set(
                 state.groups[payload.message.message.group].channels[
                     payload.message.message.chat
@@ -119,8 +135,18 @@ const store = new Vuex.Store({
                 payload.message.timetoken,
                 payload.message
             );
-            Inertia.reload();
-            // Vue.forceUpdate();
+
+            document.querySelector("#message-input").value = "test";
+            document.querySelector("#message-input").value = "";
+
+            console.log("add Message");
+            /*
+            saveMessagesToLocalStorage(
+                payload.message.message.group,
+                payload.message.message.chat,
+                payload.message.channel
+            );
+*/
         },
         addEvent(state, payload) {
             // TODO push to server
@@ -133,19 +159,16 @@ const store = new Vuex.Store({
             state.groups[payload.group].events.push(newEvent);
         },
         addGroup(state, payload) {
-            axios
-                .post("/gruppen", {
-                    name: payload.name
-                });
+            axios.post("/gruppen", {
+                name: payload.name
+            });
         }
     },
     getters: {
-
         getUser: state => {
             return state.user;
         },
         getGroups: state => {
-            console.log("abc");
             return state.groups;
         },
         getGroup: state => group => {
@@ -155,14 +178,10 @@ const store = new Vuex.Store({
             return state.groups[group].channels;
         },
         getChannel: state => (group, channel) => {
-            console.log(group);
             return state.groups[group].channels[channel];
         },
         getAllChannelUuids: state => {
             let uuids = [];
-
-            // this.chats.forEach((chat) => uuids.push(chat.uuid));
-            // console.log(uuids);
 
             Object.keys(state.groups).forEach(groupKey => {
                 Object.keys(state.groups[groupKey].channels).forEach(
@@ -197,8 +216,6 @@ const store = new Vuex.Store({
         }
     }
 });
-
-
 
 new Vue({
     store,

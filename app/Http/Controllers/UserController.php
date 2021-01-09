@@ -20,8 +20,11 @@ class UserController extends Controller
         $team = Team::where("uuid", $request->uuid)->first();
 
         if (DB::table('team_user')->where('team_id', $team->id)->first() && DB::table('team_user')->where('user_id', $user->id)->first()) {
+            Log::info("User already in Database");
             abort(500, "User already exists");
         }
+
+        Log::info($team);
 
         $team->users()->attach(
             $user,

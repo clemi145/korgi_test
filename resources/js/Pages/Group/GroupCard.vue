@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     linkToGroup() {
-      this.$inertia.visit(route("chat.show", { id: this.group.id - 1, type: "allgemein" }));
+      this.$inertia.visit(route("group.show", { name: this.group.url}));
     },
   },
 };

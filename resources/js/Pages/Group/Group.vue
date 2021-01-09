@@ -7,22 +7,20 @@
           class="round-btn secondary-background"
           ><i class="fas fa-arrow-left"></i
         ></inertia-link>
-        <h1 style="margin-left: 2%" class="headline">
-          {{ group.name }}
-        </h1>
         <inertia-link
-          as="button"
-          class="group-card-name"
           :href="route('join', { uuid: group.uuid })"
-          >{{ group.name }}</inertia-link
+          style="margin-left: 2%"
+          class="headline"
         >
+          {{ group.name }}
+        </inertia-link>
       </div>
       <div id="chat-selection">
         <button
           as="button"
           class="chat-link left"
           :class="generalIsCurrentChat()"
-          v-on:click="$inertia.visit(route('chat.show', { id: group.id - 1, type: 'allgemein' }))"
+          v-on:click="type = false"
         >
           Allgemein
         </button>
@@ -30,14 +28,24 @@
         <button
           class="chat-link right"
           :class="importantIsCurrentChat()"
-          v-on:click="$inertia.visit(route('chat.show', { id: group.id - 1, type: 'wichtig' }))"
+          v-on:click="type = true"
         >
           Wichtig
         </button>
       </div>
     </div>
-    <Chat :group="group" :chat="chats[0]" />
-    <Chat :group="group" :chat="chats[1]" />
+    <Chat
+      :group="group"
+      :chat="chats['allgemein']"
+      :hasAdminPermissions="user_is_admin"
+      v-if="!type"
+    />
+    <Chat
+      :group="group"
+      :chat="chats['wichtig']"
+      :hasAdminPermissions="user_is_admin"
+      v-else
+    />
   </div>
 </template>
 
@@ -52,21 +60,23 @@ export default {
   },
   props: {
     group: Object,
-    // chats: Object,
-    chat: Object,
+    chats: Object,
+    // chat: Object,
     user_is_admin: Boolean,
   },
-  created() {
-    // console.log(this.group);
+  data() {
+    return {
+      type: false,
+    };
   },
   methods: {
     generalIsCurrentChat() {
-      if (document.URL.includes("allgemein")) {
+      if (!this.type) {//document.URL.includes("allgemein")) {
         return "chat-link-current";
       }
     },
     importantIsCurrentChat() {
-      if (document.URL.includes("wichtig")) {
+      if (this.type) {//document.URL.includes("wichtig")) {
         return "chat-link-current";
       }
     },

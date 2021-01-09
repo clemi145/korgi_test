@@ -3609,7 +3609,7 @@ __webpack_require__.r(__webpack_exports__);
       group_obj: this.getGroups()
     };
   },
-  created: function created() {
+  mounted: function mounted() {
     this.initStore();
     this.pubnubAddListener();
     this.pubnubSubscribe();
@@ -3638,7 +3638,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$store.state.pubnub.addListener({
         message: function message(event) {
-          console.log("Message received");
+          console.log("Received message Event from PubNub!");
 
           _this.$store.commit("addMessage", {
             message: event
@@ -3647,7 +3647,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     pubnubSubscribe: function pubnubSubscribe() {
-      console.log(this.$store.state);
       this.$store.state.pubnub.subscribe({
         channels: this.$store.getters.getAllChannelUuids,
         withPresence: true
@@ -4491,10 +4490,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Pages_Dialog_DatePicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Pages/Dialog/DatePicker */ "./resources/js/Pages/Dialog/DatePicker.vue");
 /* harmony import */ var _Pages_Chat_ChatElement__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Pages/Chat/ChatElement */ "./resources/js/Pages/Chat/ChatElement.vue");
 /* harmony import */ var _Pages_Navigation_Navbar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Pages/Navigation/Navbar */ "./resources/js/Pages/Navigation/Navbar.vue");
-var _name$components$prop;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
 //
 //
 //
@@ -4605,7 +4602,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_name$components$prop = {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Chat",
   components: {
     ChatElement: _Pages_Chat_ChatElement__WEBPACK_IMPORTED_MODULE_4__.default,
@@ -4617,10 +4614,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   props: {
     group: Object,
-    chat: Object
-  },
-  created: function created() {
-    console.log(this.chat);
+    chat: Object,
+    hasAdminPermissions: Boolean
   },
   data: function data() {
     return {
@@ -4629,90 +4624,95 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       eventAnnouncementBus: new vue__WEBPACK_IMPORTED_MODULE_6__.default(),
       dateVotingBus: new vue__WEBPACK_IMPORTED_MODULE_6__.default(),
       openSpecialMessages: false,
-      hasAdminPermissions: this.group.user_is_admin,
       type: this.chat.url,
-      user: this.$store.getters.getUser
+      user: this.$store.getters.getUser,
+      renderComponent: true
     };
   },
   computed: {
     channel: function channel() {
-      // this.chat.messages = {};
-      console.log("In Channel");
       return this.$store.getters.getChannel(this.group.url, this.chat.url);
     },
     messages: function messages() {
-      // console.log(this.group, this.chat);
-      console.log("In Message");
-      return this.channel.messages; // this.$store.getters.getChannel(this.group.url, this.chat.url).messages;
+      return this.channel.messages;
     }
   },
   watch: {
-    messages: function messages() {
-      console.log("Display Message", document.getElementById("messages"));
-      var messagesElement = document.getElementById("messages");
-      var scrollPercentage = Math.ceil(100 * messagesElement.scrollTop / (messagesElement.scrollHeight - messagesElement.clientHeight));
+    messages: {
+      handler: function handler() {
+        console.log("Change in messages detected!");
+        var messagesElement = document.getElementById("messages");
+        var scrollPercentage = Math.ceil(100 * messagesElement.scrollTop / (messagesElement.scrollHeight - messagesElement.clientHeight));
 
-      if (scrollPercentage >= 100 || isNaN(scrollPercentage)) {
-        setTimeout(function () {
-          messagesElement.scrollTop = messagesElement.scrollHeight;
-        }, 1);
-      }
+        if (scrollPercentage >= 100 || isNaN(scrollPercentage)) {
+          setTimeout(function () {
+            messagesElement.scrollTop = messagesElement.scrollHeight;
+          }, 1);
+        }
+      },
+      deep: true
     }
-  }
-}, _defineProperty(_name$components$prop, "created", function created() {
-  setTimeout(this.scrollToBottom, 1);
-}), _defineProperty(_name$components$prop, "methods", {
-  scrollToBottom: function scrollToBottom() {
-    var messagesElement = document.getElementById("messages");
-    messagesElement.scrollTo(0, messagesElement.scrollHeight);
   },
-  publishMessage: function publishMessage() {
-    if (this.message.length) {
-      this.$store.commit("publishMessage", {
-        message: this.message,
+  mounted: function mounted() {
+    var _this = this;
+
+    setTimeout(function () {
+      _this.scrollToBottom();
+    }, 1);
+  },
+  methods: {
+    scrollToBottom: function scrollToBottom() {
+      var messagesElement = document.getElementById("messages");
+      messagesElement.scrollTo(0, messagesElement.scrollHeight);
+    },
+    publishMessage: function publishMessage() {
+      if (this.message.length) {
+        this.$store.commit("publishMessage", {
+          message: this.message,
+          channel: this.chat.uuid,
+          chat: this.chat.url,
+          group: this.group.url
+        });
+        this.message = "";
+        this.scrollToBottom();
+      }
+    },
+    publishFile: function publishFile(content) {
+      // TODO Upload File
+      this.$store.commit("publishFile", {
+        message: content.message,
         channel: this.chat.uuid,
         chat: this.chat.url,
-        group: this.group.url
+        group: this.group.url,
+        fileName: content.file.name,
+        fileType: content.file.type,
+        fileUrl: ""
       });
-      this.message = "";
       this.scrollToBottom();
+    },
+    publishEventAnnouncement: function publishEventAnnouncement(eventAnnouncement) {
+      // TODO add event to group in database
+      this.$store.commit("publishEventAnnouncement", {
+        message: eventAnnouncement.subject,
+        channel: this.chat.uuid,
+        chat: this.chat.url,
+        group: this.group.url,
+        date: eventAnnouncement.date
+      });
+      this.scrollToBottom();
+    },
+    hasAccess: function hasAccess() {
+      if (this.chat.url === "wichtig") {
+        return this.hasAdminPermissions;
+      } else {
+        return true;
+      }
+    },
+    toggleSpecialMessages: function toggleSpecialMessages() {
+      this.openSpecialMessages = !this.openSpecialMessages;
     }
-  },
-  publishFile: function publishFile(content) {
-    // TODO Upload File
-    this.$store.commit("publishFile", {
-      message: content.message,
-      channel: this.chat.uuid,
-      chat: this.chat.url,
-      group: this.group.url,
-      fileName: content.file.name,
-      fileType: content.file.type,
-      fileUrl: ""
-    });
-    this.scrollToBottom();
-  },
-  publishEventAnnouncement: function publishEventAnnouncement(eventAnnouncement) {
-    // TODO add event to group in database
-    this.$store.commit("publishEventAnnouncement", {
-      message: eventAnnouncement.subject,
-      channel: this.chat.uuid,
-      chat: this.chat.url,
-      group: this.group.url,
-      date: eventAnnouncement.date
-    });
-    this.scrollToBottom();
-  },
-  hasAccess: function hasAccess() {
-    if (this.chat.url === "wichtig") {
-      return this.hasAdminPermissions;
-    } else {
-      return true;
-    }
-  },
-  toggleSpecialMessages: function toggleSpecialMessages() {
-    this.openSpecialMessages = !this.openSpecialMessages;
   }
-}), _name$components$prop);
+});
 
 /***/ }),
 
@@ -5543,6 +5543,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5553,20 +5561,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     group: Object,
-    // chats: Object,
-    chat: Object,
+    chats: Object,
+    // chat: Object,
     user_is_admin: Boolean
   },
-  created: function created() {// console.log(this.group);
+  data: function data() {
+    return {
+      type: false
+    };
   },
   methods: {
     generalIsCurrentChat: function generalIsCurrentChat() {
-      if (document.URL.includes("allgemein")) {
+      if (!this.type) {
+        //document.URL.includes("allgemein")) {
         return "chat-link-current";
       }
     },
     importantIsCurrentChat: function importantIsCurrentChat() {
-      if (document.URL.includes("wichtig")) {
+      if (this.type) {
+        //document.URL.includes("wichtig")) {
         return "chat-link-current";
       }
     }
@@ -5602,9 +5615,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     linkToGroup: function linkToGroup() {
-      this.$inertia.visit(route("chat.show", {
-        id: this.group.id - 1,
-        type: "allgemein"
+      this.$inertia.visit(route("group.show", {
+        name: this.group.url
       }));
     }
   }
@@ -8062,6 +8074,19 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.use(_inertiajs_inertia_vue__WEBPACK_IMP
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use(portal_vue__WEBPACK_IMPORTED_MODULE_2__.default);
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use((vuex__WEBPACK_IMPORTED_MODULE_6___default()));
 var app = document.getElementById("app");
+
+function forceRerender(elem) {
+  // Remove my-component from the DOM
+  //this.renderComponent = false;
+  elem.style.display = "none";
+  console.log("messages hidden!"); // this.$nextTick(() => {
+  // Add the component back in
+  // this.renderComponent = true;
+
+  elem.style.display = "block";
+  console.log("messages shown!"); // });
+}
+
 var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
   state: {
     pubnub: {},
@@ -8151,9 +8176,17 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       });
     },
     addMessage: function addMessage(state, payload) {
-      console.log("add Message");
       vue__WEBPACK_IMPORTED_MODULE_5__.default.set(state.groups[payload.message.message.group].channels[payload.message.message.chat].messages, payload.message.timetoken, payload.message);
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.reload(); // Vue.forceUpdate();
+      document.querySelector("#message-input").value = "test";
+      document.querySelector("#message-input").value = "";
+      console.log("add Message");
+      /*
+      saveMessagesToLocalStorage(
+          payload.message.message.group,
+          payload.message.message.chat,
+          payload.message.channel
+      );
+      */
     },
     addEvent: function addEvent(state, payload) {
       // TODO push to server
@@ -8174,7 +8207,6 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       return state.user;
     },
     getGroups: function getGroups(state) {
-      console.log("abc");
       return state.groups;
     },
     getGroup: function getGroup(state) {
@@ -8189,14 +8221,11 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
     },
     getChannel: function getChannel(state) {
       return function (group, channel) {
-        console.log(group);
         return state.groups[group].channels[channel];
       };
     },
     getAllChannelUuids: function getAllChannelUuids(state) {
-      var uuids = []; // this.chats.forEach((chat) => uuids.push(chat.uuid));
-      // console.log(uuids);
-
+      var uuids = [];
       Object.keys(state.groups).forEach(function (groupKey) {
         Object.keys(state.groups[groupKey].channels).forEach(function (channelKey) {
           uuids.push(state.groups[groupKey].channels[channelKey].uuid);
@@ -39144,17 +39173,20 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "chat" } }, [
-    _c(
-      "div",
-      { attrs: { id: "messages" } },
-      _vm._l(Object.values(_vm.messages), function(message) {
-        return _c("ChatElement", {
-          key: message.timestamp,
-          attrs: { message: message }
-        })
-      }),
-      1
-    ),
+    _vm.renderComponent
+      ? _c(
+          "div",
+          { attrs: { id: "messages" } },
+          _vm._l(Object.values(_vm.messages), function(message) {
+            return _c("ChatElement", {
+              key: message.timestamp,
+              staticClass: "chat-element",
+              attrs: { message: message }
+            })
+          }),
+          1
+        )
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -40192,21 +40224,13 @@ var render = function() {
             ),
             _vm._v(" "),
             _c(
-              "h1",
-              { staticClass: "headline", staticStyle: { "margin-left": "2%" } },
-              [_vm._v("\n        " + _vm._s(_vm.group.name) + "\n      ")]
-            ),
-            _vm._v(" "),
-            _c(
               "inertia-link",
               {
-                staticClass: "group-card-name",
-                attrs: {
-                  as: "button",
-                  href: _vm.route("join", { uuid: _vm.group.uuid })
-                }
+                staticClass: "headline",
+                staticStyle: { "margin-left": "2%" },
+                attrs: { href: _vm.route("join", { uuid: _vm.group.uuid }) }
               },
-              [_vm._v(_vm._s(_vm.group.name))]
+              [_vm._v("\n        " + _vm._s(_vm.group.name) + "\n      ")]
             )
           ],
           1
@@ -40221,12 +40245,7 @@ var render = function() {
               attrs: { as: "button" },
               on: {
                 click: function($event) {
-                  _vm.$inertia.visit(
-                    _vm.route("chat.show", {
-                      id: _vm.group.id - 1,
-                      type: "allgemein"
-                    })
-                  )
+                  _vm.type = false
                 }
               }
             },
@@ -40240,12 +40259,7 @@ var render = function() {
               class: _vm.importantIsCurrentChat(),
               on: {
                 click: function($event) {
-                  _vm.$inertia.visit(
-                    _vm.route("chat.show", {
-                      id: _vm.group.id - 1,
-                      type: "wichtig"
-                    })
-                  )
+                  _vm.type = true
                 }
               }
             },
@@ -40254,9 +40268,21 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("Chat", { attrs: { group: _vm.group, chat: _vm.chats[0] } }),
-      _vm._v(" "),
-      _c("Chat", { attrs: { group: _vm.group, chat: _vm.chats[1] } })
+      !_vm.type
+        ? _c("Chat", {
+            attrs: {
+              group: _vm.group,
+              chat: _vm.chats["allgemein"],
+              hasAdminPermissions: _vm.user_is_admin
+            }
+          })
+        : _c("Chat", {
+            attrs: {
+              group: _vm.group,
+              chat: _vm.chats["wichtig"],
+              hasAdminPermissions: _vm.user_is_admin
+            }
+          })
     ],
     1
   )

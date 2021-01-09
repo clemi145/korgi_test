@@ -12,12 +12,12 @@ use Inertia\Inertia;
 
 class ChatController extends Controller
 {
-    function show(Request $request, $id, $type)
+    function show(Request $request, $name)
     {
 
         $user = Auth::user();
 
-        $team = Team::find($id + 1);
+        $team = Team::where("name", $name)->first();
 
         if ($team == null) {
             echo "Error finding group";
@@ -31,8 +31,8 @@ class ChatController extends Controller
                 "Group/Group",
                 [
                     "group" => $group,
-                    "chat" => $this->formatGroupTeam($user, $team)["channels"][$type],
-                    // "chats" => $this->formatGroupTeam($user, $team)["channels"],
+                    // "chat" => $this->formatGroupTeam($user, $team)["channels"][$type],
+                    "chats" => $this->formatGroupTeam($user, $team)["channels"],
                     // "type" => $type_bool,
                     "user_is_admin" => $group["hasAdminPermissions"]
                 ]

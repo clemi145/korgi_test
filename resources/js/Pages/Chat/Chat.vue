@@ -1,10 +1,11 @@
 <template>
   <div id="chat">
-    <div id="messages">
+    <div id="messages" v-if="renderComponent">
       <ChatElement
         v-for="message in Object.values(messages)"
         :key="message.timestamp"
         :message="message"
+        class="chat-element"
       />
     </div>
     <div id="input-group">
@@ -77,6 +78,7 @@
       >
         <i class="fas fa-plus" />
       </div>
+      <!--<div>Groups: {{ Object.values($store.state.groups).length }}</div>-->
       <input
         type="text"
         class="input"
@@ -124,9 +126,7 @@ export default {
   props: {
     group: Object,
     chat: Object,
-  },
-  created() {
-    console.log(this.chat);
+    hasAdminPermissions: Boolean,
   },
   data() {
     return {
@@ -135,40 +135,41 @@ export default {
       eventAnnouncementBus: new Vue(),
       dateVotingBus: new Vue(),
       openSpecialMessages: false,
-      hasAdminPermissions: this.group.user_is_admin,
       type: this.chat.url,
       user: this.$store.getters.getUser,
+      renderComponent: true,
     };
   },
   computed: {
     channel() {
-      // this.chat.messages = {};
-      console.log("In Channel");
       return this.$store.getters.getChannel(this.group.url, this.chat.url);
     },
     messages() {
-      // console.log(this.group, this.chat);
-      console.log("In Message");
-      return this.channel.messages; // this.$store.getters.getChannel(this.group.url, this.chat.url).messages;
+      return this.channel.messages;
     },
   },
   watch: {
-    messages() {
-      console.log("Display Message", document.getElementById("messages"));
-      let messagesElement = document.getElementById("messages");
-      let scrollPercentage = Math.ceil(
-        (100 * messagesElement.scrollTop) /
-          (messagesElement.scrollHeight - messagesElement.clientHeight)
-      );
-      if (scrollPercentage >= 100 || isNaN(scrollPercentage)) {
-        setTimeout(() => {
-          messagesElement.scrollTop = messagesElement.scrollHeight;
-        }, 1);
-      }
+    messages: {
+      handler() {
+        console.log("Change in messages detected!");
+        let messagesElement = document.getElementById("messages");
+        let scrollPercentage = Math.ceil(
+          (100 * messagesElement.scrollTop) /
+            (messagesElement.scrollHeight - messagesElement.clientHeight)
+        );
+        if (scrollPercentage >= 100 || isNaN(scrollPercentage)) {
+          setTimeout(() => {
+            messagesElement.scrollTop = messagesElement.scrollHeight;
+          }, 1);
+        }
+      },
+      deep: true,
     },
   },
-  created() {
-    setTimeout(this.scrollToBottom, 1);
+  mounted() {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 1);
   },
   methods: {
     scrollToBottom() {
@@ -183,6 +184,7 @@ export default {
           chat: this.chat.url,
           group: this.group.url,
         });
+
         this.message = "";
         this.scrollToBottom();
       }

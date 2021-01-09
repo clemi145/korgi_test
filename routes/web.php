@@ -32,8 +32,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/gruppen', [GroupControlle
 Route::middleware(['auth:sanctum', 'verified'])->post('/gruppen', [GroupController::class, 'store']);
 
 Route::group(['prefix' => 'gruppen'], function () {
-    Route::get('{id}', [GroupController::class, 'group'])->name('group.show');
-    Route::get('{id}/{type}', [ChatController::class, 'show'])->name('chat.show');
+    Route::get('{name}', [ChatController::class, 'show'])->name("group.show");//[GroupController::class, 'group'])->name('group.show');
+    // Route::get('{id}/{type}', [ChatController::class, 'show'])->name('chat.show');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get("/join/{uuid}", [GroupController::class, 'join'])->name("join");
@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum', 'verified')->post('/join', [UserController::cl
 Route::inertia('/termine', "Chat/Event/Events")->name('events.show');
 
 Route::inertia('/einstellungen', "Navigation/Settings")->name('settings.show');
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');

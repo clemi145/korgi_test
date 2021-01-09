@@ -19,9 +19,11 @@ class Team extends JetstreamTeam
 
     protected $primaryKey = "id";
 
+    /*
     function users() {
         return $this->belongsToMany(User::class);
     }
+    */
 
     function chats() {
         return $this->hasMany(Chat::class);
