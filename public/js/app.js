@@ -8560,7 +8560,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.dialog-content[data-v-0cea51c9] {\r\n    width: 100%;\n}\n#create-group-dialog-input[data-v-0cea51c9] {\r\n    width: 100%;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.dialog-content[data-v-0cea51c9] {\n    width: 100%;\n}\n#create-group-dialog-input[data-v-0cea51c9] {\n    width: 100%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -8608,7 +8608,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.dialog-content[data-v-3ca07dd6] {\r\n    width: 100%;\n}\n#send-file-input[data-v-3ca07dd6] {\r\n    border-radius: 2rem;\r\n    background-color: lightgray;\r\n    border: gray dashed 5px;\r\n    height: 40vh;\r\n    width: 100%;\r\n\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\n}\n.send-file-message[data-v-3ca07dd6] {\r\n    width: 100%;\r\n    margin-bottom: 10%;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.dialog-content[data-v-3ca07dd6] {\n    width: 100%;\n}\n#send-file-input[data-v-3ca07dd6] {\n    border-radius: 2rem;\n    background-color: lightgray;\n    border: gray dashed 5px;\n    height: 40vh;\n    width: 100%;\n\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n.send-file-message[data-v-3ca07dd6] {\n    width: 100%;\n    margin-bottom: 10%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
