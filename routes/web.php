@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ChatController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,30 +21,44 @@ use App\Http\Controllers\ChatController;
 |
 */
 
+// HOME
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+    if (!Auth::check()) {
+        return Inertia::render('Welcome', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
+        ]);
+    } else {
+        return redirect()->route("groups.show");
+    }
+})->name("home");
 
+// GROUPS
 Route::middleware(['auth:sanctum', 'verified'])->get('/gruppen', [GroupController::class, 'index'])->name('groups.show');
 Route::middleware(['auth:sanctum', 'verified'])->post('/gruppen', [GroupController::class, 'store']);
 
-Route::group(['prefix' => 'gruppen'], function () {
-    Route::get('{name}', [ChatController::class, 'show'])->name("group.show");//[GroupController::class, 'group'])->name('group.show');
-    // Route::get('{id}/{type}', [ChatController::class, 'show'])->name('chat.show');
+Route::group(['prefix' => 'gruppen', "middleware" => ['auth:sanctum', 'verified']], function () {
+    Route::get('{url}', [GroupController::class, 'show'])->name("group.show");
+    Route::get('{url}/users', [GroupController::class, 'users'])->name('group.users');
+    Route::get("join/{uuid}", [GroupController::class, 'join'])->name("group.join.show");
+    Route::post('join', [UserController::class, "store"])->name("group.join");
+    Route::post("leave", [GroupController::class, "leave"])->name("group.leave");
+    Route::post("delete", [GroupController::class, "delete"])->name("group.delete");
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get("/join/{uuid}", [GroupController::class, 'join'])->name("join");
-Route::middleware('auth:sanctum', 'verified')->post('/join', [UserController::class, "store"]);
+// Users
+Route::group(["prefix" => "users"], function () {
+    Route::post("delete", [UserController::class, "delete"])->name("user.delete");
+    Route::post("remove", [UserController::class, "remove"])->name("user.remove");
+});
 
-Route::inertia('/termine', "Chat/Event/Events")->name('events.show');
+// EVENTS
+Route::inertia('termine', "Chat/Event/Events")->name('events.show');
 
-Route::inertia('/einstellungen', "Navigation/Settings")->name('settings.show');
-
+// SETTINGS
+Route::inertia('einstellungen', "Navigation/Settings")->name('settings.show');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');

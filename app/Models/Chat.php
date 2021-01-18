@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Team;
-use App\Models\User;
 
 class Chat extends Model
 {
@@ -24,6 +22,6 @@ class Chat extends Model
     protected $fillable = [
         "type",
         "url",
-        "fk_team_id"
+        "team_id"
     ];
 }

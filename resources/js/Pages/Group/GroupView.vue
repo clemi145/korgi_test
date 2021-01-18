@@ -32,6 +32,7 @@ import NewGroupCard from "@/Pages/Group/NewGroupCard";
 import DialogWindow from "@/Pages/Dialog/dialog-window";
 import DialogContentCreateGroup from "@/Pages/Dialog/dialog-content-create-group";
 import Navbar from "@/Pages/Navigation/Navbar";
+import axios from "axios";
 
 export default {
   name: "GroupView",
@@ -61,6 +62,7 @@ export default {
   },
   methods: {
     createGroup(name) {
+      axios.post(route())
       this.$store.commit("addGroup", { name: name });
       this.$inertia.visit(route("groups.show"), {
         only: ["groups"],

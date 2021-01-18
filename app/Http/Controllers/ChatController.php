@@ -8,16 +8,18 @@ use App\Models\Team;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class ChatController extends Controller
 {
-    function show(Request $request, $name)
+    function show(Request $request, $url)
     {
+        $user = User::find(Auth::user()->id);
 
-        $user = Auth::user();
+        $team = $user->allTeams()->where("url", $url)->first();
 
-        $team = Team::where("name", $name)->first();
+        // Log::info($team);
 
         if ($team == null) {
             echo "Error finding group";
@@ -51,7 +53,7 @@ class ChatController extends Controller
         $groups = [];
 
         foreach ($collection as $team) {
-            $chatsObject = Chat::where("fk_team_id", $team->id)->get();
+            $chatsObject = Chat::where("team_id", $team->id)->get();
             $uuids = [];
 
             foreach ($chatsObject as $chat) {
@@ -88,7 +90,7 @@ class ChatController extends Controller
     function formatGroupTeam(User $user, Team $team)
     {
 
-        $uuids = Chat::where("fk_team_id", $team->id)->get(["uuid"]);
+        $uuids = Chat::where("team_id", $team->id)->get(["uuid"]);
 
         return  [
             "id" => $team->id,
@@ -116,7 +118,7 @@ class ChatController extends Controller
     {
         $chats = [];
         foreach ($collection as $team) {
-            $chatsObject = Chat::where("fk_team_id", $team->id)->get();
+            $chatsObject = Chat::where("team_id", $team->id)->get();
 
             foreach ($chatsObject as $chat) {
                 array_push($chats, $chat);

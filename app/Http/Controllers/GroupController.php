@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use Inertia\Inertia;
@@ -32,29 +33,68 @@ class GroupController extends Controller
         ]);
     }
 
-    function group(Request $request, $id)
+
+    function store(Request $request)
     {
+
+        Log::info("Storing Group");
+
         $user = Auth::user();
-        if ($team = Team::find($id + 1)) {
-            $chats = Chat::where("fk_team_id", $id + 1)->get();
+        $team = Team::create([
+            "name" => $request->input("name"),
+            "personal_team" => false,
+            "user_id" => $user->id,
+            "url" => route("group.show", [
+                "url" => $this->urlFormat($request->input("name"))
+            ])
+        ]);
 
-            if ($team == null) {
-                echo "Error finding group";
-            } else {
+        $team->users()->attach(
+            $user->id,
+            ["role" => "admin"]
+        );
 
-                return Inertia::render(
-                    "Group/Group",
-                    [
-                        "user" => $user,
-                        "group" => $team,
-                        "group_url" => route("group.show", ["id" => $id]),
-                        "chats" => $chats,
-                        "user_is_admin" => $user->hasTeamRole($team, "admin")
-                    ]
-                );
-            }
-        } else {
+        $general_chat = Chat::create([
+            "team_id" => $team->id,
+            "type" => false,
+            "url" => route("group.show", [
+                "url" => $this->urlFormat($team->name)
+            ])
+        ]);
+
+        $important_chat = Chat::create([
+            "team_id" => $team->id,
+            "type" => true,
+            "url" => route("group.show", [
+                "url" => $this->urlFormat($team->name)
+            ])
+        ]);
+
+        $general_chat->team()->associate($team);
+        $important_chat->team()->associate($team);
+    }
+
+    function show(Request $request, $url)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $team = Team::where("url", route("group.show", ["url" => $url]))->first();
+
+        // Log::info($team);
+
+        if ($team == null) {
             echo "Error finding group";
+        } else {
+            $group = $this->formatGroupTeam($user, $team);
+            // Log::info($group);
+            return Inertia::render(
+                "Group/Group",
+                [
+                    "group" => $group[$team->name],
+                    "chats" => $group[$team->name]["channels"],
+                    "user_is_admin" => $group[$team->name]["hasAdminPermissions"]
+                ]
+            );
         }
     }
 
@@ -68,41 +108,47 @@ class GroupController extends Controller
         ]);
     }
 
-    function store(Request $request)
+    function leave(Request $request)
     {
+        $user = User::find(Auth::user()->id);
+        $team = Team::where("uuid", $request->uuid)->first();
+        if ($user->ownsTeam($team)) {
+            if ($team->users->contains("role", "admin")) {
+                DB::table("team_user")->where([
+                    ["team_id", "=", $team->id],
+                    ["user_id", "=", $user->id]
+                ])->delete();
+            } else {
+                abort(500, "Can't leave when you're the only admin! To leave make someone else an Administrator");
+            }
+        } else {
+            DB::table("team_user")->where([
+                ["team_id", "=", $team->id],
+                ["user_id", "=", $user->id]
+            ])->delete();
+        }
+    }
 
-        Log::info("Storing Group");
+    function delete(Request $request)
+    {
+        $team = Team::where("uuid", $request->uuid)->first();
+        DB::table("team_user")->where("team_id", $team->id)->delete();
+        foreach ($team->chats as $chat) {
+            $chat->delete();
+        }
+        $team->delete();
+    }
 
-        $user = Auth::user();
-        $team = Team::create([
-            "name" => $request->input("name"),
-            "personal_team" => false,
-            "user_id" => $user->id,
+    function users(Request $request, $url)
+    {
+        $user = User::find(Auth::user()->id);
+        $team = $user->allTeams()->where("url", route("group.show", ["url" => $url]))->first();
+
+        return Inertia::render("Group/Users", [
+            "group" => $team,
+            "users" => $team->allUsers(),
+            "isAdmin" => $user->hasTeamRole($team, "admin")
         ]);
-
-        $team->users()->attach(
-            $user->id,
-            ["role" => "admin"]
-        );
-
-        $general_chat = Chat::create([
-            "fk_team_id" => $team->id,
-            "type" => false,
-            "url" => route("group.show", [
-                "name" => $team->name
-            ])
-        ]);
-
-        $important_chat = Chat::create([
-            "fk_team_id" => $team->id,
-            "type" => true,
-            "url" => route("group.show", [
-                "name" => $team->name
-            ])
-        ]);
-
-        $general_chat->team()->associate($team);
-        $important_chat->team()->associate($team);
     }
 
     function urlFormat($name)
@@ -111,22 +157,22 @@ class GroupController extends Controller
         return str_replace(" ", "-", $name);
     }
 
-    function formatGroupsEloquentCollection(User $user, Collection $collection)
+    function formatGroupsEloquentCollection(User $user, $collection)
     {
         $groups = [];
-        $chats= [];
+        $chats = [];
 
         foreach ($collection as $team) {
-            $chatsObject = Chat::where("fk_team_id", $team->id)->get();
+            $chatsObject = Chat::where("team_id", $team->id)->get();
             $uuids = [];
-
-            Log::info($chatsObject);
 
             foreach ($chatsObject as $chat) {
                 array_push($chats, $chat);
                 array_push($uuids, $chat->uuid);
-                Log::info($chat->uuid);
+                // Log::info($chat->uuid);
             }
+
+            // Log::info($uuids);
 
             array_push($groups, [
                 $this->urlFormat($team->name) => [
@@ -156,8 +202,7 @@ class GroupController extends Controller
 
     function formatGroupTeam(User $user, Team $team)
     {
-
-        $uuids = Chat::where("fk_team_id", $team->id)->get(["uuid"]);
+        $uuids = Chat::where("team_id", $team->id)->get(["uuid"]);
 
         return [
             $team->name => [
@@ -187,7 +232,7 @@ class GroupController extends Controller
     {
         $chats = [];
         foreach ($collection as $team) {
-            $chatsObject = Chat::where("fk_team_id", $team->id)->get();
+            $chatsObject = Chat::where("team_id", $team->id)->get();
 
             foreach ($chatsObject as $chat) {
                 array_push($chats, $chat);

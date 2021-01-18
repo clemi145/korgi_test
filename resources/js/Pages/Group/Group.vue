@@ -8,11 +8,27 @@
           ><i class="fas fa-arrow-left"></i
         ></inertia-link>
         <inertia-link
-          :href="route('join', { uuid: group.uuid })"
+          :href="route('group.join.show', { uuid: group.uuid })"
           style="margin-left: 2%"
           class="headline"
         >
           {{ group.name }}
+        </inertia-link>
+
+        <button v-on:click="leave" style="margin-left: 2%" class="headline">
+          Leave
+        </button>
+
+        <button v-on:click="deleteGroup" style="margin-left: 2%" class="headline">
+          Delete Group
+        </button>
+
+        <inertia-link
+          :href="route('group.users', { url: this.group.url })"
+          style="margin-left: 2%"
+          class="headline"
+        >
+          Users
         </inertia-link>
       </div>
       <div id="chat-selection">
@@ -52,6 +68,9 @@
 <script>
 import Chat from "@/Pages/Chat/Chat";
 import Navbar from "@/Pages/Navigation/Navbar";
+
+import axios from "axios";
+
 export default {
   name: "Group",
   components: {
@@ -70,13 +89,33 @@ export default {
     };
   },
   methods: {
+    deleteGroup() {
+      axios
+        .post(route("group.delete"), {
+          uuid: this.group.uuid,
+        })
+        .then(() => this.$inertia.visit(route("groups.show")));
+    },
+    leave() {
+      axios
+        .post(route("group.leave"), {
+          uuid: this.group.uuid,
+        }) /*.then(() => {
+        Object.values(this.$store.state.groups).filter((i, v, a) => {
+          return v.uuid != this.group.uuid;
+        });
+      })*/
+        .then(() => this.$inertia.visit(route("groups.show")));
+    },
     generalIsCurrentChat() {
-      if (!this.type) {//document.URL.includes("allgemein")) {
+      if (!this.type) {
+        //document.URL.includes("allgemein")) {
         return "chat-link-current";
       }
     },
     importantIsCurrentChat() {
-      if (this.type) {//document.URL.includes("wichtig")) {
+      if (this.type) {
+        //document.URL.includes("wichtig")) {
         return "chat-link-current";
       }
     },

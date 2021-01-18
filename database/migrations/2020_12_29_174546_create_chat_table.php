@@ -20,7 +20,7 @@ class CreateChatTable extends Migration
             $table->uuid("uuid")->default($uuid);
             $table->string("url")->nullable();
             $table->boolean("type")->default(false);
-            $table->foreignId("fk_team_id")->references("id")->on("teams");
+            $table->foreignId("team_id")->references("id")->on("teams");
             $table->timestamps();
         });
     }

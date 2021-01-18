@@ -26,7 +26,7 @@ export default {
   methods: {
     addUser() {
       axios
-        .post("/join", {
+        .post(route("group.join"), {
           uuid: this.group.uuid,
         })
         .then((res) => console.log(res))

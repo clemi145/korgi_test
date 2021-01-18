@@ -5,11 +5,7 @@
   >
     <div id="top">
       <div id="header">
-        <img
-          class="logo"
-          src="/images/korgi_yellow_only.svg"
-          alt="KORGI"
-        />
+        <img class="logo" src="/images/korgi_yellow_only.svg" alt="KORGI" />
         <a
           id="burger"
           href="#"
@@ -22,6 +18,12 @@
       <form method="POST" @submit.prevent="logout">
         <jet-responsive-nav-link as="button">
           Abmelden
+        </jet-responsive-nav-link>
+      </form>
+
+      <form method="POST" @submit.prevent="deleteAccount">
+        <jet-responsive-nav-link as="button">
+          Konto löschen
         </jet-responsive-nav-link>
       </form>
     </div>
@@ -90,7 +92,7 @@ export default {
     JetNavLink,
     JetResponsiveNavLink,
     Button,
-    PageLayout
+    PageLayout,
   },
   props: {
     user: String,
@@ -120,7 +122,12 @@ export default {
   methods: {
     logout() {
       axios.post(route("logout")).then((response) => {
-        window.location = "/";
+        this.$inertia.visit(route("home"));
+      });
+    },
+    deleteAccount() {
+      axios.post(route("user.delete")).then((response) => {
+        this.$inertia.visit(route("home"));
       });
     },
     toggleDarkmode() {

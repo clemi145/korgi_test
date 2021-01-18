@@ -25,7 +25,8 @@ class Team extends JetstreamTeam
     }
     */
 
-    function chats() {
+    function chats()
+    {
         return $this->hasMany(Chat::class);
     }
 
@@ -46,7 +47,8 @@ class Team extends JetstreamTeam
     protected $fillable = [
         'name',
         'personal_team',
-        'user_id'
+        'user_id',
+        'url'
     ];
 
     /**

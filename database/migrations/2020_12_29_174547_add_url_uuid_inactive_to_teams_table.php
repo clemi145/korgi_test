@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AddUrlFksToTeamsTable extends Migration
+class AddUrlUuidInactiveToTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +16,9 @@ class AddUrlFksToTeamsTable extends Migration
     {
         Schema::table('teams', function (Blueprint $table) {
             $table->string("url")->nullable();
+            $uuid = DB::raw("UUID()");
+            $table->uuid("uuid")->default($uuid);
+            $table->boolean("inactive")->default(false);
         });
     }
 
