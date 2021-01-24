@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24c7256accc3052494b76d81a2276971",
+    "content-hash": "7f60625bf825bbaafa82eb20471883bd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2842,6 +2842,73 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "soarecostin/file-vault",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/soarecostin/file-vault.git",
+                "reference": "ee40ef4a3a7a23e64599a00f9ae5ff1c3b3597b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/soarecostin/file-vault/zipball/ee40ef4a3a7a23e64599a00f9ae5ff1c3b3597b5",
+                "reference": "ee40ef4a3a7a23e64599a00f9ae5ff1c3b3597b5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.8.* || 6.*.* || ^7.0 || ^8.0",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0|^6.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SoareCostin\\FileVault\\FileVaultServiceProvider"
+                    ],
+                    "aliases": {
+                        "FileVault": "SoareCostin\\FileVault\\Facades\\FileVault"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SoareCostin\\FileVault\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Costin Soare",
+                    "email": "soarecostin@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "https://github.com/soarecostin/file-vault",
+            "keywords": [
+                "CBC",
+                "decrypt",
+                "decryption",
+                "encrypt",
+                "encryption",
+                "file",
+                "file-vault",
+                "laravel",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/soarecostin/file-vault/issues",
+                "source": "https://github.com/soarecostin/file-vault/tree/v1.2.0"
+            },
+            "time": "2020-11-01T10:19:41+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -7638,5 +7705,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

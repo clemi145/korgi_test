@@ -6,9 +6,8 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
-use App\Http\Controllers\ChatController;
+use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +41,15 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/gruppen', [GroupControll
 Route::group(['prefix' => 'gruppen', "middleware" => ['auth:sanctum', 'verified']], function () {
     Route::get('{url}', [GroupController::class, 'show'])->name("group.show");
     Route::get('{url}/users', [GroupController::class, 'users'])->name('group.users');
+    Route::get("{url}/files", [FileController::class, "show"])->name("group.files.show");
+    Route::post("files/post", [FileController::class, "store"])->name("group.files.store");
+    Route::post("files/get", [FileController::class, "download"])->name("group.files.download");
+
     Route::get("join/{uuid}", [GroupController::class, 'join'])->name("group.join.show");
     Route::post('join', [UserController::class, "store"])->name("group.join");
+
     Route::post("leave", [GroupController::class, "leave"])->name("group.leave");
+
     Route::post("delete", [GroupController::class, "delete"])->name("group.delete");
 });
 
