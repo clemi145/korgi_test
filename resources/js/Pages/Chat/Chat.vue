@@ -148,6 +148,9 @@ export default {
       return this.channel.messages;
     },
   },
+  created() {
+    console.log(this.chat);
+  },
   watch: {
     messages: {
       handler() {
