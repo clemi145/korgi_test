@@ -20,20 +20,6 @@ Vue.use(Vuex);
 
 const app = document.getElementById("app");
 
-function forceRerender(elem) {
-    // Remove my-component from the DOM
-    //this.renderComponent = false;
-    elem.style.display = "none";
-    console.log("messages hidden!");
-
-    // this.$nextTick(() => {
-    // Add the component back in
-    // this.renderComponent = true;
-    elem.style.display = "block";
-    console.log("messages shown!");
-    // });
-}
-
 const store = new Vuex.Store({
     state: {
         pubnub: {},

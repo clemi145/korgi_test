@@ -160,19 +160,17 @@ class GroupController extends Controller
     function formatGroupsEloquentCollection(User $user, $collection)
     {
         $groups = [];
-        $chats = [];
 
         foreach ($collection as $team) {
             $chatsObject = Chat::where("team_id", $team->id)->get();
             $uuids = [];
 
             foreach ($chatsObject as $chat) {
-                array_push($chats, $chat);
                 array_push($uuids, $chat->uuid);
-                // Log::info($chat->uuid);
             }
 
-            // Log::info($uuids);
+            // Log::info(implode(", ", $uuids));
+            // Log::info($chat->uuid);
 
             array_push($groups, [
                 $this->urlFormat($team->name) => [
@@ -197,6 +195,7 @@ class GroupController extends Controller
                 ]
             ]);
         }
+        Log::info($groups);
         return $groups;
     }
 

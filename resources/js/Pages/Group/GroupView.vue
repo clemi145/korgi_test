@@ -14,11 +14,7 @@
         <h1 class="title">Gruppenübersicht</h1>
       </div>
       <div id="groups">
-        <group-card
-          v-for="group in groups"
-          :group="group"
-          :key="group.url"
-        />
+        <group-card v-for="group in groups" :group="group" :key="group.url" />
         <new-group-card @click="groupInputBus.$emit('open')" />
       </div>
     </div>
@@ -63,7 +59,7 @@ export default {
   methods: {
     createGroup(name) {
       this.$store.commit("addGroup", { name: name });
-      this.$inertia.reload(route("groups.show"), {
+      this.$inertia.visit(route("groups.show"), {
         only: ["groups"],
       });
     },
@@ -77,53 +73,52 @@ export default {
 }
 
 #group-view {
-    height: 100%;
-    width: 100%;
-    background-color: var(--background-color-alternate);
-    overflow: auto;
+  height: 100%;
+  width: 100%;
+  background-color: var(--background-color-alternate);
+  overflow: auto;
 }
 
 .group-view-header {
-    padding: 2%;
+  padding: 2%;
 }
 
 #groups {
-    margin-top: 2%;
-    display: flex;
-    position: relative;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  margin-top: 2%;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 @media (max-width: 576px) {
-    #groups {
-        /*margin-top: 25%;*/
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: center;
-    }
+  #groups {
+    /*margin-top: 25%;*/
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
 
-    .group-view-header {
-        display: none;
-    }
+  .group-view-header {
+    display: none;
+  }
 }
 
 @media (min-width: 576px) {
-    #group-view::-webkit-scrollbar {
-        margin-left: -1rem;
-        width: 1rem;
-    }
+  #group-view::-webkit-scrollbar {
+    margin-left: -1rem;
+    width: 1rem;
+  }
 
-    #group-view::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 0.5rem;
-    }
+  #group-view::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 0.5rem;
+  }
 
-    #group-view::-webkit-scrollbar-thumb {
-        background-color: #FFA88E;
-        border-radius: 0.5rem;
-    }
+  #group-view::-webkit-scrollbar-thumb {
+    background-color: #ffa88e;
+    border-radius: 0.5rem;
+  }
 }
-
 </style>
