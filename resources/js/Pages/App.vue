@@ -625,6 +625,16 @@ select option {
     opacity: 0;
 }
 
+@media (max-width: 1200px) {
+    .title {
+        font-size: 2rem;
+    }
+    .headline {
+        font-size: 1.5rem;
+        margin-left: 1vh !important; /*Noch ändern!*/
+    }
+}
+
 @media (max-width: 576px) {
     #app {
         flex-direction: column;

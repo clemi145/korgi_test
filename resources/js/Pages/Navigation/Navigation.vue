@@ -304,6 +304,31 @@ export default {
     background: #ffffff;
 }
 
+@media (max-width: 1200px) {
+    #navigation {
+        width: 35%;
+    }
+}
+
+@media (max-width: 768px) {
+    #navigation {
+        width: 45%;
+    }
+    .greeting {
+        font-size: 1.2rem;
+    }
+    .navigation-item {
+        font-size: 1rem;
+    }
+    .navigation-item i {
+        width: 1.2rem;
+        font-size: 1.2rem;
+    }
+    #bottom a {
+        font-size: 1rem;
+    }
+}
+
 @media (max-width: 576px) {
     #navigation {
         position: absolute;

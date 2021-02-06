@@ -110,6 +110,30 @@ export default {
     white-space: nowrap;
 }
 
+@media (max-width: 1200px) {
+    #filters.active {
+        position: absolute;
+        width: 70%;
+        height: 100%;
+        padding: 2vh;
+    }
+    #filters {
+        position: absolute;
+        width: 100%;
+        height: 0;
+        box-shadow: none;
+    }
+    #filters-header {
+        margin-top: 2.5vh;
+    }
+}
+
+@media (max-width: 768px) {
+    #filters.active {
+        width: 70%;
+    }
+}
+
 @media (max-width: 576px) {
     #filters-header {
         margin-top: 1vh;

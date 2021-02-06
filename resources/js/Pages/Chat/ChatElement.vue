@@ -69,6 +69,13 @@ export default {
   padding-right: 10vh;
 }
 
+@media (max-width: 1200px) {
+    .chat-element {
+        padding-left: 2vh;
+        padding-right: 2vh;
+    }
+}
+
 @media (max-width: 576px) {
   .chat-element {
     padding-left: 4%;

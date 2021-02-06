@@ -63,7 +63,7 @@ export default {
   methods: {
     createGroup(name) {
       this.$store.commit("addGroup", { name: name });
-      this.$inertia.reload(route("groups.show"), {
+      this.$inertia.visit(route("groups.show"), {
         only: ["groups"],
       });
     },
@@ -94,6 +94,12 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+}
+
+@media (max-width: 1200px) {
+    #groups {
+        padding-left: 3vh;
+    }
 }
 
 @media (max-width: 576px) {
