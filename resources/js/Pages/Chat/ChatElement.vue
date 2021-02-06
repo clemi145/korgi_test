@@ -17,16 +17,16 @@
 </template>
 
 <script>
-import Message from "@/Pages/Message";
-import File from "@/Pages/File";
-import EventAnnouncement from "@/Pages/EventAnnouncement";
-import LessImportantMessage from "@/Pages/LessImportantMessage";
-import ImportantMessage from "@/Pages/ImportantMessage";
-import Poll from "@/Pages/Poll";
-import DialogWindow from "@/Pages/dialog-window";
-import DialogContentMessageReply from "@/Pages/dialog-content-message-reply";
+import Message from "@/Pages/Chat/ChatElements/Message";
+import File from "@/Pages/Chat/ChatElements/File";
+import EventAnnouncement from "@/Pages/Chat/ChatElements/EventAnnouncement";
+import LessImportantMessage from "@/Pages/Chat/ChatElements/LessImportantMessage";
+import ImportantMessage from "@/Pages/Chat/ChatElements/ImportantMessage";
+import Poll from "@/Pages/Chat/ChatElements/Poll";
+import DialogWindow from "@/Pages/Dialog/dialog-window";
+import DialogContentMessageReply from "@/Pages/Dialog/dialog-content-message-reply";
 import Vue from "vue";
-import MessageReply from "@/Pages/MessageReply";
+import MessageReply from "@/Pages/Chat/ChatElements/MessageReply";
 
 export default {
   name: "ChatElement",

@@ -1,4 +1,4 @@
-require("./bootstrap");
+require('./bootstrap');
 
 // Import modules...
 import Vue from "vue";
@@ -62,10 +62,10 @@ const store = new Vuex.Store({
             state.user.settings.darkmode = !state.user.settings.darkmode;
         },
         publishMessage(state, payload) {
-            console.log("publish Message");
+            console.log("publish Message on: " + payload.channel.uuid);
             state.pubnub.publish(
                 {
-                    channel: payload.channel,
+                    channel: payload.channel.uuid,
                     message: {
                         text: payload.message,
                         user: state.user,
@@ -75,7 +75,7 @@ const store = new Vuex.Store({
                     }
                 },
                 (status, response) => {
-                    // console.log(status, response);
+                    console.log(status, response);
                 }
             );
         },
@@ -186,6 +186,7 @@ const store = new Vuex.Store({
             Object.keys(state.groups).forEach(groupKey => {
                 Object.keys(state.groups[groupKey].channels).forEach(
                     channelKey => {
+                        console.log("Subscribed to channel: " + state.groups[groupKey].channels[channelKey].uuid)
                         uuids.push(
                             state.groups[groupKey].channels[channelKey].uuid
                         );

@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import Navbar from "@/Pages/Navbar";
-import Event from "@/Pages/Event";
+import Navbar from "@/Pages/Navigation/Navbar";
+import Event from "@/Pages/Events/Event";
 import Vue from "vue";
-import EventFilters from "@/Pages/EventFilters";
+import EventFilters from "@/Pages/Events/EventFilters";
 
 export default {
     name: "Events",

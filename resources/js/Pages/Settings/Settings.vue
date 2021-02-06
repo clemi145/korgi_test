@@ -85,9 +85,9 @@
 </template>
 
 <script>
-import Navbar from "@/Pages/Navbar";
+import Navbar from "@/Pages/Navigation/Navbar";
 import Label from "@/Jetstream/Label";
-import Navigation from "@/Pages/Navigation";
+import Navigation from "@/Pages/Navigation/Navigation";
 
 export default {
     name: "Settings",

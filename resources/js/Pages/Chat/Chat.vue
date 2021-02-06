@@ -106,12 +106,12 @@
 <script>
 import Vue from "vue";
 
-import DialogWindow from "@/Pages/dialog-window";
-import DialogContentSendFile from "@/Pages/dialog-content-send-file";
-import DialogContentEventAnnouncement from "@/Pages/dialog-content-event-announcement";
-import DatePicker from "@/Pages/DatePicker";
-import ChatElement from "@/Pages/ChatElement";
-import Navbar from "@/Pages/Navbar";
+import DialogWindow from "@/Pages/Dialog/dialog-window";
+import DialogContentSendFile from "@/Pages/Dialog/dialog-content-send-file";
+import DialogContentEventAnnouncement from "@/Pages/Dialog/dialog-content-event-announcement";
+import DatePicker from "@/Pages/Dialog/DatePicker";
+import ChatElement from "@/Pages/Chat/ChatElement";
+import Navbar from "@/Pages/Navigation/Navbar";
 
 export default {
   name: "Chat",

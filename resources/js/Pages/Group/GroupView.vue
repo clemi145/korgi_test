@@ -27,11 +27,11 @@
 
 <script>
 import Vue from "vue";
-import GroupCard from "@/Pages/GroupCard";
-import NewGroupCard from "@/Pages/NewGroupCard";
-import DialogWindow from "@/Pages/dialog-window";
-import DialogContentCreateGroup from "@/Pages/dialog-content-create-group";
-import Navbar from "@/Pages/Navbar";
+import GroupCard from "@/Pages/Group/GroupCard";
+import NewGroupCard from "@/Pages/Group/NewGroupCard";
+import DialogWindow from "@/Pages/Dialog/dialog-window";
+import DialogContentCreateGroup from "@/Pages/Dialog/dialog-content-create-group";
+import Navbar from "@/Pages/Navigation/Navbar";
 import axios from "axios";
 
 export default {
@@ -63,7 +63,7 @@ export default {
   methods: {
     createGroup(name) {
       this.$store.commit("addGroup", { name: name });
-      this.$inertia.visit(route("groups.show"), {
+      this.$inertia.reload(route("groups.show"), {
         only: ["groups"],
       });
     },
