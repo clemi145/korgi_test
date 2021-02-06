@@ -201,6 +201,7 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    color: var(--font-color);
 }
 
 .date {

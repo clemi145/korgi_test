@@ -9,7 +9,7 @@
                         <p>Abbrechen</p>
                         <i class="fas fa-times"/>
                     </div>
-                    <div class="btn secondary-background" :class="isValid ? '' : 'disabled'" @click="submit">
+                    <div class="btn secondary-background" :class="isValid ? '' : 'disabled'" @click="submit" v-if="!infoOnly">
                         <p>Senden</p>
                         <i class="fas fa-paper-plane"/>
                     </div>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-    name: "new-dialog",
+    name: "dialog-window",
     data() {
         return {
             isOpen: undefined,
@@ -32,7 +32,8 @@ export default {
     },
     props: {
         title: String,
-        bus: Object
+        bus: Object,
+        infoOnly: Boolean
     },
     created() {
         this.bus.$on('open', this.open);
@@ -127,7 +128,7 @@ export default {
 }
 
 .dialog-window {
-    background-color: white;
+    background-color: var(--background-color);
     width: 30vw;
     padding: 2.5%;
     border-radius: 3rem;

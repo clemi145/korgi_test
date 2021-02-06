@@ -11,14 +11,14 @@
                     <div id="user">
                         <div class="flex-item-container">
                             <span class="small-headline">Name</span>
-                            <input class="settings-input" type="text" name="username" value="username" placeholder="Username" v-model="username">
+                            <input class="alternate-input" type="text" name="username" value="username" placeholder="Username" v-model="username">
                             <div class="round-btn primary-background">
                                 <i class="fas fa-edit"/>
                             </div>
                         </div>
                         <div class="flex-item-container">
                             <span class="small-headline">E-Mail</span>
-                            <input class="settings-input" type="email" name="email" value="email" placeholder="E-Mail" v-model="usermail">
+                            <input class="alternate-input" type="email" name="email" value="email" placeholder="E-Mail" v-model="usermail">
                             <div class="round-btn primary-background">
                                 <i class="fas fa-edit"/>
                             </div>
@@ -51,12 +51,12 @@
                 <div class="subject">Benachrichtigungen</div>
                 <div class="content">
                     <div id="messages">
-                        <label class="flex-item-container">
+                        <label class="checkbox-container">
                             E-Mail Benachrichtigungen
                             <input type="checkbox" name="email-msg" value="email-msg">
                             <span class="checkbox"></span>
                         </label>
-                        <label class="flex-item-container">
+                        <label class="checkbox-container">
                             Push Benachrichtigungen
                             <input type="checkbox" name="push-msg" value="push-msg">
                             <span class="checkbox"></span>
@@ -69,11 +69,11 @@
                 <div class="subject">Darstellung</div>
                 <div class="content">
                     <div id="presentation">
-                        <label class="flex-item-container">Heller Modus
+                        <label class="checkbox-container">Heller Modus
                             <input type="radio" :checked="!darkmode" @change="toggleDarkmode" name="Farbmodus" value="lightmode">
                             <span class="radio"></span>
                         </label>
-                        <label class="flex-item-container">Dunkler Modus
+                        <label class="checkbox-container">Dunkler Modus
                             <input type="radio" :checked="darkmode" @change="toggleDarkmode" name="Farbmodus" value="darkmode">
                             <span class="radio"></span>
                         </label>
@@ -85,9 +85,9 @@
 </template>
 
 <script>
-import Navbar from "@/Pages/Navigation/Navbar";
+import Navbar from "@/Pages/Navbar";
 import Label from "@/Jetstream/Label";
-import Navigation from "@/Pages/Navigation/Navigation";
+import Navigation from "@/Pages/Navigation";
 
 export default {
     name: "Settings",
@@ -140,6 +140,10 @@ export default {
     outline: 0;
 }
 
+::placeholder {
+    color: var(--font-color)
+}
+
 #item-container {
     margin: auto;
     display: flex;
@@ -171,9 +175,9 @@ export default {
     border-radius: 1rem;
     background-color: var(--background-color);
 
-    box-shadow: 1px 0px 8px 3px rgba(92, 86, 86, 0.1);
-    -webkit-box-shadow: 1px 0px 8px 3px rgba(92, 86, 86, 0.1);
-    -moz-box-shadow: 1px 0px 8px 3px rgba(92, 86, 86, 0.1);
+    box-shadow: 1px 0px 8px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);
 
     margin-bottom: 6%;
     padding: 1%;
@@ -194,6 +198,11 @@ export default {
 
 #messages .flex-item-container, #presentation .flex-item-container {
     cursor: pointer;
+}
+
+.checkbox-container {
+    margin-left: 4%;
+    margin-bottom: 4%;
 }
 
 .link-container {
@@ -341,6 +350,10 @@ a {
     }
 
     .settings-input {
+        width: 70%;
+    }
+
+    .alternate-input {
         width: 70%;
     }
 

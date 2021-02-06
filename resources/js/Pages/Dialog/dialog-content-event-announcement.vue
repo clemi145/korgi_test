@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import DatePicker from "@/Pages/Dialog/DatePicker";
+import DatePicker from "@/Pages/DatePicker";
 export default {
     name: "dialog-content-event-announcement",
     components: {DatePicker},

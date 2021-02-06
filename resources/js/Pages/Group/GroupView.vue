@@ -27,11 +27,11 @@
 
 <script>
 import Vue from "vue";
-import GroupCard from "@/Pages/Group/GroupCard";
-import NewGroupCard from "@/Pages/Group/NewGroupCard";
-import DialogWindow from "@/Pages/Dialog/dialog-window";
-import DialogContentCreateGroup from "@/Pages/Dialog/dialog-content-create-group";
-import Navbar from "@/Pages/Navigation/Navbar";
+import GroupCard from "@/Pages/GroupCard";
+import NewGroupCard from "@/Pages/NewGroupCard";
+import DialogWindow from "@/Pages/dialog-window";
+import DialogContentCreateGroup from "@/Pages/dialog-content-create-group";
+import Navbar from "@/Pages/Navbar";
 import axios from "axios";
 
 export default {
@@ -62,7 +62,6 @@ export default {
   },
   methods: {
     createGroup(name) {
-      axios.post(route())
       this.$store.commit("addGroup", { name: name });
       this.$inertia.visit(route("groups.show"), {
         only: ["groups"],
@@ -78,52 +77,53 @@ export default {
 }
 
 #group-view {
-  height: 100%;
-  width: 100%;
-  background-color: var(--background-color-alternate);
-  overflow: auto;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background-color-alternate);
+    overflow: auto;
 }
 
 .group-view-header {
-  padding: 2%;
+    padding: 2%;
 }
 
 #groups {
-  margin-top: 2%;
-  display: flex;
-  position: relative;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+    margin-top: 2%;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 @media (max-width: 576px) {
-  #groups {
-    /*margin-top: 25%;*/
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
+    #groups {
+        /*margin-top: 25%;*/
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
 
-  .group-view-header {
-    display: none;
-  }
+    .group-view-header {
+        display: none;
+    }
 }
 
 @media (min-width: 576px) {
-  #group-view::-webkit-scrollbar {
-    margin-left: -1rem;
-    width: 1rem;
-  }
+    #group-view::-webkit-scrollbar {
+        margin-left: -1rem;
+        width: 1rem;
+    }
 
-  #group-view::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 0.5rem;
-  }
+    #group-view::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 0.5rem;
+    }
 
-  #group-view::-webkit-scrollbar-thumb {
-    background-color: #ffa88e;
-    border-radius: 0.5rem;
-  }
+    #group-view::-webkit-scrollbar-thumb {
+        background-color: #FFA88E;
+        border-radius: 0.5rem;
+    }
 }
+
 </style>

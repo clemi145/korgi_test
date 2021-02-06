@@ -48,7 +48,7 @@ export default {
     display: none;
     width: 100%;
     height: 20vw;
-    z-index: 35;
+    z-index: 120;
     background-color: var(--primary);
     flex-direction: row;
     justify-content: flex-start;

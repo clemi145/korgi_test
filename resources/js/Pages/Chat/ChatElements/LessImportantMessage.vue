@@ -1,11 +1,8 @@
 <template>
-    <div class="file-element" v-bind:class="changeAlignment()">
+    <div class="message" v-bind:class="changeAlignment()">
         <div class="sender" v-if="!isOwn">{{ message.message.user.username }}</div>
-        <p class="text">{{message.message.text}}</p>
-        <div class="file-container primary-background">
-            <i class="far fa-file-pdf"></i>
-            <p>{{message.message.fileName}}</p>
-        </div>
+        <div class="subject">{{ message.message.subject }}</div>
+        <div class="text">{{ message.message.text }}</div>
         <div class="timetoken">{{
                 new Date(message.timetoken / 10000).toLocaleTimeString('de', {
                     hour: "2-digit",
@@ -18,14 +15,14 @@
 
 <script>
 export default {
-    name: "File",
+    name: "less-important-message",
     props: {
         message: Object
     },
     computed: {
         isOwn() {
             return this.message.publisher === this.$store.state.pubnub.getUUID()
-        }
+        },
     },
     methods: {
         changeAlignment() {
@@ -38,51 +35,42 @@ export default {
 </script>
 
 <style scoped>
-.file-element {
-    max-width: 40%;
-    background-color: white;
+.message {
+    width: 80%;
+    background-color: var(--message-color);
+    color: var(--font-color);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: start;
     justify-content: space-between;
-    padding: 1%;
-    margin: 0.5%;
+    padding: 1vh;
+    margin: 0.5vh;
     border-radius: 1rem;
-}
-
-.right {
-    text-align: right;
-    align-self: flex-end;
-    background-color: #FFDBB1;
-}
-
-.file-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 1rem;
-    margin-top: 0.4rem;
-    margin-bottom: 0.2rem;
-    padding: 1rem;
-}
-
-i {
-    font-size: 2rem;
-    color: #ef5252;
-    margin-right: 1rem;
-    text-align: center;
+    align-self: center;
 }
 
 .sender {
     font-size: 1.1rem;
     font-weight: bold;
-    margin-bottom: 1%;
+    margin-bottom: 0.5vh;
+}
+
+.text {
 }
 
 .timetoken {
     align-self: flex-end;
-    color: #707070;
+    color: var(--font-color-light);
     font-size: 0.8rem;
+}
+
+.right {
+    background-color: var(--message-right-color);
+}
+
+@media (max-width: 576px) {
+    .message {
+        padding: 2.5%;
+    }
 }
 </style>

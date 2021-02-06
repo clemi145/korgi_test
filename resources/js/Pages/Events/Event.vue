@@ -27,12 +27,13 @@ export default {
     border-radius: 1rem;
     background-color: var(--background-color);
 
-    box-shadow: 1px 0px 15px 3px rgba(92, 86, 86, 0.3);
-    -webkit-box-shadow: 1px 0px 15px 3px rgba(92, 86, 86, 0.3);
-    -moz-box-shadow: 1px 0px 15px 3px rgba(92, 86, 86, 0.3);
+    box-shadow: 1px 0px 15px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0px 15px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0px 15px 3px var(--shadow-color);
 
     align-self: center;
-    margin-bottom: 4%;
+    margin-bottom: 1vh;
+    margin-top: 2vh;
 }
 
 .date {
@@ -43,20 +44,20 @@ export default {
 
 .date-text {
     font-size: 1.5rem;
-    margin: 1% 2% 1% 2%;
+    margin: 1vh 1.8vh 1vh 1.8vh;
     color: white;
     font-weight: 800;
 }
 
 .subject {
-    margin-left: 2%;
-    margin-top: 2%;
+    margin-left: 1.8vh;
+    margin-top: 1.8vh;
     font-weight: 800;
     font-size: 1.3rem;
     color: var(--font-color)
 }
 .description {
-    margin: 2%;
+    margin: 1.8vh;
     color: var(--font-color)
 }
 
@@ -65,16 +66,16 @@ export default {
         width: 90%;
     }
     .date-text {
-        margin: 2% 3% 2% 3%;
+        margin: 1.5vh 2vh 1.5vh 2vh;
         font-size: 1.4rem;
     }
     .subject {
-        margin-left: 3%;
-        margin-top: 3%;
+        margin-left: 2vh;
+        margin-top: 2vh;
         font-size: 1.2rem;
     }
     .description {
-        margin: 3%;
+        margin: 2vh;
     }
 }
 </style>

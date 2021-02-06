@@ -19,16 +19,16 @@ export default {
 
     width: 15vw;
     height: 15vw;
-    border: #FFCB8E dashed 4px;
+    border: #FFCB8E dashed 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 1.5rem;
 
-    box-shadow: 1px 0px 15px 3px rgba(92,86,86,0.5);
-    -webkit-box-shadow: 1px 0px 15px 3px rgba(92,86,86,0.5);
-    -moz-box-shadow: 1px 0px 15px 3px rgba(92,86,86,0.5);
+    box-shadow: 1px 0px 15px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0px 15px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0px 15px 3px var(--shadow-color);
 
     transition: 0.2s ease;
 
@@ -51,16 +51,21 @@ export default {
     color: #FFCB8E;
 }
 
+h1 {
+    text-align: center;
+}
+
 @media (max-width: 576px) {
     .new-group-card {
         width: 90vw;
         height: 20vw;
         flex-direction: row;
         justify-content: flex-start;
+        border: #FFCB8E dashed 4px;
 
-        box-shadow: 1px 0px 8px 3px rgba(92,86,86,0.3);
-        -webkit-box-shadow: 1px 0px 8px 3px rgba(92,86,86,0.3);
-        -moz-box-shadow: 1px 0px 8px 3px rgba(92,86,86,0.3);
+        box-shadow: 1px 0px 8px 3px var(--shadow-color);
+        -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);
+        -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);
     }
     .new-group-card-icon {
         width: 17%;
