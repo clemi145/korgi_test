@@ -57,7 +57,7 @@
                     <a @click="scrollToId('login')" class="btn primary-background">Anmelden</a>
                 </div>
                 <div id="header-content-right">
-                    <div id="placeholder-img">placeholder</div>
+                    <img id="app-preview" src="/images/app_vorschau_hr.png" alt="App Vorschau">
                 </div>
             </div>
         </div>
@@ -98,12 +98,22 @@
                 </div>
             </div>
         </div>
-        <div id="footer"></div>
+        <div id="footer">
+            <div id="footer-content">
+                <a class="footer-link">Impressum</a>
+                <a class="footer-link">Datenschutzerklärung</a>
+                <div class="footer-cr">© 2021 KORGI</div>
+            </div>
+        </div>
     </div>
 </template>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Comfortaa:wght@700&display=swap");
+
+#welcome {
+    font-family: "Montserrat", sans-serif;
+}
 
 #navigation {
     z-index: 10;
@@ -133,9 +143,9 @@
 }
 
 #navigation #link-container a {
-    margin-left: 1vh;
-    margin-right: 1vh;
-    font-weight: 800;
+    margin-left: 1.5vh;
+    margin-right: 1.5vh;
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -149,6 +159,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#app-preview {
+    width: 100%;
 }
 
 #header #header-content {
@@ -189,12 +203,7 @@
 
 
 #header-content-right {
-    width: 40%;
-    height: 30%;
-}
-
-#placeholder-img {
-    background-color: var(--light-grey);
+    width: 50%;
 }
 
 #login {
@@ -271,12 +280,10 @@
 
 #about-content-left .text {
     font-size: 1rem;
-    font-family: "Montserrat", sans-serif;
 }
 
 #about-content-left .section-headline {
     font-size: 1.5rem;
-    font-family: "Montserrat", sans-serif;
     font-weight: 600;
     margin-top: 4vh;
     margin-bottom: 1vh;
@@ -294,13 +301,38 @@
 
 #footer {
     height: 10vh;
-    background-color: var(--dark-grey);
+    background-color: var(--primary);
+    display: flex;
+    justify-content: flex-start;
+}
+
+#footer-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.footer-link {
+    font-size: 1.2rem;
+    color: var(--white);
+    margin-left: 6vh;
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.footer-cr {
+    margin-left: auto;
+    font-size: 1.2rem;
+    color: var(--white);
+    margin-right: 6vh;
 }
 
 .headline {
     color: var(--secondary);
     font-size: 3rem;
-    font-family: "Montserrat", sans-serif;
     margin-left: 10vh;
     margin-top: 10vh;
     margin-bottom: 5vh;
@@ -308,8 +340,8 @@
 
 .slogan {
     font-size: 4.5rem;
-    font-family: "Montserrat", sans-serif;
     font-weight: 500;
+    line-height: 5rem;
 }
 
 /*idc über das da unten*/
