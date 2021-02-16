@@ -538,6 +538,19 @@
     #about-content-left .text {
         margin-bottom: 2vh;
     }
+
+    #login-container{
+        width: 80vw;
+        margin-top: 6vh;
+    }
+
+    #login-content #register {
+        display: none;
+    }
+
+    .separator {
+        display: none;
+    }
 }
 
 @media (min-width: 576px) {
