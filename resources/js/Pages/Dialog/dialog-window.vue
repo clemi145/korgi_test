@@ -140,6 +140,15 @@ export default {
     transform: scale(1);
 }
 
+@media (max-width: 1200px) {
+    .dialog-window {
+        width: 55vw;
+    }
+    .dialog-background {
+        z-index: 150;
+    }
+}
+
 @media (max-width: 576px) {
     .dialog-window {
         width: 90vw;

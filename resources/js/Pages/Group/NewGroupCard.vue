@@ -55,6 +55,19 @@ h1 {
     text-align: center;
 }
 
+@media (max-width: 1200px) {
+    .new-group-card {
+        width: 18vw;
+        height: 18vw;
+    }
+    .new-group-card-text {
+        font-size: 1rem;
+    }
+    .new-group-card-icon {
+        font-size: 2.5rem;
+    }
+}
+
 @media (max-width: 576px) {
     .new-group-card {
         width: 90vw;

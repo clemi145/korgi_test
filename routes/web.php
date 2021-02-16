@@ -60,11 +60,13 @@ Route::group(["prefix" => "users"], function () {
 });
 
 // EVENTS
-Route::inertia('termine', "Chat/Event/Events")->name('events.show');
+Route::inertia('termine', "Events/Events")->name('events.show');
 
 // SETTINGS
-Route::inertia('einstellungen', "Navigation/Settings")->name('settings.show');
+Route::inertia('einstellungen', "Settings/Settings")->name('settings.show');
 
+/*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+*/
