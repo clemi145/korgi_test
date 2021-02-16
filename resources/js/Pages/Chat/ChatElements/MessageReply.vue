@@ -40,6 +40,11 @@ export default {
             document.getElementById(this.replyMessage.timetoken).scrollIntoView({
                 behavior: "smooth"
             });
+        },
+        scrollToId(id) {
+            document.getElementById(id).scrollIntoView({
+                behavior: "smooth"
+            });
         }
     }
 }
@@ -53,7 +58,7 @@ export default {
     color: var(--font-color);
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 1vh;
     margin: 0.5vh;

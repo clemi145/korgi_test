@@ -11,7 +11,7 @@
                 <div class="btn primary-background" @click="toggleFilters">Filter</div>
             </div>
             <div id="events-container">
-                <event v-for="event in Events" :event="event"/>
+                <event v-for="event in Events" :key="event.date" :event="event"/>
             </div>
             <div class="round-btn primary-background" id="filters-btn-mobile" @click="toggleFilters">
                 <i class="fas fa-sliders-h"></i>

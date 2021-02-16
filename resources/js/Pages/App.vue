@@ -67,12 +67,31 @@ export default {
     pubnubAddListener() {
       console.log("AddListener")
       this.$store.state.pubnub.addListener({
-        message: (event) => {
-          console.log("Received message Event from PubNub!");
-          this.$store.commit("addMessage", {
-            message: event,
-          });
-        },
+          message: (event) => {
+              console.log("Message Received")
+              console.log(this.$store)
+              this.$store.commit('addMessage', {
+                  message: event
+              });
+          },
+          messageAction: (event) => {
+              let value = JSON.parse(event.data.value);
+
+              switch (event.data.type) {
+                  case 'poll':
+                      this.$store.commit('addPollMessageAction', {
+                          group: value.group,
+                          chat: value.chat,
+                          channel: value.channel,
+                          user: value.user,
+                          messageTimetoken: event.data.messageTimetoken,
+
+                          // Poll specific
+                          answerKey: value.answerKey
+                      })
+                      break;
+              }
+          }
       });
     },
     pubnubSubscribe() {

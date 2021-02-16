@@ -1,5 +1,5 @@
 <template>
-    <div id="group">
+    <div id="app">
         <navigation/>
         <div id="group-content">
             <div id="group-header">
@@ -139,12 +139,16 @@ export default {
                 return "chat-link-current";
             }
         },
-        created() {
-            this.$store.commit("setCurrentPage", {page: this.group.name});
-            this.$store.commit("setShowArrow", {showArrow: true});
-        },
-    }
-    }
+
+    },
+    created() {
+        Vue.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid)
+        Vue.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid)
+        this.$store.commit("setCurrentPage", {page: this.group.name});
+        this.$store.commit("setShowArrow", {showArrow: true});
+        // console.log("Group", this.chats['wichtig'])
+    },
+}
 </script>
 
 <style scoped>

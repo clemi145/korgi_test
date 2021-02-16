@@ -3639,11 +3639,30 @@ __webpack_require__.r(__webpack_exports__);
       console.log("AddListener");
       this.$store.state.pubnub.addListener({
         message: function message(event) {
-          console.log("Received message Event from PubNub!");
+          console.log("Message Received");
+          console.log(_this.$store);
 
-          _this.$store.commit("addMessage", {
+          _this.$store.commit('addMessage', {
             message: event
           });
+        },
+        messageAction: function messageAction(event) {
+          var value = JSON.parse(event.data.value);
+
+          switch (event.data.type) {
+            case 'poll':
+              _this.$store.commit('addPollMessageAction', {
+                group: value.group,
+                chat: value.chat,
+                channel: value.channel,
+                user: value.user,
+                messageTimetoken: event.data.messageTimetoken,
+                // Poll specific
+                answerKey: value.answerKey
+              });
+
+              break;
+          }
         }
       });
     },
@@ -4659,6 +4678,8 @@ __webpack_require__.r(__webpack_exports__);
       messagesElement.scrollTo(0, messagesElement.scrollHeight);
     },
     publishMessage: function publishMessage() {
+      // console.log(this.chat)
+      // console.log(this.group)
       if (this.message.length) {
         this.$store.commit("publishMessage", {
           message: this.message,
@@ -4704,6 +4725,8 @@ __webpack_require__.r(__webpack_exports__);
     toggleSpecialMessages: function toggleSpecialMessages() {
       this.openSpecialMessages = !this.openSpecialMessages;
     }
+  },
+  created: function created() {// console.log(this.chat)
   }
 });
 
@@ -5135,6 +5158,11 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     scrollToMessage: function scrollToMessage() {
       document.getElementById(this.replyMessage.timetoken).scrollIntoView({
+        behavior: "smooth"
+      });
+    },
+    scrollToId: function scrollToId(id) {
+      document.getElementById(id).scrollIntoView({
         behavior: "smooth"
       });
     }
@@ -6251,6 +6279,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Pages_Chat_Chat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Pages/Chat/Chat */ "./resources/js/Pages/Chat/Chat.vue");
 /* harmony import */ var _Pages_Navigation_Navbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Pages/Navigation/Navbar */ "./resources/js/Pages/Navigation/Navbar.vue");
 /* harmony import */ var _Pages_Group_GroupInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Pages/Group/GroupInfo */ "./resources/js/Pages/Group/GroupInfo.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _Pages_Navigation_Navigation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Pages/Navigation/Navigation */ "./resources/js/Pages/Navigation/Navigation.vue");
@@ -6397,15 +6426,17 @@ __webpack_require__.r(__webpack_exports__);
         //document.URL.includes("wichtig")) {
         return "chat-link-current";
       }
-    },
-    created: function created() {
-      this.$store.commit("setCurrentPage", {
-        page: this.group.name
-      });
-      this.$store.commit("setShowArrow", {
-        showArrow: true
-      });
     }
+  },
+  created: function created() {
+    vue__WEBPACK_IMPORTED_MODULE_5__.default.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid);
+    vue__WEBPACK_IMPORTED_MODULE_5__.default.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid);
+    this.$store.commit("setCurrentPage", {
+      page: this.group.name
+    });
+    this.$store.commit("setShowArrow", {
+      showArrow: true
+    }); // console.log("Group", this.chats['wichtig'])
   }
 });
 
@@ -7076,22 +7107,19 @@ __webpack_require__.r(__webpack_exports__);
     user: String,
     bus: Object
   },
-  created: function created() {
-    var _this = this;
-
-    this.bus.$on("toggleMenu", function () {
-      if (_this.isActive) {
-        _this.isActive = !_this.isActive;
-        setTimeout(function () {
-          _this.hide = !_this.hide;
-        }, 300);
-      } else {
-        _this.hide = !_this.hide;
-        setTimeout(function () {
-          _this.isActive = !_this.isActive;
-        }, 5);
-      }
-    });
+  created: function created() {// this.bus.$on("toggleMenu", () => {
+    //   if (this.isActive) {
+    //     this.isActive = !this.isActive;
+    //     setTimeout(() => {
+    //       this.hide = !this.hide;
+    //     }, 300);
+    //   } else {
+    //     this.hide = !this.hide;
+    //     setTimeout(() => {
+    //       this.isActive = !this.isActive;
+    //     }, 5);
+    //   }
+    // });
   },
   data: function data() {
     return {
@@ -7101,17 +7129,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     logout: function logout() {
-      var _this2 = this;
+      var _this = this;
 
       axios.post(route("logout")).then(function (response) {
-        _this2.$inertia.visit(route("home"));
+        _this.$inertia.visit(route("home"));
       });
     },
     deleteAccount: function deleteAccount() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.post(route("user.delete")).then(function (response) {
-        _this3.$inertia.visit(route("home"));
+        _this2.$inertia.visit(route("home"));
       });
     },
     toggleDarkmode: function toggleDarkmode() {
@@ -10054,7 +10082,7 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.mixin({
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use(_inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__.plugin);
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use(portal_vue__WEBPACK_IMPORTED_MODULE_2__.default);
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use((vuex__WEBPACK_IMPORTED_MODULE_6___default()));
-var app = document.getElementById("app");
+var app = document.getElementById('app');
 
 function forceRerender(elem) {
   // Remove my-component from the DOM
@@ -10095,33 +10123,121 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
     toggleDarkmode: function toggleDarkmode(state) {
       state.user.settings.darkmode = !state.user.settings.darkmode;
     },
-    publishMessage: function publishMessage(state, payload) {
-      console.log("publish Message on: " + payload.channel.uuid);
-      state.pubnub.publish({
-        channel: payload.channel.uuid,
-        message: {
-          text: payload.message,
-          user: state.user,
-          group: payload.group,
-          chat: payload.chat,
-          messageType: "message"
+    // addReadBy(state, payload) {
+    //     Vue.set(state.groups[payload.group].channels[payload.chat].messages[payload.messageTimetoken].message.readBy, payload.user.uuid, {
+    //         user: payload.user,
+    //         time: payload.time
+    //     });
+    //     //saveMessagesToLocalStorage(payload.group, payload.chat, payload.channel)
+    // },
+    addPollMessageAction: function addPollMessageAction(state, payload) {
+      vue__WEBPACK_IMPORTED_MODULE_5__.default.set(state.groups[payload.group].channels[payload.chat].messages[payload.messageTimetoken].message.results, payload.user.uuid, payload.answerKey); //saveMessagesToLocalStorage(payload.group, payload.chat, payload.channel);
+    },
+    // TODO veröffentlichen einer allgemeinen Message Action
+    publishMessageAction: function publishMessageAction(state, payload) {
+      state.pubnub.addMessageAction({
+        channel: payload.message.channel,
+        messageTimetoken: payload.message.timetoken,
+        action: {
+          type: payload.type,
+          value: JSON.stringify({
+            user: state.user,
+            chat: payload.message.message.chat,
+            group: payload.message.message.group,
+            channel: payload.message.channel,
+            answerKey: payload.answerKey
+          })
         }
-      }, function (status, response) {
-        console.log(status, response);
+      });
+    },
+    // TODO Rename
+    // addMessageAction(state, payload) {
+    //     state.pubnub.addMessageAction(
+    //         {
+    //             channel: payload.message.channel,
+    //             messageTimetoken: payload.message.timetoken,
+    //             action: {
+    //                 type: 'readConfirm',
+    //                 value: JSON.stringify({
+    //                     user: state.user,
+    //                     time: new Date(),
+    //                     chat: payload.message.message.chat,
+    //                     group: payload.message.message.group,
+    //                     channel: payload.message.channel
+    //                 }),
+    //             }
+    //         }
+    //     );
+    // },
+    publishPoll: function publishPoll(state, payload) {
+      state.pubnub.publish({
+        channel: payload.channel,
+        message: {
+          'subject': payload.subject,
+          'user': state.user,
+          'group': payload.group,
+          'chat': payload.chat,
+          'allowMultiple': payload.allowMultiple,
+          'answers': payload.answers,
+          'results': {},
+          'messageType': 'poll'
+        }
+      });
+    },
+    publishReply: function publishReply(state, payload) {
+      state.pubnub.publish({
+        channel: payload.channel,
+        message: {
+          'text': payload.message,
+          'user': state.user,
+          'group': payload.group,
+          'chat': payload.chat,
+          'messageTimetoken': payload.messageTimetoken,
+          'messageType': 'reply'
+        }
+      });
+    },
+    publishMessage: function publishMessage(state, payload) {
+      console.log("publishMessage on: " + payload.channel);
+      console.log("   group: " + payload.group);
+      console.log("   chat: " + payload.chat);
+      state.pubnub.publish({
+        channel: payload.channel,
+        message: {
+          'text': payload.message,
+          'user': state.user,
+          'group': payload.group,
+          'chat': payload.chat,
+          'messageType': 'message'
+        }
+      });
+    },
+    publishImportantMessage: function publishImportantMessage(state, payload) {
+      state.pubnub.publish({
+        channel: payload.channel,
+        message: {
+          'text': payload.message,
+          'subject': payload.subject,
+          'user': state.user,
+          'group': payload.group,
+          'chat': payload.chat,
+          'readBy': {},
+          'messageType': 'importantMessage'
+        }
       });
     },
     publishFile: function publishFile(state, payload) {
       state.pubnub.publish({
         channel: payload.channel,
         message: {
-          text: payload.message,
-          fileName: payload.fileName,
-          fileType: payload.fileType,
-          user: state.user,
-          group: payload.group,
-          chat: payload.chat,
-          url: payload.url,
-          messageType: "file"
+          'text': payload.message,
+          'fileName': payload.fileName,
+          'fileType': payload.fileType,
+          'user': state.user,
+          'group': payload.group,
+          'chat': payload.chat,
+          'url': payload.url,
+          'messageType': 'file'
         }
       });
     },
@@ -10129,16 +10245,16 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       state.pubnub.publish({
         channel: payload.channel,
         message: {
-          text: payload.message,
-          date: payload.date,
-          user: state.user,
-          group: payload.group,
-          chat: payload.chat,
-          messageType: "eventAnnouncement"
+          'text': payload.message,
+          'date': payload.date,
+          'user': state.user,
+          'group': payload.group,
+          'chat': payload.chat,
+          'messageType': 'eventAnnouncement'
         }
       }); // Unnötig, wenn groups vom server kommen
 
-      store.commit("addEvent", {
+      store.commit('addEvent', {
         subject: payload.message,
         date: payload.date,
         group: payload.group
@@ -10148,27 +10264,20 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       state.pubnub.publish({
         channel: payload.channel,
         message: {
-          text: payload.message,
-          options: payload.dates,
-          user: state.user,
-          group: payload.group,
-          chat: payload.chat,
-          messageType: "dateVoting"
+          'text': payload.message,
+          'options': payload.dates,
+          'user': state.user,
+          'group': payload.group,
+          'chat': payload.chat,
+          'messageType': 'dateVoting'
         }
       });
     },
     addMessage: function addMessage(state, payload) {
-      vue__WEBPACK_IMPORTED_MODULE_5__.default.set(state.groups[payload.message.message.group].channels[payload.message.message.chat].messages, payload.message.timetoken, payload.message);
-      document.querySelector("#message-input").value = "test";
-      document.querySelector("#message-input").value = "";
-      console.log("add Message");
-      /*
-      saveMessagesToLocalStorage(
-          payload.message.message.group,
-          payload.message.message.chat,
-          payload.message.channel
-      );
-      */
+      console.log("addMessage");
+      console.log("   group: " + payload.message.message.group);
+      console.log("   chat: " + payload.message.message.chat);
+      vue__WEBPACK_IMPORTED_MODULE_5__.default.set(state.groups[payload.message.message.group].channels[payload.message.message.chat].messages, payload.message.timetoken, payload.message); //saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel)
     },
     addEvent: function addEvent(state, payload) {
       // TODO push to server
@@ -10327,7 +10436,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#chat[data-v-3e05bcf6] {\n  background-color: #f3f3f3;\n  flex-grow: 1;\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n#messages[data-v-3e05bcf6] {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  flex-grow: 1;\n  padding: 2%;\n  overflow-y: auto;\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar {\n  margin-left: -1rem;\n  width: 1rem;\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar-track {\n  background: transparent;\n  border-radius: 0.5rem;\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar-thumb {\n  background-color: #ffa88e;\n  border-radius: 0.5rem;\n}\n#message-input[data-v-3e05bcf6] {\n  margin-left: 2%;\n  margin-right: 2%;\n  flex-grow: 1;\n}\n#input-group[data-v-3e05bcf6] {\n  position: relative;\n  display: flex;\n  padding: 1% 2% 1% 2%;\n  box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);\n  -webkit-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);\n  -moz-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);\n  justify-content: space-between;\n}\n.special-messages-container[data-v-3e05bcf6] {\n  margin-bottom: 2%;\n  background-color: white;\n  padding: 1%;\n  height: 19rem;\n  position: absolute;\n  bottom: 100%;\n  border-radius: 1rem;\n  box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);\n  -webkit-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);\n  -moz-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: space-between;\n}\n.fade-enter-active[data-v-3e05bcf6],\n.fade-leave-active[data-v-3e05bcf6] {\n  transition: opacity 0.2s ease;\n}\n.fade-enter[data-v-3e05bcf6], .fade-leave-to[data-v-3e05bcf6] /* .fade-leave-active below version 2.1.8 */ {\n  opacity: 0;\n}\n@media (max-width: 576px) {\n#message-input[data-v-3e05bcf6] {\n    max-width: 68%; /*Irgendwie dumm, aber sonst funktioniert nix*/\n}\n#input-group[data-v-3e05bcf6] {\n    padding: 2% 2% 4% 2%; /*Unten mehr, damit bei Handys mit abgerundeten Ecken nix abgeschnitten wird*/\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar {\n    width: 0.5rem;\n}\n.special-messages-container[data-v-3e05bcf6] {\n    padding: 4%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#chat[data-v-3e05bcf6] {\n    background-color: #f3f3f3;\n    flex-grow: 1;\n    width: 100%;\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n    overflow: hidden;\n}\n#messages[data-v-3e05bcf6] {\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n    flex-grow: 1;\n    padding: 2%;\n    overflow-y: auto;\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar {\n    margin-left: -1rem;\n    width: 1rem;\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar-track {\n    background: transparent;\n    border-radius: 0.5rem;\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar-thumb {\n    background-color: #ffa88e;\n    border-radius: 0.5rem;\n}\n#message-input[data-v-3e05bcf6] {\n    margin-left: 2%;\n    margin-right: 2%;\n    flex-grow: 1;\n}\n#input-group[data-v-3e05bcf6] {\n    position: relative;\n    display: flex;\n    padding: 1% 2% 1% 2%;\n    box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);\n    -webkit-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);\n    -moz-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);\n    justify-content: space-between;\n}\n.special-messages-container[data-v-3e05bcf6] {\n    margin-bottom: 2%;\n    background-color: white;\n    padding: 1%;\n    height: 19rem;\n    position: absolute;\n    bottom: 100%;\n    border-radius: 1rem;\n    box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);\n    -webkit-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);\n    -moz-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: space-between;\n}\n.fade-enter-active[data-v-3e05bcf6],\n.fade-leave-active[data-v-3e05bcf6] {\n    transition: opacity 0.2s ease;\n}\n.fade-enter[data-v-3e05bcf6], .fade-leave-to[data-v-3e05bcf6] /* .fade-leave-active below version 2.1.8 */\n{\n    opacity: 0;\n}\n@media (max-width: 576px) {\n#message-input[data-v-3e05bcf6] {\n        max-width: 68%; /*Irgendwie dumm, aber sonst funktioniert nix*/\n}\n#input-group[data-v-3e05bcf6] {\n        padding: 2% 2% 4% 2%; /*Unten mehr, damit bei Handys mit abgerundeten Ecken nix abgeschnitten wird*/\n}\n#messages[data-v-3e05bcf6]::-webkit-scrollbar {\n        width: 0.5rem;\n}\n.special-messages-container[data-v-3e05bcf6] {\n        padding: 4%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10447,7 +10556,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-ef0b5d60] {\n    width: 80%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n    align-self: center;\n}\n.sender[data-v-ef0b5d60] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.text[data-v-ef0b5d60] {\n}\n.timetoken[data-v-ef0b5d60] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.right[data-v-ef0b5d60] {\n    background-color: var(--message-right-color);\n}\n@media (max-width: 576px) {\n.message[data-v-ef0b5d60] {\n        padding: 2.5%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-ef0b5d60] {\n    width: 80%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: flex-start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n    align-self: center;\n}\n.sender[data-v-ef0b5d60] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.text[data-v-ef0b5d60] {\n}\n.timetoken[data-v-ef0b5d60] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.right[data-v-ef0b5d60] {\n    background-color: var(--message-right-color);\n}\n@media (max-width: 576px) {\n.message[data-v-ef0b5d60] {\n        padding: 2.5%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10471,7 +10580,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-eb11b736] {\n    max-width: 80%;\n    min-width: 30%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n}\n.sender[data-v-eb11b736] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.text[data-v-eb11b736] {\n    word-break: break-word;\n    font-weight: 500;\n}\n.timetoken[data-v-eb11b736] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.right[data-v-eb11b736] {\n    align-self: flex-end;\n    background-color: var(--message-right-color);\n}\n.message-header[data-v-eb11b736] {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.fa-reply[data-v-eb11b736] {\n    color: var(--header-color);\n    cursor: pointer;\n}\n.fa-reply[data-v-eb11b736]:hover {\n    color: var(--primary);\n}\n@media (max-width: 576px) {\n.message[data-v-eb11b736] {\n        padding: 2.5%;\n}\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-eb11b736] {\n    max-width: 80%;\n    min-width: 30%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: flex-start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n}\n.sender[data-v-eb11b736] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.text[data-v-eb11b736] {\n    word-break: break-word;\n    font-weight: 500;\n}\n.timetoken[data-v-eb11b736] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.right[data-v-eb11b736] {\n    align-self: flex-end;\n    background-color: var(--message-right-color);\n}\n.message-header[data-v-eb11b736] {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.fa-reply[data-v-eb11b736] {\n    color: var(--header-color);\n    cursor: pointer;\n}\n.fa-reply[data-v-eb11b736]:hover {\n    color: var(--primary);\n}\n@media (max-width: 576px) {\n.message[data-v-eb11b736] {\n        padding: 2.5%;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10495,7 +10604,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-fed1f296] {\n    max-width: 80%;\n    min-width: 30%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n}\n.sender[data-v-fed1f296] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.text[data-v-fed1f296] {\n    word-break: break-word;\n}\n.timetoken[data-v-fed1f296] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.own[data-v-fed1f296] {\n    align-self: flex-end;\n    background-color: var(--message-right-color);\n}\n.message-header[data-v-fed1f296] {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.reply[data-v-fed1f296] {\n    width: 100%;\n    background-color: var(--background-color-alternate);\n    padding: 1vh;\n    border-radius: 1rem;\n    margin-bottom: 0.5vh;\n    cursor: pointer;\n}\n.reply-sender[data-v-fed1f296] {\n    font-size: 0.9rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.reply-text[data-v-fed1f296] {\n    font-size: 0.8rem;\n}\n.fa-reply[data-v-fed1f296] {\n    color: var(--header-color);\n    cursor: pointer;\n}\n.fa-reply[data-v-fed1f296]:hover {\n    color: var(--primary);\n}\n@media (max-width: 576px) {\n.message[data-v-fed1f296] {\n        padding: 2.5%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-fed1f296] {\n    max-width: 80%;\n    min-width: 30%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: flex-start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n}\n.sender[data-v-fed1f296] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.text[data-v-fed1f296] {\n    word-break: break-word;\n}\n.timetoken[data-v-fed1f296] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.own[data-v-fed1f296] {\n    align-self: flex-end;\n    background-color: var(--message-right-color);\n}\n.message-header[data-v-fed1f296] {\n    width: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.reply[data-v-fed1f296] {\n    width: 100%;\n    background-color: var(--background-color-alternate);\n    padding: 1vh;\n    border-radius: 1rem;\n    margin-bottom: 0.5vh;\n    cursor: pointer;\n}\n.reply-sender[data-v-fed1f296] {\n    font-size: 0.9rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.reply-text[data-v-fed1f296] {\n    font-size: 0.8rem;\n}\n.fa-reply[data-v-fed1f296] {\n    color: var(--header-color);\n    cursor: pointer;\n}\n.fa-reply[data-v-fed1f296]:hover {\n    color: var(--primary);\n}\n@media (max-width: 576px) {\n.message[data-v-fed1f296] {\n        padding: 2.5%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -10519,7 +10628,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-37cefb51] {\n    width: 80%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n    align-self: center;\n}\n.sender[data-v-37cefb51] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.timetoken[data-v-37cefb51] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.own[data-v-37cefb51] {\n    background-color: var(--message-right-color);\n}\n.poll[data-v-37cefb51] {\n    width: 100%;\n    transition: 0.2s ease;\n}\n@media (max-width: 576px) {\n.message[data-v-37cefb51] {\n        padding: 2.5%;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.message[data-v-37cefb51] {\n    width: 80%;\n    background-color: var(--message-color);\n    color: var(--font-color);\n    display: flex;\n    flex-direction: column;\n    align-items: flex-start;\n    justify-content: space-between;\n    padding: 1vh;\n    margin: 0.5vh;\n    border-radius: 1rem;\n    align-self: center;\n}\n.sender[data-v-37cefb51] {\n    font-size: 1.1rem;\n    font-weight: bold;\n    margin-bottom: 0.5vh;\n}\n.timetoken[data-v-37cefb51] {\n    align-self: flex-end;\n    color: var(--font-color-light);\n    font-size: 0.8rem;\n}\n.own[data-v-37cefb51] {\n    background-color: var(--message-right-color);\n}\n.poll[data-v-37cefb51] {\n    width: 100%;\n    transition: 0.2s ease;\n}\n@media (max-width: 576px) {\n.message[data-v-37cefb51] {\n        padding: 2.5%;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43799,6 +43908,7 @@ var render = function() {
       { staticClass: "poll" },
       _vm._l(Object.keys(_vm.message.message.answers), function(answerKey) {
         return _c("poll-answer", {
+          key: answerKey,
           attrs: { answerKey: answerKey, message: _vm.message },
           on: {
             click: function($event) {
@@ -44875,7 +44985,7 @@ var render = function() {
           "div",
           { attrs: { id: "events-container" } },
           _vm._l(_vm.Events, function(event) {
-            return _c("event", { attrs: { event: event } })
+            return _c("event", { key: event.date, attrs: { event: event } })
           }),
           1
         ),
@@ -44971,7 +45081,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { attrs: { id: "group" } },
+    { attrs: { id: "app" } },
     [
       _c("navigation"),
       _vm._v(" "),

@@ -3,7 +3,7 @@
         <div class="sender" v-if="!isOwn">{{ message.message.user.username }}</div>
         <div class="subject">{{ message.message.subject }}</div>
         <div class="poll">
-            <poll-answer v-for="answerKey in Object.keys(message.message.answers)" :answerKey="answerKey" :message="message" @click="addResult(answerKey)"/>
+            <poll-answer v-for="answerKey in Object.keys(message.message.answers)" :key="answerKey" :answerKey="answerKey" :message="message" @click="addResult(answerKey)"/>
         </div>
         <div class="timetoken">
             {{
@@ -53,7 +53,7 @@ export default {
     color: var(--font-color);
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 1vh;
     margin: 0.5vh;
