@@ -341,7 +341,7 @@
      border-radius: 2rem;
  }
 
- .separator {
+ #login-content .separator {
      height: 60vh;
      background-color: white;
      width: 6px;
@@ -548,7 +548,7 @@
         display: none;
     }
 
-    .separator {
+    #login-content .separator {
         display: none;
     }
 }
