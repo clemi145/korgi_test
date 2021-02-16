@@ -39,12 +39,18 @@
     <!--  </div>-->
     <div id="welcome">
         <div id="navigation">
-            <img id="logo" src="/images/korgi_full_l.svg" alt="Logo">
+            <img @click="scrollToId('header')" id="logo" src="/images/korgi_full_l.svg" alt="Logo">
             <div id="link-container">
                 <a @click="scrollToId('header')">Home</a>
-                <a @click="scrollToId('login')"">Anmelden</a>
+                <a @click="scrollToId('login')">Anmelden</a>
                 <a @click="scrollToId('about')">Über uns</a>
             </div>
+            <a id="burger" @click="toggleMenu"><span/></a>
+        </div>
+        <div id="slider">
+            <a @click="scrollToId('header'); toggleMenu">Home</a>
+            <a @click="scrollToId('login'); toggleMenu">Anmelden</a>
+            <a @click="scrollToId('about'); toggleMenu">Über uns</a>
         </div>
         <div id="header">
             <div id="header-content">
@@ -102,8 +108,8 @@
             <div id="footer-content">
                 <a class="footer-link">Impressum</a>
                 <a class="footer-link">Datenschutzerklärung</a>
-                <div class="footer-cr">© 2021 KORGI</div>
             </div>
+            <div class="footer-cr">© 2021 KORGI</div>
         </div>
     </div>
 </template>
@@ -149,8 +155,93 @@
     cursor: pointer;
 }
 
+#navigation #link-container a:hover {
+    color: var(--secondary);
+    transition: 0.15s;
+}
+
+#slider a {
+    margin-bottom: 2vh;
+    font-size: 1.2rem;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#slider a:hover {
+    color: var(--secondary);
+    transition: 0.15s;
+}
+
+#slider {
+    width: 80vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.3);
+    -moz-box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.3);
+    box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.3);
+    position: fixed;
+    left: 100vw;
+    z-index: 5;
+    background-color: #ffffff;
+    transition: all 0.25s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#slider.sliderActive {
+    transform: translateX(-80vw);
+}
+
+#burger {
+    margin-left: auto;
+    display: block;
+    padding: 10px;
+}
+
+#burger span {
+    position: relative;
+    display: block;
+    z-index: 5;
+    width: 30px;
+    height: 4px;
+    background: var(--font-color);
+    transition: all 0.2s ease-in-out;
+    border-radius: 3px;
+}
+#burger span:before, #burger span:after {
+    position: absolute;
+    background: var(--font-color);
+    content: "";
+    width: 30px;
+    height: 4px;
+    transition: all 0.2s;
+    border-radius: 3px;
+}
+#burger span:before {
+    top: -8px;
+}
+#burger span:after {
+    top: 8px;
+}
+#burger.active span {
+    background: transparent;
+}
+#burger.active span:before {
+    transform: rotate(45deg) translate(5px, 6px);
+    background: var(--font-color);
+}
+#burger.active span:after {
+    transform: rotate(-45deg) translate(5px, -6px);
+    background: var(--font-color);
+}
+
 #logo {
     width: 18vh;
+    cursor: pointer;
 }
 
 #header {
@@ -183,8 +274,8 @@
     width: 55%;
     height: 6px;
     background-color: var(--primary);
-    margin-top: 6vh;
-    margin-bottom: 6vh;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
 }
 
 #header-content-left .text {
@@ -258,7 +349,7 @@
  }
 
 #about {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -280,12 +371,12 @@
 
 #about-content-left .text {
     font-size: 1rem;
+    margin-bottom: 4vh;
 }
 
 #about-content-left .section-headline {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-top: 4vh;
     margin-bottom: 1vh;
 }
 
@@ -304,6 +395,7 @@
     background-color: var(--primary);
     display: flex;
     justify-content: flex-start;
+    align-items: center;
 }
 
 #footer-content {
@@ -311,7 +403,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
+    width: 90%;
 }
 
 .footer-link {
@@ -324,7 +416,6 @@
 }
 
 .footer-cr {
-    margin-left: auto;
     font-size: 1.2rem;
     color: var(--white);
     margin-right: 6vh;
@@ -339,9 +430,120 @@
 }
 
 .slogan {
-    font-size: 4.5rem;
+    font-size: 4rem;
     font-weight: 500;
-    line-height: 5rem;
+    line-height: 4.5rem;
+    width: 80%;
+}
+
+@media (max-width: 576px) {
+
+    #navigation {
+        height: 15vw;
+    }
+
+    #header-content-right {
+        display: none;
+    }
+
+    #header-content-left {
+        width: 100%;
+    }
+
+    #navigation {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    #navigation #link-container {
+        display: none;
+    }
+
+    #header-content {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .slogan {
+        font-size: 2.6rem;
+        line-height: 4rem;
+    }
+
+    #header-content-left .separator  {
+        margin-bottom: 2vh;
+        margin-top: 2vh;
+        width: 40%;
+    }
+
+    #header-content-left .text {
+        font-size: 1.1rem;
+    }
+
+    #header-content-left .btn {
+        align-self: flex-start;
+        margin-top: 4vh;
+    }
+
+    #about-content-right {
+        display: none;
+    }
+
+    #about-content-left {
+        width: 100%;
+    }
+
+    .headline {
+        margin-left: 2vh;
+        margin-top: 8vh;
+        margin-bottom: 2vh;
+        font-size: 2.2rem;
+    }
+
+    .footer-link {
+        font-size: 1rem;
+        margin-left: 2vh;
+    }
+
+    #footer-content {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    #footer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+    }
+
+    .footer-cr {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #register .btn {
+        height: 3rem;
+        font-size: 1rem;
+    }
+
+    #header-content .btn {
+        height: 3rem;
+        font-size: 1rem;
+    }
+
+    #about-content-left .section-headline {
+        font-size: 1.3rem;
+    }
+
+    #about-content-left .text {
+        margin-bottom: 2vh;
+    }
+}
+
+@media (min-width: 576px) {
+    #burger {
+        display: none;
+    }
 }
 
 /*idc über das da unten*/
@@ -1385,6 +1587,15 @@ export default {
             document.getElementById(id).scrollIntoView({
                 behavior: "smooth"
             });
+        },
+        toggleMenu() {
+            if (document.getElementById('slider').classList.contains('sliderActive')) {
+                document.getElementById('slider').classList.remove("sliderActive");
+                document.getElementById('burger').classList.remove("active");
+            } else {
+                document.getElementById('slider').classList.add("sliderActive");
+                document.getElementById('burger').classList.add("active");
+            }
         }
     }
 };
