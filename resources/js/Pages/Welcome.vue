@@ -121,6 +121,19 @@
     font-family: "Montserrat", sans-serif;
 }
 
+::selection {
+    background: var(--secondary);
+    color: white;
+}
+
+img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #navigation {
     z-index: 10;
     background-color: #ffffff;
@@ -153,6 +166,12 @@
     margin-right: 1.5vh;
     font-weight: 600;
     cursor: pointer;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #navigation #link-container a:hover {
