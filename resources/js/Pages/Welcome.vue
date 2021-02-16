@@ -276,6 +276,7 @@
     background-color: var(--primary);
     margin-top: 4vh;
     margin-bottom: 4vh;
+    border-radius: 10px;
 }
 
 #header-content-left .text {
