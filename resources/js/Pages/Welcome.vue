@@ -77,7 +77,7 @@
                     <div id="register-info">Registriere dich jetzt und genieße
                         alle Vorteile von KORGI.
                         Absolut kostenlos.</div>
-                    <div class="btn secondary-background">Registrieren</div>
+                    <inertia-link :href="route('register')" class="btn secondary-background">Registrieren</inertia-link>
                 </div>
             </div>
         </div>
@@ -1606,7 +1606,7 @@ img {
 </style>
 
 <script>
-import Login from "@/Pages/Login";
+import Login from "@/Pages/Auth/Login";
 export default {
     components: {Login},
     props: {
