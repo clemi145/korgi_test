@@ -9,33 +9,34 @@
     <form @submit.prevent="submit" id="login-form">
       <h2 id="greeting">Wilkommen!</h2>
       <div>
-        <jet-label for="email" value="Email" />
         <jet-input
           id="email"
           type="email"
-          class="mt-1 block w-full"
+          class="input"
           v-model="form.email"
+          placeholder="E-Mail"
           required
           autofocus
         />
       </div>
 
       <div class="mt-4">
-        <jet-label for="password" value="Password" />
         <jet-input
           id="password"
           type="password"
-          class="mt-1 block w-full"
+          class="input"
           v-model="form.password"
+          placeholder="Passwort"
           required
           autocomplete="current-password"
         />
       </div>
 
       <div class="block mt-4">
-        <label class="flex items-center">
+        <label class="checkbox-container">
+            Passwort merken
           <jet-checkbox name="remember" v-model="form.remember" />
-          <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            <span class="checkbox"></span>
         </label>
       </div>
 
@@ -49,11 +50,10 @@
         </inertia-link>
 
         <jet-button
-          class="ml-4"
-          :class="{ 'opacity-25': form.processing }"
+          class="btn secondary-background"
           :disabled="form.processing"
         >
-          Login
+          Anmelden
         </jet-button>
       </div>
     </form>
@@ -112,7 +112,7 @@ export default {
   font-family: "Montserrat", sans-serif;
   display: flex;
   flex-direction: column;
-  width: 24%;
+  width: 100%;
 }
 
 #greeting {
@@ -124,7 +124,7 @@ export default {
 }
 
 #login-form {
-  background-color: var(--white);
+  background-color: var(--background-color);
   border-radius: 30px;
   padding: 4vh;
 }
