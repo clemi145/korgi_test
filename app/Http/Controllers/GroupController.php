@@ -151,6 +151,15 @@ class GroupController extends Controller
         ]);
     }
 
+    function set(Request $request)
+    {
+        foreach ($request->all() as $key => $value) {
+            if ($key != "groupId") {
+                Team::where("id", $request->groupId)->update([$key => $value]);
+            }
+        }
+    }
+
     function urlFormat($name)
     {
         $name = strtolower($name);
@@ -195,7 +204,7 @@ class GroupController extends Controller
                 ]
             ]);
         }
-        Log::info($groups);
+        // Log::info($groups);
         return $groups;
     }
 

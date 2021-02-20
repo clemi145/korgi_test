@@ -34,9 +34,9 @@
 
       <div class="block mt-4">
         <label class="checkbox-container">
-            Passwort merken
+          Passwort merken
           <jet-checkbox name="remember" v-model="form.remember" />
-            <span class="checkbox"></span>
+          <span class="checkbox"></span>
         </label>
       </div>
 
@@ -46,7 +46,7 @@
           :href="route('password.request')"
           class="underline text-sm text-gray-600 hover:text-gray-900"
         >
-          Forgot your password?
+          Passwort vergessen?
         </inertia-link>
 
         <jet-button
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+// import JetAuthenticationCard from "@/Jetstream/AuthenticationCard";
 import JetButton from "@/Jetstream/Button";
 import JetInput from "@/Jetstream/Input";
 import JetCheckbox from "@/Jetstream/Checkbox";
@@ -69,6 +70,7 @@ import JetValidationErrors from "@/Jetstream/ValidationErrors";
 
 export default {
   components: {
+    // JetAuthenticationCard,
     JetButton,
     JetInput,
     JetCheckbox,
@@ -77,7 +79,7 @@ export default {
   },
 
   props: {
-    canResetPassword: Boolean,
+    // canResetPassword: Boolean,
     status: String,
   },
 
@@ -88,6 +90,7 @@ export default {
         password: "",
         remember: false,
       }),
+      canResetPassword: 1
     };
   },
 
@@ -130,7 +133,7 @@ export default {
 }
 
 .btn {
-  width: 100%;
+  width: 50%;
   justify-content: center;
 }
 

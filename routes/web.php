@@ -51,6 +51,8 @@ Route::group(['prefix' => 'gruppen', "middleware" => ['auth:sanctum', 'verified'
     Route::post("leave", [GroupController::class, "leave"])->name("group.leave");
 
     Route::post("delete", [GroupController::class, "delete"])->name("group.delete");
+
+    Route::post("set", [GroupController::class, "set"])->name("group.set");
 });
 
 // Users

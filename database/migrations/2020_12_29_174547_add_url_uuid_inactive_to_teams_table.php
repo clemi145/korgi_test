@@ -19,6 +19,7 @@ class AddUrlUuidInactiveToTeamsTable extends Migration
             $uuid = DB::raw("UUID()");
             $table->uuid("uuid")->default($uuid);
             $table->boolean("inactive")->default(false);
+            $table->timestamp("last_message")->nullable();
         });
     }
 
