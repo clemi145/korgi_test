@@ -20,8 +20,8 @@ class CreateTeamsTable extends Migration
             $table->string('name');
             $table->boolean('personal_team');
             $table->string("url")->nullable();
-            $uuid = DB::raw("UUID()");
-            $table->uuid("uuid")->default($uuid);
+            // $uuid = DB::raw("UUID()");
+            $table->uuid("uuid")->nullable();//default($uuid);
             $table->timestamp("last_message")->nullable();
             $table->boolean("inactive")->default(false);
             $table->timestamp("inactive_since")->nullable();

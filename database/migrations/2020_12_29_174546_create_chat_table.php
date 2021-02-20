@@ -16,8 +16,8 @@ class CreateChatTable extends Migration
     {
         Schema::create('chat', function (Blueprint $table) {
             $table->id('id')->autoIncrement();
-            $uuid = DB::raw('UUID()');
-            $table->uuid("uuid")->default($uuid);
+            // $uuid = DB::raw('UUID()');
+            $table->uuid("uuid")->nullable();//default($uuid);
             $table->string("url")->nullable();
             $table->boolean("type")->default(false);
             $table->foreignId("team_id")->references("id")->on("teams");

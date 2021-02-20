@@ -23,8 +23,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->text('profile_photo_path')->nullable();
-            $uuid = DB::raw('UUID()');
-            $table->uuid("uuid")->default($uuid);
+            // $uuid = DB::raw('UUID()');
+            $table->uuid("uuid")->nullable();//default($uuid);
             $table->timestamp('last_message')->nullable();
             $table->timestamps();
         });

@@ -45,8 +45,9 @@ class GroupController extends Controller
             "personal_team" => false,
             "user_id" => $user->id,
             //"url" => route("group.show", [
-                "url" => $this->urlFormat($request->input("name"))
+                "url" => $this->urlFormat($request->input("name")),
             //])
+            "uuid" => DB::raw('UUID()')
         ]);
 
         $team->users()->attach(
@@ -59,7 +60,8 @@ class GroupController extends Controller
             "type" => false,
             "url" => route("group.show", [
                 "url" => $this->urlFormat($team->name)
-            ])
+            ]),
+            "uuid" => DB::raw('UUID()')
         ]);
 
         $important_chat = Chat::create([
@@ -67,7 +69,8 @@ class GroupController extends Controller
             "type" => true,
             "url" => route("group.show", [
                 "url" => $this->urlFormat($team->name)
-            ])
+            ]),
+            "uuid" => DB::raw('UUID()')
         ]);
 
         $general_chat->team()->associate($team);
