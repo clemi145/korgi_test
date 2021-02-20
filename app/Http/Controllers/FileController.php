@@ -28,7 +28,7 @@ class FileController extends Controller
         $group = Team::find($request->groupId);
         $dirName = 'files/' . $group->name . "_" . $group->id;
         if (!Storage::exists($dirName)) {
-            Storage::makeDirectory($dirName); //creates directory
+            Storage::makeDirectory($dirName);
         }
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $filename = Storage::disk("ftp")->put($dirName, $request->file('file'));

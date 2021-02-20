@@ -65,6 +65,8 @@ Route::inertia('termine', "Events/Events")->name('events.show');
 // SETTINGS
 Route::inertia('einstellungen', "Settings/Settings")->name('settings.show');
 
+Route::inertia('offline', "Welcome")->name('offline');
+
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
