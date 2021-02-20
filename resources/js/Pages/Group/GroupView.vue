@@ -92,6 +92,12 @@ export default {
   justify-content: flex-start;
 }
 
+@media (max-width: 1200px) {
+    #groups {
+        padding-left: 3vh;
+    }
+}
+
 @media (max-width: 576px) {
   #groups {
     /*margin-top: 25%;*/

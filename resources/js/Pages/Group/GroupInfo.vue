@@ -161,4 +161,43 @@ export default {
     justify-content: space-between;
 }
 
+@media (max-width: 1200px) {
+    #group-info.active {
+        position: absolute;
+        width: 70%;
+        height: 100%;
+        padding: 2vh;
+        z-index: 35;
+    }
+    #group-info {
+        position: absolute;
+        width: 100%;
+        height: 0;
+        box-shadow: none;
+        z-index: 0;
+    }
+
+    #group-info-delete .btn {
+        width: 25vh;
+    }
+}
+
+@media (max-width: 576px) {
+    #group-info.active {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 2vh;
+        z-index: 35;
+    }
+    #group-info {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 0;
+        box-shadow: none;
+        z-index: 0;
+    }
+}
+
 </style>

@@ -79,6 +79,19 @@ export default {
     color: var(--font-color);
 }
 
+@media (max-width: 1200px) {
+    .group-card {
+        width: 18vw;
+        height: 18vw;
+    }
+    .group-card-name {
+        font-size: 1rem;
+    }
+    .group-card-icon {
+        font-size: 2.5rem;
+    }
+}
+
 @media (max-width: 576px) {
     .group-card {
         width: 90vw;
