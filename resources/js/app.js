@@ -1,4 +1,4 @@
-require('./bootstrap');
+require("./bootstrap");
 
 // Import modules...
 import Vue from "vue";
@@ -19,6 +19,40 @@ Vue.use(PortalVue);
 Vue.use(Vuex);
 
 const app = document.getElementById("app");
+
+function generateLaravelTimestamp() {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = ("0" + (d.getMonth() + 1)).slice(-2);
+    var day = ("0" + d.getDate()).slice(-2);
+    var hour = ("0" + d.getHours()).slice(-2);
+    var minutes = ("0" + d.getMinutes()).slice(-2);
+    var seconds = ("0" + d.getSeconds()).slice(-2);
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minutes +
+        ":" +
+        seconds
+    );
+}
+
+function setLastMessage(groupName) {
+    axios.post(route("group.get"), { groupName: groupName }).then(res => {
+        axios
+            .post(route("group.set"), {
+                groupId: res.id,
+                last_message: generateLaravelTimestamp()
+            })
+            .then(res => console.log(res));
+    });
+}
 
 const store = new Vuex.Store({
     state: {
@@ -48,7 +82,9 @@ const store = new Vuex.Store({
             state.user.settings.darkmode = !state.user.settings.darkmode;
         },
         publishMessage(state, payload) {
+            // console.log(payload.group);
             console.log("publish Message on: " + payload.channel.uuid);
+            setLastMessage(payload.group);
             state.pubnub.publish(
                 {
                     channel: payload.channel.uuid,
@@ -66,6 +102,7 @@ const store = new Vuex.Store({
             );
         },
         publishFile(state, payload) {
+            setLastMessage(payload.group);
             state.pubnub.publish({
                 channel: payload.channel,
                 message: {
@@ -81,6 +118,7 @@ const store = new Vuex.Store({
             });
         },
         publishEventAnnouncement(state, payload) {
+            setLastMessage(payload.group);
             state.pubnub.publish({
                 channel: payload.channel,
                 message: {
@@ -101,6 +139,7 @@ const store = new Vuex.Store({
             });
         },
         publishDateVoting(state, payload) {
+            setLastMessage(payload.group);
             state.pubnub.publish({
                 channel: payload.channel,
                 message: {
@@ -172,7 +211,10 @@ const store = new Vuex.Store({
             Object.keys(state.groups).forEach(groupKey => {
                 Object.keys(state.groups[groupKey].channels).forEach(
                     channelKey => {
-                        console.log("Subscribed to channel: " + state.groups[groupKey].channels[channelKey].uuid)
+                        console.log(
+                            "Subscribed to channel: " +
+                                state.groups[groupKey].channels[channelKey].uuid
+                        );
                         uuids.push(
                             state.groups[groupKey].channels[channelKey].uuid
                         );

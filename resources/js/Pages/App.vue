@@ -4,7 +4,7 @@
     <!--        <date-picker :multiple="false"></date-picker>-->
     <Navbar :bus="bus" />
     <Navigation :user="user.name" :bus="bus" />
-    <GroupView :groups="group_obj" />
+    <GroupView :groups="group_obj" :user="user"/>
   </div>
 </template>
 

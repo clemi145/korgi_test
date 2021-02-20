@@ -1,6 +1,6 @@
 <template>
   <div id="group">
-    <navigation />
+    <navigation :user="user.name"/>
     <div id="group-content">
       <div id="group-header">
         <div class="row">
@@ -102,6 +102,7 @@ export default {
     chats: Object,
     // chat: Object,
     user_is_admin: Boolean,
+    user: Object
   },
   data() {
     return {

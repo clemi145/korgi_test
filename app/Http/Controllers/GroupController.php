@@ -44,9 +44,9 @@ class GroupController extends Controller
             "name" => $request->input("name"),
             "personal_team" => false,
             "user_id" => $user->id,
-            "url" => route("group.show", [
+            //"url" => route("group.show", [
                 "url" => $this->urlFormat($request->input("name"))
-            ])
+            //])
         ]);
 
         $team->users()->attach(
@@ -78,7 +78,8 @@ class GroupController extends Controller
     {
         $user = User::find(Auth::user()->id);
 
-        $team = Team::where("url", route("group.show", ["url" => $url]))->first();
+        // route("group.show", ["url" => $url])
+        $team = Team::where("url", $url)->first();
 
         // Log::info($team);
 
@@ -158,6 +159,10 @@ class GroupController extends Controller
                 Team::where("id", $request->groupId)->update([$key => $value]);
             }
         }
+    }
+
+    function get(Request $request) {
+        return Team::where("name", $request->groupName)->first();
     }
 
     function urlFormat($name)

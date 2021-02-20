@@ -22,21 +22,33 @@ export default {
           groupId: this.group.id,
           last_message: this.generateLaravelTimestamp(),
         })
-        .then((res) => console.log(res))
+        // .then((res) => console.log(res))
         .then(() => {
           this.$inertia.visit(route("group.show", { url: this.group.url }));
         });
     },
-    generateLaravelTimestamp(){
-    var d = new Date()
-    var year = d.getFullYear();
-    var month = ("0" + (d.getMonth() + 1)).slice(-2);
-    var day = ("0" + d.getDate()).slice(-2);
-    var hour = ("0" + d.getHours()).slice(-2);
-    var minutes = ("0" + d.getMinutes()).slice(-2);
-    var seconds = ("0" + d.getSeconds()).slice(-2);
-    return year + "-" + month + "-" + day + " "+ hour + ":" + minutes + ":" + seconds;
-}
+    generateLaravelTimestamp() {
+      var d = new Date();
+      var year = d.getFullYear();
+      var month = ("0" + (d.getMonth() + 1)).slice(-2);
+      var day = ("0" + d.getDate()).slice(-2);
+      var hour = ("0" + d.getHours()).slice(-2);
+      var minutes = ("0" + d.getMinutes()).slice(-2);
+      var seconds = ("0" + d.getSeconds()).slice(-2);
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minutes +
+        ":" +
+        seconds
+      );
+    },
   },
 };
 </script>

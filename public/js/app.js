@@ -6377,7 +6377,8 @@ __webpack_require__.r(__webpack_exports__);
     group: Object,
     chats: Object,
     // chat: Object,
-    user_is_admin: Boolean
+    user_is_admin: Boolean,
+    user: Object
   },
   data: function data() {
     return {
@@ -6475,9 +6476,8 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post(route("group.set"), {
         groupId: this.group.id,
         last_message: this.generateLaravelTimestamp()
-      }).then(function (res) {
-        return console.log(res);
-      }).then(function () {
+      }) // .then((res) => console.log(res))
+      .then(function () {
         _this.$inertia.visit(route("group.show", {
           url: _this.group.url
         }));
@@ -6647,7 +6647,8 @@ __webpack_require__.r(__webpack_exports__);
     Navbar: _Pages_Navigation_Navbar__WEBPACK_IMPORTED_MODULE_4__.default
   },
   props: {
-    groups: Object
+    groups: Object,
+    user: Object
   },
   data: function data() {
     return {
@@ -10987,6 +10988,31 @@ vue__WEBPACK_IMPORTED_MODULE_5__.default.use(_inertiajs_inertia_vue__WEBPACK_IMP
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use(portal_vue__WEBPACK_IMPORTED_MODULE_2__.default);
 vue__WEBPACK_IMPORTED_MODULE_5__.default.use((vuex__WEBPACK_IMPORTED_MODULE_6___default()));
 var app = document.getElementById("app");
+
+function generateLaravelTimestamp() {
+  var d = new Date();
+  var year = d.getFullYear();
+  var month = ("0" + (d.getMonth() + 1)).slice(-2);
+  var day = ("0" + d.getDate()).slice(-2);
+  var hour = ("0" + d.getHours()).slice(-2);
+  var minutes = ("0" + d.getMinutes()).slice(-2);
+  var seconds = ("0" + d.getSeconds()).slice(-2);
+  return year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
+}
+
+function setLastMessage(groupName) {
+  axios__WEBPACK_IMPORTED_MODULE_4___default().post(route("group.get"), {
+    groupName: groupName
+  }).then(function (res) {
+    axios__WEBPACK_IMPORTED_MODULE_4___default().post(route("group.set"), {
+      groupId: res.id,
+      last_message: generateLaravelTimestamp()
+    }).then(function (res) {
+      return console.log(res);
+    });
+  });
+}
+
 var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
   state: {
     pubnub: {},
@@ -11015,7 +11041,9 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       state.user.settings.darkmode = !state.user.settings.darkmode;
     },
     publishMessage: function publishMessage(state, payload) {
+      // console.log(payload.group);
       console.log("publish Message on: " + payload.channel.uuid);
+      setLastMessage(payload.group);
       state.pubnub.publish({
         channel: payload.channel.uuid,
         message: {
@@ -11030,6 +11058,7 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       });
     },
     publishFile: function publishFile(state, payload) {
+      setLastMessage(payload.group);
       state.pubnub.publish({
         channel: payload.channel,
         message: {
@@ -11045,6 +11074,7 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       });
     },
     publishEventAnnouncement: function publishEventAnnouncement(state, payload) {
+      setLastMessage(payload.group);
       state.pubnub.publish({
         channel: payload.channel,
         message: {
@@ -11064,6 +11094,7 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       });
     },
     publishDateVoting: function publishDateVoting(state, payload) {
+      setLastMessage(payload.group);
       state.pubnub.publish({
         channel: payload.channel,
         message: {
@@ -11222,7 +11253,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap);"]);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n* {\r\n    box-sizing: border-box;\r\n    margin: 0;\r\n    padding: 0;\r\n    transition: all 0.15s ease;\n}\n:root {\r\n    --primary: #FFA88E;\r\n    --primary-darker: #ff8f6e;\r\n\r\n    --secondary-lighter: #FFDBB1;\r\n    --secondary: #FFCB8E;\r\n    --secondary-darker: #ffb561;\r\n\r\n    --warn: #FC6B6B;\r\n    --warn-darker: #ef5252;\r\n\r\n    --black: #000000;\r\n    --dark-grey: #2C2F33;\r\n    --semi-dark-grey: #505050;\r\n    --mid-grey: #E1E1E1;\r\n    --light-grey: #F3F3F3;\r\n    --white: #ffffff;\r\n\r\n    --font-color-light: #707070;\n}\nhtml {\r\n    scroll-behavior: smooth;\r\n\r\n    --background-color: var(--white);\r\n    --background-color-alternate: var(--light-grey);\r\n    --alt-input-border-color: var(--dark-grey);\r\n    --font-color: var(--black);\r\n    --font-color-alternate: var(--white);\r\n    --header-color: var(--dark-grey);\r\n    --font-color-light: var(--font-color-light);\r\n    --message-color: var(--white);\r\n    --message-right-color: var(--secondary-lighter);\r\n    --shadow-color: rgba(92, 86, 86, 0.3);\r\n    --subject-color: var(--warn);\n}\nhtml.darkmode {\r\n    --background-color: var(--semi-dark-grey);\r\n    --background-color-alternate: var(--dark-grey);\r\n    --alt-input-border-color: var(--mid-grey);\r\n    --font-color: var(--white);\r\n    --font-color-alternate: var(--black);\r\n    --header-color: var(--white);\r\n    --font-color-light: var(--mid-grey);\r\n    --message-color: var(--semi-dark-grey);\r\n    --message-right-color: var(--primary-darker);\r\n    --shadow-color: rgb(31, 31, 31);\r\n    --subject-color: var(--secondary);\n}\n#app {\r\n    display: flex;\r\n    flex-direction: row;\r\n\r\n    width: 100%;\r\n    height: 100vh;\r\n\r\n    font-family: 'Montserrat', sans-serif;\n}\n.headline {\r\n    color: var(--font-color-light);\r\n    font-size: 1.8rem;\r\n    font-weight: 700;\n}\n.title {\r\n    color: #FFCB8E;\r\n    font-size: 3rem;\r\n    font-weight: 700;\n}\n.round-btn {\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n\r\n    width: 3rem;\r\n    height: 3rem;\r\n    font-size: 1.5rem;\r\n    border-radius: 1.5rem;\r\n    outline: 0;\n}\n.round-btn.mini {\r\n    width: 1.5rem;\r\n    height: 1.5rem;\r\n    font-size: 0.75rem;\n}\n.btn {\r\n    width: 100%;\r\n    /*flex-grow: 1;*/\r\n    height: 3rem;\r\n    font-size: 1rem;\r\n    font-weight: 600;\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    border-radius: 1.5rem;\r\n    padding-left: 1.5rem;\r\n    padding-right: 1.5rem;\r\n    -webkit-user-select: none;\r\n       -moz-user-select: none;\r\n        -ms-user-select: none;\r\n            user-select: none;\n}\n.btn i {\r\n    font-size: 1.5rem;\n}\n.input {\r\n    font-size: 1rem;\r\n    outline: 0;\r\n    border-radius: 1.5rem;\r\n    color: var(--font-color);\r\n    font-weight: 600;\r\n\r\n    padding-left: 1.5rem;\r\n    padding-right: 1.5rem;\r\n    height: 3rem;\r\n    background-color: var(--background-color);\n}\n.dialog-window .input {\r\n    background-color: var(--background-color-alternate);\n}\n.textarea {\r\n    font-size: 1rem;\r\n    outline: 0;\r\n    border-radius: 1.5rem;\r\n    color: #707070;\r\n    font-weight: 600;\r\n\r\n    padding: 1.5rem;\r\n    background-color: #E1E1E1;\r\n    resize: none;\n}\n.input::-moz-placeholder {\r\n    color: #707070;\n}\n.input:-ms-input-placeholder {\r\n    color: #707070;\n}\n.input::placeholder {\r\n    color: #707070;\n}\n.textarea::-moz-placeholder {\r\n    color: #707070;\n}\n.textarea:-ms-input-placeholder {\r\n    color: #707070;\n}\n.textarea::placeholder {\r\n    color: #707070;\n}\n.input.disabled {\r\n    cursor: default;\r\n    pointer-events: none;\n}\n.warn-background {\r\n    background-color: var(--warn);\r\n    transition: 0.2s ease;\r\n    cursor: pointer;\r\n    color: white;\n}\n.primary-background {\r\n    background-color: var(--primary);\r\n    transition: 0.2s ease;\r\n    cursor: pointer;\r\n    color: white;\n}\n.secondary-background {\r\n    background-color: var(--secondary);\r\n    transition: 0.2s ease;\r\n    cursor: pointer;\r\n    color: white;\n}\n.warn-background.disabled {\r\n    pointer-events: none;\r\n    cursor: default;\r\n    filter: saturate(0.3);\n}\n.primary-background.disabled {\r\n    pointer-events: none;\r\n    cursor: default;\r\n    filter: saturate(0.3);\n}\n.secondary-background.disabled {\r\n    pointer-events: none;\r\n    cursor: default;\r\n    filter: saturate(0.3);\n}\n.warn-background:hover {\r\n    background-color: var(--warn-darker);\n}\n.primary-background:hover {\r\n    background-color: var(--primary-darker);\n}\n.secondary-background:hover {\r\n    background-color: var(--secondary-darker);\n}\n.row {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    width: 100%;\n}\n.col {\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    height: 100%;\n}\n.space-between {\r\n    justify-content: space-between;\n}\n.flex-start {\r\n    justify-content: flex-start;\n}\r\n\r\n/*Checkbox*/\n.checkbox-container {\r\n    margin: 1vh;\r\n    display: flex;\r\n    align-items: center;\r\n    position: relative;\r\n    padding-left: 35px;\r\n    -webkit-user-select: none;\r\n    -moz-user-select: none;\r\n    -ms-user-select: none;\r\n    user-select: none;\r\n    cursor: pointer;\n}\n.checkbox-container input, .checkbox-container input {\r\n    opacity: 0;\r\n    position: absolute;\r\n    cursor: pointer;\r\n    height: 0;\r\n    width: 0;\n}\n.checkbox {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    border-radius: 30%;\r\n    height: 20px;\r\n    width: 20px;\r\n    background-color: var(--background-color);\r\n    border: 2px solid var(--font-color);\n}\ninput:checked ~ .checkbox {\r\n    background-color: var(--primary);\r\n    border: 2px solid var(--primary);\n}\n.checkbox:after {\r\n    content: \"\";\r\n    position: absolute;\r\n    display: none;\n}\ninput:checked ~ .checkbox:after {\r\n    display: block;\n}\n.checkbox:after {\r\n    left: 6px;\r\n    top: 3px;\r\n    width: 5px;\r\n    height: 10px;\r\n    border: solid var(--white);\r\n    border-width: 0 3px 3px 0;\r\n    border-radius: 1px;\r\n    transform: rotate(45deg);\n}\r\n\r\n/*Radio*/\n.radio {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    height: 20px;\r\n    width: 20px;\r\n    background-color: var(--background-color);\r\n    border: 2px solid var(--font-color);\r\n    border-radius: 50%;\n}\ninput:checked ~ .radio {\r\n    background-color: var(--primary);\r\n    border: 2px solid var(--primary);\n}\n.radio:after {\r\n    content: \"\";\r\n    position: absolute;\r\n    display: none;\n}\ninput:checked ~ .radio:after {\r\n    display: block;\n}\n.radio:after {\r\n    top: 3px;\r\n    left: 3px;\r\n    width: 10px;\r\n    height: 10px;\r\n    border-radius: 50%;\r\n    background: var(--white);\n}\n.alternate-input {\r\n    background-color: var(--background-color-alternate);\r\n    border: 3px solid var(--alt-input-border-color);\r\n    border-radius: 12px;\r\n    padding: 6px;\r\n    color: var(--font-color);\n}\n.alternate-input:focus {\r\n    outline: 0;\r\n    border: 3px solid var(--primary);\r\n    transition: 0.2s;\n}\nselect option {\r\n    color: var(--font-color);\r\n    background-color: var(--background-color);\n}\r\n\r\n/* Vue Transitions */\n.fade-enter-active, .fade-leave-active {\r\n    transition: opacity .2s ease;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */\r\n{\r\n    opacity: 0;\n}\n@media (max-width: 1200px) {\n.title {\r\n        font-size: 2rem;\n}\n.headline {\r\n        font-size: 1.5rem;\r\n        margin-left: 1vh !important; /*Noch ändern!*/\n}\n}\n@media (max-width: 576px) {\n#app {\r\n        flex-direction: column;\n}\n.btn i {\r\n        display: none;\n}\n.btn {\r\n        justify-content: center;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n* {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    transition: all 0.15s ease;\n}\n:root {\n    --primary: #FFA88E;\n    --primary-darker: #ff8f6e;\n\n    --secondary-lighter: #FFDBB1;\n    --secondary: #FFCB8E;\n    --secondary-darker: #ffb561;\n\n    --warn: #FC6B6B;\n    --warn-darker: #ef5252;\n\n    --black: #000000;\n    --dark-grey: #2C2F33;\n    --semi-dark-grey: #505050;\n    --mid-grey: #E1E1E1;\n    --light-grey: #F3F3F3;\n    --white: #ffffff;\n\n    --font-color-light: #707070;\n}\nhtml {\n    scroll-behavior: smooth;\n\n    --background-color: var(--white);\n    --background-color-alternate: var(--light-grey);\n    --alt-input-border-color: var(--dark-grey);\n    --font-color: var(--black);\n    --font-color-alternate: var(--white);\n    --header-color: var(--dark-grey);\n    --font-color-light: var(--font-color-light);\n    --message-color: var(--white);\n    --message-right-color: var(--secondary-lighter);\n    --shadow-color: rgba(92, 86, 86, 0.3);\n    --subject-color: var(--warn);\n}\nhtml.darkmode {\n    --background-color: var(--semi-dark-grey);\n    --background-color-alternate: var(--dark-grey);\n    --alt-input-border-color: var(--mid-grey);\n    --font-color: var(--white);\n    --font-color-alternate: var(--black);\n    --header-color: var(--white);\n    --font-color-light: var(--mid-grey);\n    --message-color: var(--semi-dark-grey);\n    --message-right-color: var(--primary-darker);\n    --shadow-color: rgb(31, 31, 31);\n    --subject-color: var(--secondary);\n}\n#app {\n    display: flex;\n    flex-direction: row;\n\n    width: 100%;\n    height: 100vh;\n\n    font-family: 'Montserrat', sans-serif;\n}\n.headline {\n    color: var(--font-color-light);\n    font-size: 1.8rem;\n    font-weight: 700;\n}\n.title {\n    color: #FFCB8E;\n    font-size: 3rem;\n    font-weight: 700;\n}\n.round-btn {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n\n    width: 3rem;\n    height: 3rem;\n    font-size: 1.5rem;\n    border-radius: 1.5rem;\n    outline: 0;\n}\n.round-btn.mini {\n    width: 1.5rem;\n    height: 1.5rem;\n    font-size: 0.75rem;\n}\n.btn {\n    width: 100%;\n    /*flex-grow: 1;*/\n    height: 3rem;\n    font-size: 1rem;\n    font-weight: 600;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    border-radius: 1.5rem;\n    padding-left: 1.5rem;\n    padding-right: 1.5rem;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n.btn i {\n    font-size: 1.5rem;\n}\n.input {\n    font-size: 1rem;\n    outline: 0;\n    border-radius: 1.5rem;\n    color: var(--font-color);\n    font-weight: 600;\n\n    padding-left: 1.5rem;\n    padding-right: 1.5rem;\n    height: 3rem;\n    background-color: var(--background-color);\n}\n.dialog-window .input {\n    background-color: var(--background-color-alternate);\n}\n.textarea {\n    font-size: 1rem;\n    outline: 0;\n    border-radius: 1.5rem;\n    color: #707070;\n    font-weight: 600;\n\n    padding: 1.5rem;\n    background-color: #E1E1E1;\n    resize: none;\n}\n.input::-moz-placeholder {\n    color: #707070;\n}\n.input:-ms-input-placeholder {\n    color: #707070;\n}\n.input::placeholder {\n    color: #707070;\n}\n.textarea::-moz-placeholder {\n    color: #707070;\n}\n.textarea:-ms-input-placeholder {\n    color: #707070;\n}\n.textarea::placeholder {\n    color: #707070;\n}\n.input.disabled {\n    cursor: default;\n    pointer-events: none;\n}\n.warn-background {\n    background-color: var(--warn);\n    transition: 0.2s ease;\n    cursor: pointer;\n    color: white;\n}\n.primary-background {\n    background-color: var(--primary);\n    transition: 0.2s ease;\n    cursor: pointer;\n    color: white;\n}\n.secondary-background {\n    background-color: var(--secondary);\n    transition: 0.2s ease;\n    cursor: pointer;\n    color: white;\n}\n.warn-background.disabled {\n    pointer-events: none;\n    cursor: default;\n    filter: saturate(0.3);\n}\n.primary-background.disabled {\n    pointer-events: none;\n    cursor: default;\n    filter: saturate(0.3);\n}\n.secondary-background.disabled {\n    pointer-events: none;\n    cursor: default;\n    filter: saturate(0.3);\n}\n.warn-background:hover {\n    background-color: var(--warn-darker);\n}\n.primary-background:hover {\n    background-color: var(--primary-darker);\n}\n.secondary-background:hover {\n    background-color: var(--secondary-darker);\n}\n.row {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    width: 100%;\n}\n.col {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    height: 100%;\n}\n.space-between {\n    justify-content: space-between;\n}\n.flex-start {\n    justify-content: flex-start;\n}\n\n/*Checkbox*/\n.checkbox-container {\n    margin: 1vh;\n    display: flex;\n    align-items: center;\n    position: relative;\n    padding-left: 35px;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    cursor: pointer;\n}\n.checkbox-container input, .checkbox-container input {\n    opacity: 0;\n    position: absolute;\n    cursor: pointer;\n    height: 0;\n    width: 0;\n}\n.checkbox {\n    position: absolute;\n    top: 0;\n    left: 0;\n    border-radius: 30%;\n    height: 20px;\n    width: 20px;\n    background-color: var(--background-color);\n    border: 2px solid var(--font-color);\n}\ninput:checked ~ .checkbox {\n    background-color: var(--primary);\n    border: 2px solid var(--primary);\n}\n.checkbox:after {\n    content: \"\";\n    position: absolute;\n    display: none;\n}\ninput:checked ~ .checkbox:after {\n    display: block;\n}\n.checkbox:after {\n    left: 6px;\n    top: 3px;\n    width: 5px;\n    height: 10px;\n    border: solid var(--white);\n    border-width: 0 3px 3px 0;\n    border-radius: 1px;\n    transform: rotate(45deg);\n}\n\n/*Radio*/\n.radio {\n    position: absolute;\n    top: 0;\n    left: 0;\n    height: 20px;\n    width: 20px;\n    background-color: var(--background-color);\n    border: 2px solid var(--font-color);\n    border-radius: 50%;\n}\ninput:checked ~ .radio {\n    background-color: var(--primary);\n    border: 2px solid var(--primary);\n}\n.radio:after {\n    content: \"\";\n    position: absolute;\n    display: none;\n}\ninput:checked ~ .radio:after {\n    display: block;\n}\n.radio:after {\n    top: 3px;\n    left: 3px;\n    width: 10px;\n    height: 10px;\n    border-radius: 50%;\n    background: var(--white);\n}\n.alternate-input {\n    background-color: var(--background-color-alternate);\n    border: 3px solid var(--alt-input-border-color);\n    border-radius: 12px;\n    padding: 6px;\n    color: var(--font-color);\n}\n.alternate-input:focus {\n    outline: 0;\n    border: 3px solid var(--primary);\n    transition: 0.2s;\n}\nselect option {\n    color: var(--font-color);\n    background-color: var(--background-color);\n}\n\n/* Vue Transitions */\n.fade-enter-active, .fade-leave-active {\n    transition: opacity .2s ease;\n}\n.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */\n{\n    opacity: 0;\n}\n@media (max-width: 1200px) {\n.title {\n        font-size: 2rem;\n}\n.headline {\n        font-size: 1.5rem;\n        margin-left: 1vh !important; /*Noch ändern!*/\n}\n}\n@media (max-width: 576px) {\n#app {\n        flex-direction: column;\n}\n.btn i {\n        display: none;\n}\n.btn {\n        justify-content: center;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11846,7 +11877,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#outer-wrapper[data-v-3e26457b] {\r\n  width: 100vw;\n}\n#group-view[data-v-3e26457b] {\r\n  height: 100%;\r\n  width: 100%;\r\n  background-color: var(--background-color-alternate);\r\n  overflow: auto;\n}\n.group-view-header[data-v-3e26457b] {\r\n  padding: 2%;\n}\n#groups[data-v-3e26457b] {\r\n  margin-top: 2%;\r\n  display: flex;\r\n  position: relative;\r\n  flex-direction: row;\r\n  flex-wrap: wrap;\r\n  justify-content: flex-start;\n}\n@media (max-width: 1200px) {\n#groups[data-v-3e26457b] {\r\n        padding-left: 3vh;\n}\n}\n@media (max-width: 576px) {\n#groups[data-v-3e26457b] {\r\n    /*margin-top: 25%;*/\r\n    flex-direction: column;\r\n    flex-wrap: nowrap;\r\n    align-items: center;\n}\n.group-view-header[data-v-3e26457b] {\r\n    display: none;\n}\n}\n@media (min-width: 576px) {\n#group-view[data-v-3e26457b]::-webkit-scrollbar {\r\n    margin-left: -1rem;\r\n    width: 1rem;\n}\n#group-view[data-v-3e26457b]::-webkit-scrollbar-track {\r\n    background: transparent;\r\n    border-radius: 0.5rem;\n}\n#group-view[data-v-3e26457b]::-webkit-scrollbar-thumb {\r\n    background-color: #ffa88e;\r\n    border-radius: 0.5rem;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#outer-wrapper[data-v-3e26457b] {\n  width: 100vw;\n}\n#group-view[data-v-3e26457b] {\n  height: 100%;\n  width: 100%;\n  background-color: var(--background-color-alternate);\n  overflow: auto;\n}\n.group-view-header[data-v-3e26457b] {\n  padding: 2%;\n}\n#groups[data-v-3e26457b] {\n  margin-top: 2%;\n  display: flex;\n  position: relative;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: flex-start;\n}\n@media (max-width: 1200px) {\n#groups[data-v-3e26457b] {\n        padding-left: 3vh;\n}\n}\n@media (max-width: 576px) {\n#groups[data-v-3e26457b] {\n    /*margin-top: 25%;*/\n    flex-direction: column;\n    flex-wrap: nowrap;\n    align-items: center;\n}\n.group-view-header[data-v-3e26457b] {\n    display: none;\n}\n}\n@media (min-width: 576px) {\n#group-view[data-v-3e26457b]::-webkit-scrollbar {\n    margin-left: -1rem;\n    width: 1rem;\n}\n#group-view[data-v-3e26457b]::-webkit-scrollbar-track {\n    background: transparent;\n    border-radius: 0.5rem;\n}\n#group-view[data-v-3e26457b]::-webkit-scrollbar-thumb {\n    background-color: #ffa88e;\n    border-radius: 0.5rem;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43020,7 +43051,7 @@ var render = function() {
       _vm._v(" "),
       _c("Navigation", { attrs: { user: _vm.user.name, bus: _vm.bus } }),
       _vm._v(" "),
-      _c("GroupView", { attrs: { groups: _vm.group_obj } })
+      _c("GroupView", { attrs: { groups: _vm.group_obj, user: _vm.user } })
     ],
     1
   )
@@ -46024,7 +46055,7 @@ var render = function() {
     "div",
     { attrs: { id: "group" } },
     [
-      _c("navigation"),
+      _c("navigation", { attrs: { user: _vm.user.name } }),
       _vm._v(" "),
       _c(
         "div",
@@ -46404,7 +46435,7 @@ var render = function() {
             _vm._l(_vm.groups, function(group) {
               return _c("group-card", {
                 key: group.url,
-                attrs: { group: group }
+                attrs: { group: group, user: _vm.user }
               })
             }),
             _vm._v(" "),
