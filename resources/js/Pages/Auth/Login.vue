@@ -1,63 +1,62 @@
 <template>
-  <div id="login-container">
-    <jet-validation-errors class="mb-4" />
+    <div id="login-container">
+        <jet-validation-errors class="mb-4"/>
 
-    <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-      {{ status }}
+        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+            {{ status }}
+        </div>
+
+        <form @submit.prevent="submit" id="login-form">
+            <h2 id="greeting">Wilkommen!</h2>
+            <div>
+                <jet-input
+                    id="email"
+                    type="email"
+                    class="input"
+                    v-model="form.email"
+                    placeholder="E-Mail"
+                    required
+                    autofocus
+                />
+            </div>
+
+            <div class="mt-4">
+                <jet-input
+                    id="password"
+                    type="password"
+                    class="input"
+                    v-model="form.password"
+                    placeholder="Passwort"
+                    required
+                    autocomplete="current-password"
+                />
+            </div>
+
+            <div id="password-container">
+                <label class="checkbox-container">
+                    Passwort merken
+                    <jet-checkbox name="remember" v-model="form.remember"/>
+                    <span class="checkbox"></span>
+                </label>
+                <inertia-link
+                    v-if="canResetPassword"
+                    :href="route('password.request')"
+                    class="underline text-sm text-gray-600 hover:text-gray-900"
+                >
+                    Passwort vergessen?
+                </inertia-link>
+            </div>
+
+            <div id="login-button-container">
+                <jet-button
+                    class="btn secondary-background"
+                    :disabled="form.processing"
+                >
+                    Anmelden
+                </jet-button>
+            </div>
+        </form>
     </div>
-
-    <form @submit.prevent="submit" id="login-form">
-      <h2 id="greeting">Wilkommen!</h2>
-      <div>
-        <jet-input
-          id="email"
-          type="email"
-          class="input"
-          v-model="form.email"
-          placeholder="E-Mail"
-          required
-          autofocus
-        />
-      </div>
-
-      <div class="mt-4">
-        <jet-input
-          id="password"
-          type="password"
-          class="input"
-          v-model="form.password"
-          placeholder="Passwort"
-          required
-          autocomplete="current-password"
-        />
-      </div>
-
-      <div class="block mt-4">
-        <label class="checkbox-container">
-          Passwort merken
-          <jet-checkbox name="remember" v-model="form.remember" />
-          <span class="checkbox"></span>
-        </label>
-      </div>
-
-      <div class="flex items-center justify-end mt-4">
-        <inertia-link
-          v-if="canResetPassword"
-          :href="route('password.request')"
-          class="underline text-sm text-gray-600 hover:text-gray-900"
-        >
-          Passwort vergessen?
-        </inertia-link>
-
-        <jet-button
-          class="btn secondary-background"
-          :disabled="form.processing"
-        >
-          Anmelden
-        </jet-button>
-      </div>
-    </form>
-  </div>
 </template>
 
 <script>
@@ -69,75 +68,89 @@ import JetLabel from "@/Jetstream/Label";
 import JetValidationErrors from "@/Jetstream/ValidationErrors";
 
 export default {
-  components: {
-    // JetAuthenticationCard,
-    JetButton,
-    JetInput,
-    JetCheckbox,
-    JetLabel,
-    JetValidationErrors,
-  },
-
-  props: {
-    // canResetPassword: Boolean,
-    status: String,
-  },
-
-  data() {
-    return {
-      form: this.$inertia.form({
-        email: "",
-        password: "",
-        remember: false,
-      }),
-      canResetPassword: 1
-    };
-  },
-
-  methods: {
-    submit() {
-      this.form
-        .transform((data) => ({
-          ...data,
-          remember: this.form.remember ? "on" : "",
-        }))
-        .post(this.route("login"), {
-          onFinish: () => this.form.reset("password"),
-        });
+    components: {
+        // JetAuthenticationCard,
+        JetButton,
+        JetInput,
+        JetCheckbox,
+        JetLabel,
+        JetValidationErrors,
     },
-  },
+
+    props: {
+        // canResetPassword: Boolean,
+        status: String,
+    },
+
+    data() {
+        return {
+            form: this.$inertia.form({
+                email: "",
+                password: "",
+                remember: false,
+            }),
+            canResetPassword: 1
+        };
+    },
+
+    methods: {
+        submit() {
+            this.form
+                .transform((data) => ({
+                    ...data,
+                    remember: this.form.remember ? "on" : "",
+                }))
+                .post(this.route("login"), {
+                    onFinish: () => this.form.reset("password"),
+                });
+        },
+    },
 };
 </script>
 
 
 <style scoped>
 #login-container {
-  font-family: "Montserrat", sans-serif;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 #greeting {
-  color: var(--font-color);
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 2vh;
+    color: var(--font-color);
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2vh;
 }
 
 #login-form {
-  background-color: var(--background-color);
-  border-radius: 30px;
-  padding: 4vh;
+    background-color: var(--background-color);
+    border-radius: 30px;
+    padding: 4vh;
 }
 
 .btn {
-  width: 50%;
-  justify-content: center;
+    width: 50%;
+    justify-content: center;
+    margin-top: 2vh;
+}
+
+#login-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#password-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2vh;
 }
 
 .input {
-  width: 100%;
+    width: 100%;
 }
 </style>
