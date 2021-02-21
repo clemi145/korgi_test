@@ -9,30 +9,23 @@
             />
         </div>
         <div id="input-group">
-            <dialog-window
-                :bus="fileInputBus"
-                title="Datei senden!"
-                @submit="publishFile"
-            >
+            <dialog-window :bus="fileInputBus" title="Datei senden!" @submit="publishFile">
                 <dialog-content-send-file :bus="fileInputBus"/>
             </dialog-window>
-            <dialog-window
-                :bus="eventAnnouncementBus"
-                title="Termin bekannt geben"
-                @submit="publishEventAnnouncement"
-            >
+            <dialog-window :bus="eventAnnouncementBus" title="Termin bekannt geben" @submit="publishEventAnnouncement">
                 <dialog-content-event-announcement :bus="eventAnnouncementBus"/>
             </dialog-window>
+            <dialog-window :bus="importantMessageBus" title="Wichtige Nachricht senden"
+                           @submit="publishImportantMessage">
+                <dialog-content-important-message :bus="importantMessageBus"/>
+            </dialog-window>
+            <dialog-window :bus="pollBus" title="Umfrage starten" @submit="publishPoll">
+                <dialog-content-poll :bus="pollBus"/>
+            </dialog-window>
             <transition name="fade">
-                <div
-                    v-show="openSpecialMessages"
-                    class="special-messages-container"
-                    @click="toggleSpecialMessages"
-                >
-                    <div class="btn primary-background">
-                        <p>Umfrage starten</p>
-                        <i class="far fa-calendar-alt"></i>
-                    </div>
+                <div v-show="openSpecialMessages && chat.url === 'wichtig'" class="special-messages-container" @click="toggleSpecialMessages">
+                    <div class="btn primary-background" v-on:click="pollBus.$emit('open')"><p>Umfrage starten</p><i
+                        class="far fa-calendar-alt"></i></div>
                     <div
                         class="btn primary-background"
                         v-on:click="eventAnnouncementBus.$emit('open')"
@@ -47,9 +40,8 @@
                         <p>Terminumfrage starten</p>
                         <i class="far fa-calendar-alt"></i>
                     </div>
-                    <div class="btn primary-background">
-                        <p>Wichtige Nachricht schreiben</p>
-                        <i class="far fa-calendar-alt"/>
+                    <div class="btn primary-background" v-on:click="importantMessageBus.$emit('open')">
+                        <p>Wichtige Nachricht schreiben</p><i class="far fa-calendar-alt"/>
                     </div>
                     <div
                         class="btn primary-background"
@@ -63,7 +55,7 @@
             <div
                 class="round-btn warn-background"
                 :class="hasAccess() ? '' : 'disabled'"
-                v-if="!type"
+                v-if="chat.url === 'allgemein'"
                 :disabled="!hasAccess()"
                 v-on:click="fileInputBus.$emit('open')"
             >
@@ -72,7 +64,7 @@
             <div
                 class="round-btn warn-background"
                 :class="hasAccess() ? '' : 'disabled'"
-                v-if="type"
+                v-if="chat.url === 'wichtig'"
                 :disabled="!hasAccess()"
                 v-on:click="toggleSpecialMessages"
             >
@@ -112,10 +104,14 @@ import DialogContentEventAnnouncement from "@/Pages/Dialog/dialog-content-event-
 import DatePicker from "@/Pages/Dialog/DatePicker";
 import ChatElement from "@/Pages/Chat/ChatElement";
 import Navbar from "@/Pages/Navigation/Navbar";
+import DialogContentPoll from "@/Pages/Dialog/dialog-content-poll";
+import DialogContentImportantMessage from "@/Pages/Dialog/dialog-content-important-message";
 
 export default {
     name: "Chat",
     components: {
+        DialogContentImportantMessage,
+        DialogContentPoll,
         ChatElement,
         DatePicker,
         DialogWindow,
@@ -134,8 +130,9 @@ export default {
             fileInputBus: new Vue(),
             eventAnnouncementBus: new Vue(),
             dateVotingBus: new Vue(),
+            pollBus: new Vue(),
+            importantMessageBus: new Vue(),
             openSpecialMessages: false,
-            type: this.chat.url,
             user: this.$store.getters.getUser,
             renderComponent: true,
         };
@@ -177,8 +174,6 @@ export default {
             messagesElement.scrollTo(0, messagesElement.scrollHeight);
         },
         publishMessage() {
-            // console.log(this.chat)
-            // console.log(this.group)
             if (this.message.length) {
                 this.$store.commit("publishMessage", {
                     message: this.message,
@@ -190,6 +185,28 @@ export default {
                 this.message = "";
                 this.scrollToBottom();
             }
+        },
+        publishImportantMessage(content) {
+            this.$store.commit('publishImportantMessage', {
+                subject: content.subject,
+                message: content.text,
+                channel: this.channel.uuid,
+                chat: this.chat.url,
+                group: this.group.url,
+            });
+            this.scrollToBottom();
+        },
+        publishPoll(content) {
+            console.log("Publish Poll")
+            this.$store.commit('publishPoll', {
+                subject: content.subject,
+                channel: this.channel.uuid,
+                chat: this.chat.url,
+                group: this.group.url,
+                allowMultiple: content.allowMultiple,
+                answers: content.answers
+            });
+            this.scrollToBottom();
         },
         publishFile(content) {
             // TODO Upload File

@@ -30,7 +30,15 @@ const store = new Vuex.Store({
                 darkmode: false
             }
         },
-        groups: {}
+        groups: {},
+        methods: {
+            saveMessagesToLocalStorage: (group, chat, channel) => {
+                localStorage.setItem(
+                    channel,
+                    JSON.stringify(store.getters.getChannel(group, chat).messages)
+                );
+            },
+        }
     },
     mutations: {
         setState(state, payload) {
@@ -57,7 +65,7 @@ const store = new Vuex.Store({
 
         addPollMessageAction(state, payload) {
             Vue.set(state.groups[payload.group].channels[payload.chat].messages[payload.messageTimetoken].message.results, payload.user.uuid, payload.answerKey);
-            //saveMessagesToLocalStorage(payload.group, payload.chat, payload.channel);
+            store.state.methods.saveMessagesToLocalStorage(payload.group, payload.chat, payload.channel);
         },
 
         // TODO veröffentlichen einer allgemeinen Message Action
@@ -113,6 +121,7 @@ const store = new Vuex.Store({
                     }
                 }
             );
+            console.log("Poll published")
         },
         publishReply(state, payload) {
             state.pubnub.publish(
@@ -130,9 +139,6 @@ const store = new Vuex.Store({
             );
         },
         publishMessage(state, payload) {
-            console.log("publishMessage on: " + payload.channel);
-            console.log("   group: " + payload.group)
-            console.log("   chat: " + payload.chat)
             state.pubnub.publish(
                 {
                     channel: payload.channel,
@@ -217,9 +223,7 @@ const store = new Vuex.Store({
             );
         },
         addMessage(state, payload) {
-            console.log("addMessage");
-            console.log("   group: " + payload.message.message.group)
-            console.log("   chat: " + payload.message.message.chat)
+            console.log(payload)
             Vue.set(
                 state.groups[payload.message.message.group].channels[
                     payload.message.message.chat
@@ -227,7 +231,8 @@ const store = new Vuex.Store({
                 payload.message.timetoken,
                 payload.message
             );
-            //saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel)
+            console.log("Message added")
+            store.state.methods.saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel)
         },
         addEvent(state, payload) {
             // TODO push to server
@@ -238,6 +243,7 @@ const store = new Vuex.Store({
             }
 
             state.groups[payload.group].events.push(newEvent);
+            store.state.methods.saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel)
         },
         addGroup(state, payload) {
             axios.post("/gruppen", {
@@ -258,8 +264,8 @@ const store = new Vuex.Store({
         getChannels: state => group => {
             return state.groups[group].channels;
         },
-        getChannel: state => (group, channel) => {
-            return state.groups[group].channels[channel];
+        getChannel: state => (group, chat) => {
+            return state.groups[group].channels[chat];
         },
         getAllChannelUuids: state => {
             let uuids = [];
