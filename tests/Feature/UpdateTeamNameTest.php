@@ -8,6 +8,7 @@ use Tests\TestCase;
 
 class UpdateTeamNameTest extends TestCase
 {
+    /*
     use RefreshDatabase;
 
     public function test_team_names_can_be_updated()
@@ -21,4 +22,5 @@ class UpdateTeamNameTest extends TestCase
         $this->assertCount(1, $user->fresh()->ownedTeams);
         $this->assertEquals('Test Team', $user->currentTeam->fresh()->name);
     }
+    */
 }

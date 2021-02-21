@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 class DeleteTeamTest extends TestCase
 {
+    /*
     use RefreshDatabase;
 
     public function test_teams_can_be_deleted()
@@ -37,4 +38,5 @@ class DeleteTeamTest extends TestCase
 
         $this->assertNotNull($user->currentTeam->fresh());
     }
+    */
 }
