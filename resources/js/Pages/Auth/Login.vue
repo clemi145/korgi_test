@@ -153,4 +153,65 @@ export default {
 .input {
     width: 100%;
 }
+
+/*Checkbox*/
+.checkbox-container {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.checkbox-container input, .checkbox-container input {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 30%;
+    height: 20px;
+    width: 20px;
+    background-color: var(--background-color);
+    border: 2px solid var(--font-color);
+}
+
+input:checked ~ .checkbox {
+    background-color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+input:checked ~ .checkbox:after {
+    display: block;
+}
+
+.checkbox:after {
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--white);
+    border-width: 0 3px 3px 0;
+    border-radius: 1px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
 </style>
