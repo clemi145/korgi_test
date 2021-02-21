@@ -22,6 +22,7 @@ class Chat extends Model
     protected $fillable = [
         "type",
         "url",
-        "team_id"
+        "team_id",
+        "uuid"
     ];
 }

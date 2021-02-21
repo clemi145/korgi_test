@@ -8,6 +8,7 @@ use Tests\TestCase;
 
 class LeaveTeamTest extends TestCase
 {
+    /*
     use RefreshDatabase;
 
     public function test_users_can_leave_teams()
@@ -35,4 +36,5 @@ class LeaveTeamTest extends TestCase
 
         $this->assertNotNull($user->currentTeam->fresh());
     }
+    */
 }

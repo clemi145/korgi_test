@@ -1,11 +1,11 @@
 <template>
-    <div id="app-window">
-        <!--        <date-picker :multiple="true"></date-picker>-->
-        <!--        <date-picker :multiple="false"></date-picker>-->
-        <Navbar :bus="bus"/>
-        <Navigation :user="user.name" :bus="bus"/>
-        <GroupView :groups="group_obj"/>
-    </div>
+  <div id="app-window">
+    <!--        <date-picker :multiple="true"></date-picker>-->
+    <!--        <date-picker :multiple="false"></date-picker>-->
+    <Navbar :bus="bus" />
+    <Navigation :user="user.name" :bus="bus" />
+    <GroupView :groups="group_obj" :user="user"/>
+  </div>
 </template>
 
 <script>

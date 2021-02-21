@@ -15,6 +15,7 @@ class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
 
+    /*
     public function test_email_verification_screen_can_be_rendered()
     {
         if (! Features::enabled(Features::emailVerification())) {
@@ -29,6 +30,7 @@ class EmailVerificationTest extends TestCase
 
         $response->assertStatus(200);
     }
+    */
 
     public function test_email_can_be_verified()
     {

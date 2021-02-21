@@ -1,88 +1,217 @@
 <template>
-    <jet-authentication-card>
-        <jet-validation-errors class="mb-4" />
+    <div id="login-container">
+        <jet-validation-errors class="mb-4"/>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" id="login-form">
+            <h2 id="greeting">Wilkommen!</h2>
             <div>
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus />
+                <jet-input
+                    id="email"
+                    type="email"
+                    class="input"
+                    v-model="form.email"
+                    placeholder="E-Mail"
+                    required
+                    autofocus
+                />
             </div>
 
             <div class="mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                <jet-input
+                    id="password"
+                    type="password"
+                    class="input"
+                    v-model="form.password"
+                    placeholder="Passwort"
+                    required
+                    autocomplete="current-password"
+                />
             </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <jet-checkbox name="remember" v-model="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            <div id="password-container">
+                <label class="checkbox-container">
+                    Passwort merken
+                    <jet-checkbox name="remember" v-model="form.remember"/>
+                    <span class="checkbox"></span>
                 </label>
+                <inertia-link
+                    v-if="canResetPassword"
+                    :href="route('password.request')"
+                    class="underline text-sm text-gray-600 hover:text-gray-900"
+                >
+                    Passwort vergessen?
+                </inertia-link>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Forgot your password?
-                </inertia-link>
-
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Login
+            <div id="login-button-container">
+                <jet-button
+                    class="btn secondary-background"
+                    :disabled="form.processing"
+                >
+                    Anmelden
                 </jet-button>
             </div>
         </form>
-    </jet-authentication-card>
+    </div>
 </template>
 
 <script>
-    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
-    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
-    import JetButton from '@/Jetstream/Button'
-    import JetInput from '@/Jetstream/Input'
-    import JetCheckbox from '@/Jetstream/Checkbox'
-    import JetLabel from '@/Jetstream/Label'
-    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+// import JetAuthenticationCard from "@/Jetstream/AuthenticationCard";
+import JetButton from "@/Jetstream/Button";
+import JetInput from "@/Jetstream/Input";
+import JetCheckbox from "@/Jetstream/Checkbox";
+import JetLabel from "@/Jetstream/Label";
+import JetValidationErrors from "@/Jetstream/ValidationErrors";
 
-    export default {
-        components: {
-            JetAuthenticationCard,
-            JetAuthenticationCardLogo,
-            JetButton,
-            JetInput,
-            JetCheckbox,
-            JetLabel,
-            JetValidationErrors
+export default {
+    components: {
+        // JetAuthenticationCard,
+        JetButton,
+        JetInput,
+        JetCheckbox,
+        JetLabel,
+        JetValidationErrors,
+    },
+
+    props: {
+        // canResetPassword: Boolean,
+        status: String,
+    },
+
+    data() {
+        return {
+            form: this.$inertia.form({
+                email: "",
+                password: "",
+                remember: false,
+            }),
+            canResetPassword: 1
+        };
+    },
+
+    methods: {
+        submit() {
+            this.form
+                .transform((data) => ({
+                    ...data,
+                    remember: this.form.remember ? "on" : "",
+                }))
+                .post(this.route("login"), {
+                    onFinish: () => this.form.reset("password"),
+                });
         },
-
-        props: {
-            canResetPassword: Boolean,
-            status: String
-        },
-
-        data() {
-            return {
-                form: this.$inertia.form({
-                    email: '',
-                    password: '',
-                    remember: false
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form
-                    .transform(data => ({
-                        ... data,
-                        remember: this.form.remember ? 'on' : ''
-                    }))
-                    .post(this.route('login'), {
-                        onFinish: () => this.form.reset('password'),
-                    })
-            }
-        }
-    }
+    },
+};
 </script>
+
+
+<style scoped>
+#login-container {
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#greeting {
+    color: var(--font-color);
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2vh;
+}
+
+#login-form {
+    background-color: var(--background-color);
+    border-radius: 30px;
+    padding: 4vh;
+}
+
+.btn {
+    width: 50%;
+    justify-content: center;
+    margin-top: 2vh;
+}
+
+#login-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#password-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2vh;
+}
+
+.input {
+    width: 100%;
+}
+
+/*Checkbox*/
+.checkbox-container {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.checkbox-container input, .checkbox-container input {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 30%;
+    height: 20px;
+    width: 20px;
+    background-color: var(--background-color);
+    border: 2px solid var(--font-color);
+}
+
+input:checked ~ .checkbox {
+    background-color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+input:checked ~ .checkbox:after {
+    display: block;
+}
+
+.checkbox:after {
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--white);
+    border-width: 0 3px 3px 0;
+    border-radius: 1px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+</style>

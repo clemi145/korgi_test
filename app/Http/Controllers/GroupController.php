@@ -44,9 +44,10 @@ class GroupController extends Controller
             "name" => $request->input("name"),
             "personal_team" => false,
             "user_id" => $user->id,
-            "url" => route("group.show", [
-                "url" => $this->urlFormat($request->input("name"))
-            ])
+            //"url" => route("group.show", [
+                "url" => $this->urlFormat($request->input("name")),
+            //])
+            "uuid" => DB::raw('UUID()')
         ]);
 
         $team->users()->attach(
@@ -59,7 +60,8 @@ class GroupController extends Controller
             "type" => false,
             "url" => route("group.show", [
                 "url" => $this->urlFormat($team->name)
-            ])
+            ]),
+            "uuid" => DB::raw('UUID()')
         ]);
 
         $important_chat = Chat::create([
@@ -67,7 +69,8 @@ class GroupController extends Controller
             "type" => true,
             "url" => route("group.show", [
                 "url" => $this->urlFormat($team->name)
-            ])
+            ]),
+            "uuid" => DB::raw('UUID()')
         ]);
 
         $general_chat->team()->associate($team);
@@ -78,7 +81,8 @@ class GroupController extends Controller
     {
         $user = User::find(Auth::user()->id);
 
-        $team = Team::where("url", route("group.show", ["url" => $url]))->first();
+        // route("group.show", ["url" => $url])
+        $team = Team::where("url", $url)->first();
 
         // Log::info($team);
 
@@ -151,6 +155,19 @@ class GroupController extends Controller
         ]);
     }
 
+    function set(Request $request)
+    {
+        foreach ($request->all() as $key => $value) {
+            if ($key != "groupId") {
+                Team::where("id", $request->groupId)->update([$key => $value]);
+            }
+        }
+    }
+
+    function get(Request $request) {
+        return Team::where("name", $request->groupName)->first();
+    }
+
     function urlFormat($name)
     {
         $name = strtolower($name);
@@ -195,7 +212,7 @@ class GroupController extends Controller
                 ]
             ]);
         }
-        Log::info($groups);
+        // Log::info($groups);
         return $groups;
     }
 

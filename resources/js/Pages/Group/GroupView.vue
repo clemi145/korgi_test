@@ -14,7 +14,7 @@
         <h1 class="title">Gruppenübersicht</h1>
       </div>
       <div id="groups">
-        <group-card v-for="group in groups" :group="group" :key="group.url" />
+        <group-card v-for="group in groups" :group="group" :key="group.url" :user="user"/>
         <new-group-card @click="groupInputBus.$emit('open')" />
       </div>
     </div>
@@ -41,6 +41,7 @@ export default {
   },
   props: {
     groups: Object,
+    user: Object
   },
   data() {
     return {

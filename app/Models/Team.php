@@ -48,7 +48,8 @@ class Team extends JetstreamTeam
         'name',
         'personal_team',
         'user_id',
-        'url'
+        'url',
+        'uuid'
     ];
 
     /**

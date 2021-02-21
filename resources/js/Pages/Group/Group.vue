@@ -1,21 +1,21 @@
 <template>
-    <div id="app">
-        <navigation/>
-        <div id="group-content">
-            <div id="group-header">
-                <div class="row">
-                    <inertia-link
-                        :href="route('groups.show')"
-                        class="round-btn secondary-background"
-                    ><i class="fas fa-arrow-left"></i
-                    ></inertia-link>
-                    <inertia-link
-                        :href="route('group.join.show', { uuid: group.uuid })"
-                        style="margin-left: 2%"
-                        class="headline"
-                    >
-                        {{ group.name }}
-                    </inertia-link>
+  <div id="group">
+    <navigation :user="user.name"/>
+    <div id="group-content">
+      <div id="group-header">
+        <div class="row">
+          <inertia-link
+            :href="route('groups.show')"
+            class="round-btn secondary-background"
+            ><i class="fas fa-arrow-left"></i
+          ></inertia-link>
+          <inertia-link
+            :href="route('group.join.show', { uuid: group.uuid })"
+            style="margin-left: 2%"
+            class="headline"
+          >
+            {{ group.name }}
+          </inertia-link>
 
           <button v-on:click="leave" style="margin-left: 2%" class="headline">
             Leave
@@ -102,6 +102,7 @@ export default {
     chats: Object,
     // chat: Object,
     user_is_admin: Boolean,
+    user: Object
   },
   data() {
     return {

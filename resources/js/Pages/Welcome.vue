@@ -13,13 +13,13 @@
     <!--        Gruppen-->
     <!--      </inertia-link>-->
 
-<!--          <template v-else>-->
-<!--            <inertia-link-->
-<!--              :href="route('login')"-->
-<!--              class="text-sm text-gray-700 underline"-->
-<!--            >-->
-<!--              Login-->
-<!--            </inertia-link>-->
+    <!--          <template v-else>-->
+    <!--            <inertia-link-->
+    <!--              :href="route('login')"-->
+    <!--              class="text-sm text-gray-700 underline"-->
+    <!--            >-->
+    <!--              Login-->
+    <!--            </inertia-link>-->
 
     <!--        <inertia-link-->
     <!--          v-if="canRegister"-->
@@ -39,12 +39,18 @@
     <!--  </div>-->
     <div id="welcome">
         <div id="navigation">
-            <img id="logo" src="/images/korgi_full_l.svg" alt="Logo">
+            <img @click="scrollToId('header')" id="logo" src="/images/korgi_full_l.svg" alt="Logo">
             <div id="link-container">
                 <a @click="scrollToId('header')">Home</a>
-                <a @click="scrollToId('login')"">Anmelden</a>
+                <a @click="scrollToId('login')">Anmelden</a>
                 <a @click="scrollToId('about')">Über uns</a>
             </div>
+            <a id="burger" @click="toggleMenu"><span/></a>
+        </div>
+        <div id="slider">
+            <a @click="scrollToId('header'); toggleMenu">Home</a>
+            <a @click="scrollToId('login'); toggleMenu">Anmelden</a>
+            <a @click="scrollToId('about'); toggleMenu">Über uns</a>
         </div>
         <div id="header">
             <div id="header-content">
@@ -53,7 +59,8 @@
                     <div class="separator"></div>
                     <div class="text">Weil Kommunikation und Organisation
                         auch im Kindergarten nicht kompliziert
-                        sein muss, setzt KORGI genau hier an. </div>
+                        sein muss, setzt KORGI genau hier an.
+                    </div>
                     <a @click="scrollToId('login')" class="btn primary-background">Anmelden</a>
                 </div>
                 <div id="header-content-right">
@@ -63,15 +70,38 @@
         </div>
         <div id="login">
             <h2 class="headline">Anmeldung</h2>
+            <div id="selection">
+                <button
+                    as="button"
+                    class="selection-link left"
+                    :class="loginIsCurrent()"
+                    v-on:click="type = false"
+                    @click="showLogin()"
+                >
+                    Anmelden
+                </button>
+
+                <button
+                    class="selection-link right"
+                    :class="registrationIsCurrent()"
+                    v-on:click="type = true"
+                    @click="showRegistration()"
+                >
+                    Registrieren
+                </button>
+            </div>
             <div id="login-content">
-                <login></login>
+                <div id="login-content-left" class="active">
+                    <login></login>
+                </div>
                 <div class="separator"></div>
                 <div id="register">
                     <img id="logo-msg" src="/images/dog_message.svg" alt="KORGI">
                     <div id="register-info">Registriere dich jetzt und genieße
                         alle Vorteile von KORGI.
-                        Absolut kostenlos.</div>
-                    <div class="btn secondary-background">Registrieren</div>
+                        Absolut kostenlos.
+                    </div>
+                    <inertia-link :href="route('register')" class="btn secondary-background">Registrieren</inertia-link>
                 </div>
             </div>
         </div>
@@ -83,15 +113,18 @@
                     <div class="text">Die Idee ist es, die Komplexität der Verwaltung mehrere
                         Kindergartengruppen, hinsichtlich Organisation und
                         Terminplanung für diverse alltägliche Ereignisse, für Eltern sowie
-                        Personal, auf ein Minimum zu reduzieren. </div>
+                        Personal, auf ein Minimum zu reduzieren.
+                    </div>
                     <h2 class="section-headline">Wieso KORGI?</h2>
                     <div class="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
                         diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                        aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo. </div>
+                        aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo.
+                    </div>
                     <h2 class="section-headline">Was kann die App?</h2>
                     <div class="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
                         diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                        aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo. </div>
+                        aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo.
+                    </div>
                 </div>
                 <div id="about-content-right">
                     <img src="/images/korgi_red.svg">
@@ -102,8 +135,8 @@
             <div id="footer-content">
                 <a class="footer-link">Impressum</a>
                 <a class="footer-link">Datenschutzerklärung</a>
-                <div class="footer-cr">© 2021 KORGI</div>
             </div>
+            <div class="footer-cr">© 2021 KORGI</div>
         </div>
     </div>
 </template>
@@ -115,9 +148,22 @@
     font-family: "Montserrat", sans-serif;
 }
 
+::selection {
+    background: var(--secondary);
+    color: var(--font-color-alternate);
+}
+
+img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #navigation {
     z-index: 10;
-    background-color: #ffffff;
+    background-color: var(--background-color);
     width: 100%;
     position: fixed;
     height: 7vh;
@@ -127,9 +173,9 @@
     align-items: center;
     padding-left: 15%;
     padding-right: 15%;
-    -webkit-box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.1);
-    -moz-box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.1);
-    box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.1);
+    -webkit-box-shadow: 5px 5px 40px 0px var(--shadow-color);
+    -moz-box-shadow: 5px 5px 40px 0px var(--shadow-color);
+    box-shadow: 5px 5px 40px 0px var(--shadow-color);
 }
 
 #navigation #logo {
@@ -147,10 +193,109 @@
     margin-right: 1.5vh;
     font-weight: 600;
     cursor: pointer;
+    color: var(--font-color);
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#navigation #link-container a:hover {
+    color: var(--secondary);
+    transition: 0.15s;
+}
+
+#slider a {
+    margin-bottom: 2vh;
+    font-size: 1.2rem;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: var(--font-color)
+}
+
+#slider a:hover {
+    color: var(--secondary);
+    transition: 0.15s;
+}
+
+#slider {
+    width: 80vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.3);
+    -moz-box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.3);
+    box-shadow: 5px 5px 40px 0px rgba(44, 47, 51, 0.3);
+    position: fixed;
+    left: 100vw;
+    z-index: 5;
+    background-color: var(--background-color);
+    transition: all 0.25s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+#slider.sliderActive {
+    transform: translateX(-80vw);
+}
+
+#burger {
+    margin-left: auto;
+    display: block;
+    padding: 10px;
+}
+
+#burger span {
+    position: relative;
+    display: block;
+    z-index: 5;
+    width: 30px;
+    height: 4px;
+    background: var(--font-color);
+    transition: all 0.2s ease-in-out;
+    border-radius: 3px;
+}
+
+#burger span:before, #burger span:after {
+    position: absolute;
+    background: var(--font-color);
+    content: "";
+    width: 30px;
+    height: 4px;
+    transition: all 0.2s;
+    border-radius: 3px;
+}
+
+#burger span:before {
+    top: -8px;
+}
+
+#burger span:after {
+    top: 8px;
+}
+
+#burger.active span {
+    background: transparent;
+}
+
+#burger.active span:before {
+    transform: rotate(45deg) translate(5px, 6px);
+    background: var(--font-color);
+}
+
+#burger.active span:after {
+    transform: rotate(-45deg) translate(5px, -6px);
+    background: var(--font-color);
 }
 
 #logo {
     width: 18vh;
+    cursor: pointer;
 }
 
 #header {
@@ -159,6 +304,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: var(--background-color);
 }
 
 #app-preview {
@@ -183,13 +329,15 @@
     width: 55%;
     height: 6px;
     background-color: var(--primary);
-    margin-top: 6vh;
-    margin-bottom: 6vh;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    border-radius: 10px;
 }
 
 #header-content-left .text {
     font-size: 1.5rem;
     width: 80%;
+    color: var(--font-color);
 }
 
 #header-content-left .btn {
@@ -214,55 +362,116 @@
     align-items: flex-start;
     justify-content: flex-start;
 }
- #login-content {
-     width: 90%;
-     display: flex;
-     justify-content: space-around;
-     align-items: center;
-     flex-direction: row;
-     align-self: center;
- }
 
- #register {
-     width: 30%;
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
- }
+#selection {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    align-self: center;
+    margin-bottom: 4vh;
+}
 
- #logo-msg {
-     margin-bottom: 4vh;
- }
+.selection-link {
+    width: 8em;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--white);
+    font-weight: 600;
+    transition: 0.2s ease;
+}
 
- #register-info {
-     color: white;
-     font-size: 1.5rem;
-     font-weight: 800;
-     text-align: center;
-     margin-bottom: 4vh;
- }
+.selection-link:hover {
+    color: var(--secondary);
+}
 
- #register .btn {
-     width: fit-content;
-     font-size: 1.5rem;
-     height: 4rem;
-     border-radius: 2rem;
- }
+.selection-link::after {
+    content: "";
+    width: 0;
+    height: 4px;
+    display: block;
+    background-color: var(--secondary);
+    transition: 0.2s ease;
+}
 
- .separator {
-     height: 60vh;
-     background-color: white;
-     width: 6px;
-     border-radius: 10px;
- }
+.selection-link.left::after {
+    margin-left: 100%;
+}
+
+.selection-link.right::after {
+    margin-left: 0;
+}
+
+.selection-link-current {
+    color: var(--secondary);
+}
+
+.selection-link-current.left::after {
+    width: 100%;
+    margin-left: 0;
+}
+
+.selection-link-current.right::after {
+    width: 100%;
+    margin-left: 0;
+}
+
+#login-content {
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    align-self: center;
+}
+
+#login-content-left {
+    width: 30%;
+}
+
+#register {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    border-radius: 30px;
+    padding: 4vh;
+}
+
+#logo-msg {
+    margin-bottom: 4vh;
+}
+
+#register-info {
+    color: var(--font-color);
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 4vh;
+}
+
+#register .btn {
+    width: fit-content;
+    font-size: 1.5rem;
+    height: 4rem;
+    border-radius: 2rem;
+}
+
+#login-content .separator {
+    height: 60vh;
+    background-color: white;
+    width: 6px;
+    border-radius: 10px;
+}
 
 #about {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    background-color: var(--background-color);
 }
 
 #about-content {
@@ -280,13 +489,15 @@
 
 #about-content-left .text {
     font-size: 1rem;
+    margin-bottom: 4vh;
+    color: var(--font-color);
 }
 
 #about-content-left .section-headline {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-top: 4vh;
     margin-bottom: 1vh;
+    color: var(--font-color);
 }
 
 #about-content-right {
@@ -304,6 +515,7 @@
     background-color: var(--primary);
     display: flex;
     justify-content: flex-start;
+    align-items: center;
 }
 
 #footer-content {
@@ -311,7 +523,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
+    width: 90%;
 }
 
 .footer-link {
@@ -324,7 +536,6 @@
 }
 
 .footer-cr {
-    margin-left: auto;
     font-size: 1.2rem;
     color: var(--white);
     margin-right: 6vh;
@@ -339,9 +550,151 @@
 }
 
 .slogan {
-    font-size: 4.5rem;
+    font-size: 4rem;
     font-weight: 500;
-    line-height: 5rem;
+    line-height: 4.5rem;
+    width: 80%;
+    color: var(--font-color);
+}
+
+@media (max-width: 576px) {
+
+    #navigation {
+        height: 15vw;
+    }
+
+    #header-content-right {
+        display: none;
+    }
+
+    #header-content-left {
+        width: 100%;
+    }
+
+    #navigation {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    #navigation #link-container {
+        display: none;
+    }
+
+    #header-content {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .slogan {
+        font-size: 2.6rem;
+        line-height: 4rem;
+    }
+
+    #header-content-left .separator {
+        margin-bottom: 2vh;
+        margin-top: 2vh;
+        width: 40%;
+    }
+
+    #header-content-left .text {
+        font-size: 1.1rem;
+    }
+
+    #header-content-left .btn {
+        align-self: flex-start;
+        margin-top: 4vh;
+    }
+
+    #about-content-right {
+        display: none;
+    }
+
+    #about-content-left {
+        width: 100%;
+    }
+
+    .headline {
+        margin-left: 2vh;
+        margin-top: 8vh;
+        margin-bottom: 2vh;
+        font-size: 2.2rem;
+    }
+
+    .footer-link {
+        font-size: 1rem;
+        margin-left: 2vh;
+    }
+
+    #footer-content {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    #footer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+    }
+
+    .footer-cr {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #register .btn {
+        height: 3rem;
+        font-size: 1rem;
+    }
+
+    #header-content .btn {
+        height: 3rem;
+        font-size: 1rem;
+    }
+
+    #about-content-left .section-headline {
+        font-size: 1.3rem;
+    }
+
+    #about-content-left .text {
+        margin-bottom: 2vh;
+    }
+
+    #login-content #login-content-left {
+        width: 80vw;
+        display: none;
+    }
+
+    #login-content #login-content-left.active {
+        display: flex;
+    }
+
+    #login-content #register {
+        display: none;
+        width: 80vw;
+    }
+
+    #login-content #register.active {
+        display: flex;
+    }
+
+    #login-content .separator {
+        display: none;
+    }
+
+    button:focus {
+        outline: 0;
+    }
+
+    #selection {
+        display: flex;
+    }
+}
+
+@media (min-width: 576px) {
+    #burger {
+        display: none;
+    }
 }
 
 /*idc über das da unten*/
@@ -1371,7 +1724,8 @@
 </style>
 
 <script>
-import Login from "@/Pages/Login";
+import Login from "@/Pages/Auth/Login";
+
 export default {
     components: {Login},
     props: {
@@ -1380,12 +1734,44 @@ export default {
         laravelVersion: String,
         phpVersion: String,
     },
+    data() {
+        return {
+            type: false,
+        };
+    },
     methods: {
         scrollToId(id) {
             document.getElementById(id).scrollIntoView({
                 behavior: "smooth"
             });
-        }
+        },
+        toggleMenu() {
+            if (document.getElementById('slider').classList.contains('sliderActive')) {
+                document.getElementById('slider').classList.remove("sliderActive");
+                document.getElementById('burger').classList.remove("active");
+            } else {
+                document.getElementById('slider').classList.add("sliderActive");
+                document.getElementById('burger').classList.add("active");
+            }
+        },
+        showLogin() {
+            document.getElementById('login-content-left').classList.add('active');
+            document.getElementById('register').classList.remove('active');
+        },
+        showRegistration() {
+            document.getElementById('register').classList.add('active');
+            document.getElementById('login-content-left').classList.remove('active');
+        },
+        loginIsCurrent() {
+            if (!this.type) {
+                return "selection-link-current";
+            }
+        },
+        registrationIsCurrent() {
+            if (this.type) {
+                return "selection-link-current";
+            }
+        },
     }
 };
 </script>

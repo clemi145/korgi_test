@@ -1,4 +1,4 @@
-require('./bootstrap');
+require("./bootstrap");
 
 // Import modules...
 import Vue from "vue";
@@ -19,6 +19,40 @@ Vue.use(PortalVue);
 Vue.use(Vuex);
 
 const app = document.getElementById('app');
+
+function generateLaravelTimestamp() {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = ("0" + (d.getMonth() + 1)).slice(-2);
+    var day = ("0" + d.getDate()).slice(-2);
+    var hour = ("0" + d.getHours()).slice(-2);
+    var minutes = ("0" + d.getMinutes()).slice(-2);
+    var seconds = ("0" + d.getSeconds()).slice(-2);
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minutes +
+        ":" +
+        seconds
+    );
+}
+
+function setLastMessage(groupName) {
+    axios.post(route("group.get"), { groupName: groupName }).then(res => {
+        axios
+            .post(route("group.set"), {
+                groupId: res.id,
+                last_message: generateLaravelTimestamp()
+            })
+            .then(res => console.log(res));
+    });
+}
 
 const store = new Vuex.Store({
     state: {
@@ -169,34 +203,32 @@ const store = new Vuex.Store({
             );
         },
         publishFile(state, payload) {
-            state.pubnub.publish(
-                {
-                    channel: payload.channel,
-                    message: {
-                        'text': payload.message,
-                        'fileName': payload.fileName,
-                        'fileType': payload.fileType,
-                        'user': state.user,
-                        'group': payload.group,
-                        'chat': payload.chat,
-                        'url': payload.url,
-                        'messageType': 'file'
-                    }
+            setLastMessage(payload.group);
+            state.pubnub.publish({
+                channel: payload.channel,
+                message: {
+                    text: payload.message,
+                    fileName: payload.fileName,
+                    fileType: payload.fileType,
+                    user: state.user,
+                    group: payload.group,
+                    chat: payload.chat,
+                    url: payload.url,
+                    messageType: "file"
                 }
             );
         },
         publishEventAnnouncement(state, payload) {
-            state.pubnub.publish(
-                {
-                    channel: payload.channel,
-                    message: {
-                        'text': payload.message,
-                        'date': payload.date,
-                        'user': state.user,
-                        'group': payload.group,
-                        'chat': payload.chat,
-                        'messageType': 'eventAnnouncement'
-                    }
+            setLastMessage(payload.group);
+            state.pubnub.publish({
+                channel: payload.channel,
+                message: {
+                    text: payload.message,
+                    date: payload.date,
+                    user: state.user,
+                    group: payload.group,
+                    chat: payload.chat,
+                    messageType: "eventAnnouncement"
                 }
             );
 
@@ -208,17 +240,16 @@ const store = new Vuex.Store({
             })
         },
         publishDateVoting(state, payload) {
-            state.pubnub.publish(
-                {
-                    channel: payload.channel,
-                    message: {
-                        'text': payload.message,
-                        'options': payload.dates,
-                        'user': state.user,
-                        'group': payload.group,
-                        'chat': payload.chat,
-                        'messageType': 'dateVoting'
-                    }
+            setLastMessage(payload.group);
+            state.pubnub.publish({
+                channel: payload.channel,
+                message: {
+                    text: payload.message,
+                    options: payload.dates,
+                    user: state.user,
+                    group: payload.group,
+                    chat: payload.chat,
+                    messageType: "dateVoting"
                 }
             );
         },
@@ -273,7 +304,10 @@ const store = new Vuex.Store({
             Object.keys(state.groups).forEach(groupKey => {
                 Object.keys(state.groups[groupKey].channels).forEach(
                     channelKey => {
-                        console.log("Subscribed to channel: " + state.groups[groupKey].channels[channelKey].uuid)
+                        console.log(
+                            "Subscribed to channel: " +
+                                state.groups[groupKey].channels[channelKey].uuid
+                        );
                         uuids.push(
                             state.groups[groupKey].channels[channelKey].uuid
                         );

@@ -8,6 +8,7 @@ use Tests\TestCase;
 
 class UpdateTeamMemberRoleTest extends TestCase
 {
+    /*
     use RefreshDatabase;
 
     public function test_team_member_roles_can_be_updated()
@@ -45,4 +46,5 @@ class UpdateTeamMemberRoleTest extends TestCase
             $user->currentTeam->fresh(), 'admin'
         ));
     }
+    */
 }

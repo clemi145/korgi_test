@@ -33,10 +33,13 @@
         <form @submit.prevent="submit" id="login-form">
             <h2 id="greeting">Wilkommen!</h2>
             <div class="mb-4">
-                <Input class="input" v-model="username" placeholder="E-Mail" type="text" :error="error.username"/>
+<!--                <Input class="input" v-model="username" placeholder="E-Mail" type="text" :error="error.username"/>-->
+                <input class="input" v-model="username" placeholder="E-Mail" type="email" :error="error.username"/>
             </div>
             <div class="mb-6">
-                <Input class="input" v-model="password" placeholder="Passwort" type="password"
+<!--                <Input class="input" v-model="password" placeholder="Passwort" type="password"-->
+<!--                       :error="error.password"/>-->
+                <input class="input" v-model="password" placeholder="Passwort" type="password"
                        :error="error.password"/>
             </div>
             <div>
@@ -73,6 +76,7 @@
     text-align: center;
     font-size: 1.5rem;
     font-weight: 600;
+    margin-bottom: 2vh;
 }
 
 #login-form {
@@ -84,6 +88,10 @@
 .btn {
     width: 100%;
     justify-content: center;
+}
+
+.input {
+    width: 100%;
 }
 
 </style>
