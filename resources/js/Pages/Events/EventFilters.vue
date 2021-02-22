@@ -46,7 +46,8 @@ export default {
     methods: {
         toggleActive() {
             this.active = !this.active;
-        }
+        },
+        saveDate() {}
     }
 }
 </script>

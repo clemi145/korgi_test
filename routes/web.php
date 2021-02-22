@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\FileController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -64,10 +65,20 @@ Route::group(["prefix" => "users"], function () {
 });
 
 // EVENTS
-Route::inertia('termine', "Events/Events")->name('events.show');
+Route::get('termine', function () {
+    return Inertia::render("Events/Events", [
+        "user" => User::find(Auth::user()->id)
+    ]);
+})->name('events.show');
 
 // SETTINGS
-Route::inertia('einstellungen', "Settings/Settings")->name('settings.show');
+Route::get('einstellungen', function () {
+    return Inertia::render("Settings/Settings", [
+        "user" => User::find(Auth::user()->id)
+    ]);
+})->name('settings.show');
+
+Route::inertia('offline', "Welcome")->name('offline');
 
 Route::inertia('offline', "Welcome")->name('offline');
 

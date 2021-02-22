@@ -1,7 +1,5 @@
 <template>
     <div id="app-window">
-        <!--        <date-picker :multiple="true"></date-picker>-->
-        <!--        <date-picker :multiple="false"></date-picker>-->
         <Navbar :bus="bus"/>
         <Navigation :bus="bus"/>
         <GroupView :groups="group_obj"/>
