@@ -110,6 +110,12 @@ export default {
 
 
 <style scoped>
+
+::selection {
+    background-color: var(--secondary);
+    color: white;
+}
+
 #login-container {
     font-family: "Montserrat", sans-serif;
     display: flex;
@@ -132,9 +138,12 @@ export default {
 }
 
 .btn {
-    width: 50%;
     justify-content: center;
     margin-top: 2vh;
+    width: 50%;
+    font-size: 1.5rem;
+    height: 4rem;
+    border-radius: 2rem;
 }
 
 #login-button-container {
@@ -213,5 +222,12 @@ input:checked ~ .checkbox:after {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+@media (max-width: 576px) {
+    .btn {
+        height: 3rem;
+        font-size: 1rem;
+    }
 }
 </style>
