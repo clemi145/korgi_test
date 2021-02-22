@@ -18,7 +18,6 @@
         </div>
         <div id="group-info-members">
             <div class="section-header">Mitglieder</div>
-<!--            <member v-for="member in members" :group="member"/>-->
             <member></member>
             <member></member>
             <member></member>
@@ -37,9 +36,16 @@
             <div class="section-header">Einladungslink</div>
             <div class="btn secondary-background">Link generieren</div>
         </div>
+
+
         <div id="group-info-delete">
-            <div class="btn warn-background">
-                <p>Gruppe löschen</p>
+
+
+            <div
+                v-on:click="deleteGroup"
+                class="btn warn-background"
+            >
+                Gruppe löschen
                 <i class="fas fa-trash-alt"/>
             </div>
         </div>
@@ -48,11 +54,13 @@
 
 <script>
 import Member from "@/Pages/Member";
+
 export default {
     name: "group-info",
     components: {Member},
     props: {
-        bus: Object
+        bus: Object,
+        group: Object
     },
     data() {
         return {
@@ -67,7 +75,14 @@ export default {
     methods: {
         toggleActive() {
             this.active = !this.active;
-        }
+        },
+        deleteGroup() {
+            axios
+                .post(route("group.delete"), {
+                    uuid: this.group.uuid,
+                })
+                .then(() => this.$inertia.visit(route("groups.show")));
+        },
     }
 }
 </script>
@@ -169,6 +184,7 @@ export default {
         padding: 2vh;
         z-index: 35;
     }
+
     #group-info {
         position: absolute;
         width: 100%;
@@ -190,6 +206,7 @@ export default {
         padding: 2vh;
         z-index: 35;
     }
+
     #group-info {
         display: none;
         position: absolute;

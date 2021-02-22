@@ -164,7 +164,7 @@ const store = new Vuex.Store({
                     results: {},
                     messageType: "poll"
                 }
-            );
+            });
         },
         publishReply(state, payload) {
             state.pubnub.publish({
