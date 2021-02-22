@@ -36,7 +36,7 @@ Route::get('/', function () {
 
 // GROUPS
 Route::middleware(['auth:sanctum', 'verified'])->get('/gruppen', [GroupController::class, 'index'])->name('groups.show');
-Route::middleware(['auth:sanctum', 'verified'])->post('/gruppen', [GroupController::class, 'store']);
+Route::middleware(['auth:sanctum', 'verified'])->post('/gruppen', [GroupController::class, 'store'])->name('group.store');
 
 Route::group(['prefix' => 'gruppen', "middleware" => ['auth:sanctum', 'verified']], function () {
     Route::get('{url}', [GroupController::class, 'show'])->name("group.show");
@@ -51,6 +51,10 @@ Route::group(['prefix' => 'gruppen', "middleware" => ['auth:sanctum', 'verified'
     Route::post("leave", [GroupController::class, "leave"])->name("group.leave");
 
     Route::post("delete", [GroupController::class, "delete"])->name("group.delete");
+
+    Route::post("set", [GroupController::class, "set"])->name("group.set");
+
+    Route::post("get", [GroupController::class, "get"])->name("group.get");
 });
 
 // Users
@@ -64,6 +68,8 @@ Route::inertia('termine', "Events/Events")->name('events.show');
 
 // SETTINGS
 Route::inertia('einstellungen', "Settings/Settings")->name('settings.show');
+
+Route::inertia('offline', "Welcome")->name('offline');
 
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

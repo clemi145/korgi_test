@@ -3620,7 +3620,7 @@ __webpack_require__.r(__webpack_exports__);
         pubnub: new (pubnub__WEBPACK_IMPORTED_MODULE_4___default())({
           publishKey: this.getPublishKey(),
           subscribeKey: this.getSubscribeKey(),
-          uuid: this.getUUID()
+          uuid: this.user.uuid
         }),
         user: {
           username: this.getUsername(),
@@ -3639,8 +3639,6 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$store.state.pubnub.addListener({
         message: function message(event) {
-          console.log("Message Received");
-
           _this.$store.commit('addMessage', {
             message: event
           });
@@ -3677,7 +3675,6 @@ __webpack_require__.r(__webpack_exports__);
       Object.keys(this.$store.state.groups).forEach(function (group) {
         Object.keys(_this2.$store.state.groups[group].channels).forEach(function (chat) {
           var channel = _this2.$store.state.groups[group].channels[chat].uuid;
-          console.log(_this2.getMessagesFromLocalStorage(channel));
 
           var messages = _this2.getMessagesFromLocalStorage(channel);
 
@@ -3700,7 +3697,6 @@ __webpack_require__.r(__webpack_exports__);
     getAllMissedMessagesFromPubNub: function getAllMissedMessagesFromPubNub() {
       var _this3 = this;
 
-      console.log("getAllMissedMessagesFromPubnub");
       Object.keys(this.$store.state.groups).forEach(function (group) {
         Object.keys(_this3.$store.state.groups[group].channels).forEach(function (chat) {
           var channel = _this3.$store.state.groups[group].channels[chat];
@@ -4664,7 +4660,6 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     messages: {
       handler: function handler() {
-        console.log("Change in messages detected!");
         var messagesElement = document.getElementById("messages");
         var scrollPercentage = Math.ceil(100 * messagesElement.scrollTop / (messagesElement.scrollHeight - messagesElement.clientHeight));
 
@@ -4712,7 +4707,6 @@ __webpack_require__.r(__webpack_exports__);
       this.scrollToBottom();
     },
     publishPoll: function publishPoll(content) {
-      console.log("Publish Poll");
       this.$store.commit('publishPoll', {
         subject: content.subject,
         channel: this.channel.uuid,
@@ -5249,7 +5243,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     addResult: function addResult(answerKey) {
-      console.log("Add result");
       this.$store.commit('publishMessageAction', {
         type: 'poll',
         message: this.message,
@@ -6268,7 +6261,6 @@ __webpack_require__.r(__webpack_exports__);
     upload: function upload() {
       var _this = this;
 
-      console.log(document.querySelector("#fileInput").files[0]);
       var data = new FormData();
       data.append("file", document.querySelector("#fileInput").files[0]);
       data.append("groupId", this.group.id);
@@ -6277,8 +6269,6 @@ __webpack_require__.r(__webpack_exports__);
           "content-type": "multipart/form-data"
         }
       }).then(function (res) {
-        console.log(res);
-
         _this.$inertia.reload({
           only: ["files"]
         });
@@ -6315,8 +6305,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _Pages_Navigation_Navigation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Pages/Navigation/Navigation */ "./resources/js/Pages/Navigation/Navigation.vue");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -6405,7 +6393,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_defineProperty({
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Group",
   components: {
     Navigation: _Pages_Navigation_Navigation__WEBPACK_IMPORTED_MODULE_4__.default,
@@ -6423,9 +6411,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       type: false
     };
-  },
-  created: function created() {
-    console.log(this.chats);
   },
   methods: {
     deleteGroup: function deleteGroup() {
@@ -6467,17 +6452,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return "chat-link-current";
       }
     }
+  },
+  created: function created() {
+    vue__WEBPACK_IMPORTED_MODULE_5__.default.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid);
+    vue__WEBPACK_IMPORTED_MODULE_5__.default.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid);
+    this.$store.commit("setCurrentPage", {
+      page: this.group.name
+    });
+    this.$store.commit("setShowArrow", {
+      showArrow: true
+    }); // console.log("Group", this.chats['wichtig'])
   }
-}, "created", function created() {
-  vue__WEBPACK_IMPORTED_MODULE_5__.default.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid);
-  vue__WEBPACK_IMPORTED_MODULE_5__.default.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid);
-  this.$store.commit("setCurrentPage", {
-    page: this.group.name
-  });
-  this.$store.commit("setShowArrow", {
-    showArrow: true
-  }); // console.log("Group", this.chats['wichtig'])
-}));
+});
 
 /***/ }),
 
@@ -6732,9 +6718,7 @@ __webpack_require__.r(__webpack_exports__);
       link: ""
     };
   },
-  created: function created() {
-    console.log(this.group.uuid);
-  },
+  created: function created() {},
   methods: {
     addUser: function addUser() {
       axios__WEBPACK_IMPORTED_MODULE_0___default().post(route("group.join"), {
@@ -7177,9 +7161,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -7199,7 +7180,6 @@ __webpack_require__.r(__webpack_exports__);
     PageLayout: _Pages_PageLayout__WEBPACK_IMPORTED_MODULE_6__.default
   },
   props: {
-    user: String,
     bus: Object
   },
   created: function created() {// this.bus.$on("toggleMenu", () => {
@@ -7215,6 +7195,11 @@ __webpack_require__.r(__webpack_exports__);
     //     }, 5);
     //   }
     // });
+  },
+  computed: {
+    user: function user() {
+      return this.$store.getters.getUser;
+    }
   },
   data: function data() {
     return {
@@ -10702,7 +10687,6 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
           'messageType': 'poll'
         }
       });
-      console.log("Poll published");
     },
     publishReply: function publishReply(state, payload) {
       state.pubnub.publish({
@@ -10791,9 +10775,7 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       });
     },
     addMessage: function addMessage(state, payload) {
-      console.log(payload);
       vue__WEBPACK_IMPORTED_MODULE_5__.default.set(state.groups[payload.message.message.group].channels[payload.message.message.chat].messages, payload.message.timetoken, payload.message);
-      console.log("Message added");
       store.state.methods.saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel);
     },
     addEvent: function addEvent(state, payload) {
@@ -10837,7 +10819,6 @@ var store = new (vuex__WEBPACK_IMPORTED_MODULE_6___default().Store)({
       var uuids = [];
       Object.keys(state.groups).forEach(function (groupKey) {
         Object.keys(state.groups[groupKey].channels).forEach(function (channelKey) {
-          console.log("Subscribed to channel: " + state.groups[groupKey].channels[channelKey].uuid);
           uuids.push(state.groups[groupKey].channels[channelKey].uuid);
         });
       });
@@ -11650,7 +11631,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.logo[data-v-1fa68894] {\r\n    width: 100%;\n}\n#navigation[data-v-1fa68894] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-content: flex-start;\r\n    justify-content: space-between;\r\n    z-index: 120;\r\n\r\n    width: 20vw;\r\n    height: 100%;\r\n\r\n    background-color: var(--primary);\n}\n.navigation-item[data-v-1fa68894] {\r\n    padding: 5%;\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    color: white;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n\r\n    margin-top: 1em;\r\n    margin-bottom: 1em;\r\n    background-color: #FFA88E;\r\n    transition: 0.2s ease;\r\n    margin: 0;\n}\n.greeting[data-v-1fa68894] {\r\n    font-size: 1.4rem;\r\n    font-weight: bold;\r\n    color: white;\r\n    margin-top: 5%;\r\n    margin-bottom: 5%;\n}\n.navigation-item i[data-v-1fa68894] {\r\n    width: 1.2rem;\r\n    font-size: 1.5rem;\n}\n.navigation-item[data-v-1fa68894]:hover {\r\n    background-color: #ff8f6e;\n}\n#top[data-v-1fa68894] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 5%;\r\n    padding-right: 3%;\n}\n#top a[data-v-1fa68894] {\r\n    color: white;\r\n    text-decoration: underline;\r\n    font-size: 1rem;\r\n    font-weight: bold;\r\n    cursor: pointer;\n}\n.navigation-item-active[data-v-1fa68894] {\r\n    background-color: #ff8f6e;\n}\n#bottom[data-v-1fa68894] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 5%;\n}\n#bottom a[data-v-1fa68894] {\r\n    margin-top: 5%;\r\n    color: white;\r\n    text-decoration: underline;\r\n    font-size: 1.2rem;\r\n    font-weight: bold;\n}\n#header[data-v-1fa68894] {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\n}\n#burger[data-v-1fa68894] {\r\n    display: none;\r\n    cursor: pointer;\r\n    margin-left: auto;\r\n    align-self: center;\r\n    padding: 10px;\n}\n#burger span[data-v-1fa68894] {\r\n    position: relative;\r\n    display: block;\r\n    z-index: 5;\r\n    width: 30px;\r\n    height: 4px;\r\n    background: #ffffff;\r\n    transition: all 0.2s ease-in-out;\r\n    border-radius: 3px;\n}\n#burger span[data-v-1fa68894]:before, #burger span[data-v-1fa68894]:after {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    content: \"\";\r\n    width: 30px;\r\n    height: 4px;\r\n    transition: all 0.2s ease-in-out;\r\n    border-radius: 3px;\n}\n#burger span[data-v-1fa68894]:before {\r\n    top: -8px;\n}\n#burger span[data-v-1fa68894]:after {\r\n    top: 8px;\n}\n#burger.active span[data-v-1fa68894] {\r\n    background: transparent;\n}\n#burger.active span[data-v-1fa68894]:before {\r\n    transform: rotate(45deg) translate(5px, 6px);\r\n    background: #ffffff;\n}\n#burger.active span[data-v-1fa68894]:after {\r\n    transform: rotate(-45deg) translate(5px, -6px);\r\n    background: #ffffff;\n}\n@media (max-width: 1200px) {\n#navigation[data-v-1fa68894] {\r\n        width: 35%;\n}\n}\n@media (max-width: 768px) {\n#navigation[data-v-1fa68894] {\r\n        width: 45%;\n}\n.greeting[data-v-1fa68894] {\r\n        font-size: 1.2rem;\n}\n.navigation-item[data-v-1fa68894] {\r\n        font-size: 1rem;\n}\n.navigation-item i[data-v-1fa68894] {\r\n        width: 1.2rem;\r\n        font-size: 1.2rem;\n}\n#bottom a[data-v-1fa68894] {\r\n        font-size: 1rem;\n}\n}\n@media (max-width: 576px) {\n#navigation[data-v-1fa68894] {\r\n        position: absolute;\r\n        right: -80vw;\r\n        width: 80vw;\r\n        height: 100vh;\r\n\r\n        box-shadow: 1px 0px 15px 3px var(--shadow-color);\r\n        -webkit-box-shadow: 1px 0px 15px 3px var(--shadow-color);\r\n        -moz-box-shadow: 1px 0px 15px 3px var(--shadow-color);\r\n        transition: 0.3s ease;\n}\n#navigation.navigation-active[data-v-1fa68894] {\r\n        right: 0;\r\n        transition: 0.3s ease;\n}\n.logo[data-v-1fa68894] {\r\n        width: 70%;\n}\n.hide[data-v-1fa68894] {\r\n        display: none !important;\n}\n#burger[data-v-1fa68894] {\r\n        display: inline;\n}\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.logo[data-v-1fa68894] {\n    width: 100%;\n}\n#navigation[data-v-1fa68894] {\n    display: flex;\n    flex-direction: column;\n    align-content: flex-start;\n    justify-content: space-between;\n    z-index: 120;\n\n    width: 20vw;\n    height: 100%;\n\n    background-color: var(--primary);\n}\n.navigation-item[data-v-1fa68894] {\n    padding: 5%;\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    color: white;\n    font-size: 1.2rem;\n    font-weight: 600;\n\n    margin-top: 1em;\n    margin-bottom: 1em;\n    background-color: #FFA88E;\n    transition: 0.2s ease;\n    margin: 0;\n}\n.greeting[data-v-1fa68894] {\n    font-size: 1.4rem;\n    font-weight: bold;\n    color: white;\n    margin-top: 5%;\n    margin-bottom: 5%;\n}\n.navigation-item i[data-v-1fa68894] {\n    width: 1.2rem;\n    font-size: 1.5rem;\n}\n.navigation-item[data-v-1fa68894]:hover {\n    background-color: #ff8f6e;\n}\n#top[data-v-1fa68894] {\n    display: flex;\n    flex-direction: column;\n    padding: 5%;\n    padding-right: 3%;\n}\n#top a[data-v-1fa68894] {\n    color: white;\n    text-decoration: underline;\n    font-size: 1rem;\n    font-weight: bold;\n    cursor: pointer;\n}\n.navigation-item-active[data-v-1fa68894] {\n    background-color: #ff8f6e;\n}\n#bottom[data-v-1fa68894] {\n    display: flex;\n    flex-direction: column;\n    padding: 5%;\n}\n#bottom a[data-v-1fa68894] {\n    margin-top: 5%;\n    color: white;\n    text-decoration: underline;\n    font-size: 1.2rem;\n    font-weight: bold;\n}\n#header[data-v-1fa68894] {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n}\n#burger[data-v-1fa68894] {\n    display: none;\n    cursor: pointer;\n    margin-left: auto;\n    align-self: center;\n    padding: 10px;\n}\n#burger span[data-v-1fa68894] {\n    position: relative;\n    display: block;\n    z-index: 5;\n    width: 30px;\n    height: 4px;\n    background: #ffffff;\n    transition: all 0.2s ease-in-out;\n    border-radius: 3px;\n}\n#burger span[data-v-1fa68894]:before, #burger span[data-v-1fa68894]:after {\n    position: absolute;\n    background: #ffffff;\n    content: \"\";\n    width: 30px;\n    height: 4px;\n    transition: all 0.2s ease-in-out;\n    border-radius: 3px;\n}\n#burger span[data-v-1fa68894]:before {\n    top: -8px;\n}\n#burger span[data-v-1fa68894]:after {\n    top: 8px;\n}\n#burger.active span[data-v-1fa68894] {\n    background: transparent;\n}\n#burger.active span[data-v-1fa68894]:before {\n    transform: rotate(45deg) translate(5px, 6px);\n    background: #ffffff;\n}\n#burger.active span[data-v-1fa68894]:after {\n    transform: rotate(-45deg) translate(5px, -6px);\n    background: #ffffff;\n}\n@media (max-width: 1200px) {\n#navigation[data-v-1fa68894] {\n        width: 35%;\n}\n}\n@media (max-width: 768px) {\n#navigation[data-v-1fa68894] {\n        width: 45%;\n}\n.greeting[data-v-1fa68894] {\n        font-size: 1.2rem;\n}\n.navigation-item[data-v-1fa68894] {\n        font-size: 1rem;\n}\n.navigation-item i[data-v-1fa68894] {\n        width: 1.2rem;\n        font-size: 1.2rem;\n}\n#bottom a[data-v-1fa68894] {\n        font-size: 1rem;\n}\n}\n@media (max-width: 576px) {\n#navigation[data-v-1fa68894] {\n        position: absolute;\n        right: -80vw;\n        width: 80vw;\n        height: 100vh;\n\n        box-shadow: 1px 0px 15px 3px var(--shadow-color);\n        -webkit-box-shadow: 1px 0px 15px 3px var(--shadow-color);\n        -moz-box-shadow: 1px 0px 15px 3px var(--shadow-color);\n        transition: 0.3s ease;\n}\n#navigation.navigation-active[data-v-1fa68894] {\n        right: 0;\n        transition: 0.3s ease;\n}\n.logo[data-v-1fa68894] {\n        width: 70%;\n}\n.hide[data-v-1fa68894] {\n        display: none !important;\n}\n#burger[data-v-1fa68894] {\n        display: inline;\n}\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42657,7 +42638,7 @@ var render = function() {
     [
       _c("Navbar", { attrs: { bus: _vm.bus } }),
       _vm._v(" "),
-      _c("Navigation", { attrs: { user: _vm.user.name, bus: _vm.bus } }),
+      _c("Navigation", { attrs: { bus: _vm.bus } }),
       _vm._v(" "),
       _c("GroupView", { attrs: { groups: _vm.group_obj } })
     ],
@@ -46585,7 +46566,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "greeting" }, [
-          _vm._v("Willkommen zurück, " + _vm._s(_vm.user) + "!")
+          _vm._v("Willkommen zurück, " + _vm._s(_vm.user.username) + "!")
         ]),
         _vm._v(" "),
         _c(
@@ -46710,15 +46691,6 @@ var render = function() {
           ]
         )
       ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "btn secondary-background",
-          on: { click: _vm.toggleDarkmode }
-        },
-        [_vm._v("\n    Toggle Darkmode WIP\n  ")]
-      ),
       _vm._v(" "),
       _vm._m(0)
     ]

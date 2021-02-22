@@ -10,6 +10,7 @@ use Tests\TestCase;
 
 class InviteTeamMemberTest extends TestCase
 {
+    /*
     use RefreshDatabase;
 
     public function test_team_members_can_be_invited_to_team()
@@ -41,4 +42,5 @@ class InviteTeamMemberTest extends TestCase
 
         $this->assertCount(0, $user->currentTeam->fresh()->teamInvitations);
     }
+    */
 }
