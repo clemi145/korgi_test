@@ -531,7 +531,7 @@ img {
     color: var(--white);
     margin-left: 6vh;
     text-decoration: underline;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
 }
 
