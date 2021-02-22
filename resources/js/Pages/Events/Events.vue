@@ -1,6 +1,6 @@
 <template>
     <div id="events">
-        <Navigation />
+        <navigation :user="user.name" :bus="bus"/>
         <div id="events-content">
             <!--        <div v-for="event in events">-->
             <!--            <p>{{event.subject}}</p>-->
@@ -11,7 +11,7 @@
                 <div class="btn primary-background" @click="toggleFilters">Filter</div>
             </div>
             <div id="events-container">
-                <event v-for="event in Events" :key="event.date" :event="event"/>
+                <event v-for="event in events" :key="event.date" :event="event"/>
             </div>
             <div class="round-btn primary-background" id="filters-btn-mobile" @click="toggleFilters">
                 <i class="fas fa-sliders-h"></i>
@@ -22,14 +22,18 @@
 </template>
 
 <script>
+import Vue from "vue";
 import Navbar from "@/Pages/Navigation/Navbar";
 import Event from "@/Pages/Events/Event";
-import Vue from "vue";
 import EventFilters from "@/Pages/Events/EventFilters";
+import Navigation from '@/Pages/Navigation/Navigation.vue';
 
 export default {
     name: "Events",
     components: {EventFilters, Event, Navbar, Navigation},
+    props: {
+        user: Object
+    },
     computed: {
         events() {
             return this.$store.getters.getEvents

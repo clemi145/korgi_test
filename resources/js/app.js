@@ -18,7 +18,7 @@ Vue.use(InertiaPlugin);
 Vue.use(PortalVue);
 Vue.use(Vuex);
 
-const app = document.getElementById('app');
+const app = document.getElementById("app");
 
 function generateLaravelTimestamp() {
     var d = new Date();
@@ -69,9 +69,11 @@ const store = new Vuex.Store({
             saveMessagesToLocalStorage: (group, chat, channel) => {
                 localStorage.setItem(
                     channel,
-                    JSON.stringify(store.getters.getChannel(group, chat).messages)
+                    JSON.stringify(
+                        store.getters.getChannel(group, chat).messages
+                    )
                 );
-            },
+            }
         }
     },
     mutations: {
@@ -98,8 +100,18 @@ const store = new Vuex.Store({
         // },
 
         addPollMessageAction(state, payload) {
-            Vue.set(state.groups[payload.group].channels[payload.chat].messages[payload.messageTimetoken].message.results, payload.user.uuid, payload.answerKey);
-            store.state.methods.saveMessagesToLocalStorage(payload.group, payload.chat, payload.channel);
+            Vue.set(
+                state.groups[payload.group].channels[payload.chat].messages[
+                    payload.messageTimetoken
+                ].message.results,
+                payload.user.uuid,
+                payload.answerKey
+            );
+            store.state.methods.saveMessagesToLocalStorage(
+                payload.group,
+                payload.chat,
+                payload.channel
+            );
         },
 
         // TODO veröffentlichen einer allgemeinen Message Action
@@ -117,7 +129,7 @@ const store = new Vuex.Store({
                         answerKey: payload.answerKey
                     })
                 }
-            })
+            });
         },
 
         // TODO Rename
@@ -140,67 +152,59 @@ const store = new Vuex.Store({
         //     );
         // },
         publishPoll(state, payload) {
-            state.pubnub.publish(
-                {
-                    channel: payload.channel,
-                    message: {
-                        'subject': payload.subject,
-                        'user': state.user,
-                        'group': payload.group,
-                        'chat': payload.chat,
-                        'allowMultiple': payload.allowMultiple,
-                        'answers': payload.answers,
-                        'results': {},
-                        'messageType': 'poll'
-                    }
+            state.pubnub.publish({
+                channel: payload.channel,
+                message: {
+                    subject: payload.subject,
+                    user: state.user,
+                    group: payload.group,
+                    chat: payload.chat,
+                    allowMultiple: payload.allowMultiple,
+                    answers: payload.answers,
+                    results: {},
+                    messageType: "poll"
                 }
-            );
-            console.log("Poll published")
+            });
+            console.log("Poll published");
         },
         publishReply(state, payload) {
-            state.pubnub.publish(
-                {
-                    channel: payload.channel,
-                    message: {
-                        'text': payload.message,
-                        'user': state.user,
-                        'group': payload.group,
-                        'chat': payload.chat,
-                        'messageTimetoken': payload.messageTimetoken,
-                        'messageType': 'reply'
-                    }
+            state.pubnub.publish({
+                channel: payload.channel,
+                message: {
+                    text: payload.message,
+                    user: state.user,
+                    group: payload.group,
+                    chat: payload.chat,
+                    messageTimetoken: payload.messageTimetoken,
+                    messageType: "reply"
                 }
-            );
+            });
         },
         publishMessage(state, payload) {
-            state.pubnub.publish(
-                {
-                    channel: payload.channel,
-                    message: {
-                        'text': payload.message,
-                        'user': state.user,
-                        'group': payload.group,
-                        'chat': payload.chat,
-                        'messageType': 'message'
-                    }
+            state.pubnub.publish({
+                channel: payload.channel,
+                message: {
+                    text: payload.message,
+                    user: state.user,
+                    group: payload.group,
+                    chat: payload.chat,
+                    messageType: "message"
                 }
-            );
+            });
         },
         publishImportantMessage(state, payload) {
-            state.pubnub.publish(
-                {
-                    channel: payload.channel,
-                    message: {
-                        'text': payload.message,
-                        'subject': payload.subject,
-                        'user': state.user,
-                        'group': payload.group,
-                        'chat': payload.chat,
-                        'readBy': {},
-                        'messageType': 'importantMessage'
-                    }
+            state.pubnub.publish({
+                channel: payload.channel,
+                message: {
+                    text: payload.message,
+                    subject: payload.subject,
+                    user: state.user,
+                    group: payload.group,
+                    chat: payload.chat,
+                    readBy: {},
+                    messageType: "importantMessage"
                 }
-            );
+            });
         },
         publishFile(state, payload) {
             setLastMessage(payload.group);
@@ -216,7 +220,7 @@ const store = new Vuex.Store({
                     url: payload.url,
                     messageType: "file"
                 }
-            );
+            });
         },
         publishEventAnnouncement(state, payload) {
             setLastMessage(payload.group);
@@ -230,14 +234,14 @@ const store = new Vuex.Store({
                     chat: payload.chat,
                     messageType: "eventAnnouncement"
                 }
-            );
+            });
 
             // Unnötig, wenn groups vom server kommen
-            store.commit('addEvent', {
+            store.commit("addEvent", {
                 subject: payload.message,
                 date: payload.date,
                 group: payload.group
-            })
+            });
         },
         publishDateVoting(state, payload) {
             setLastMessage(payload.group);
@@ -251,19 +255,23 @@ const store = new Vuex.Store({
                     chat: payload.chat,
                     messageType: "dateVoting"
                 }
-            );
+            });
         },
         addMessage(state, payload) {
-            console.log(payload)
+            console.log(payload);
             Vue.set(
                 state.groups[payload.message.message.group].channels[
                     payload.message.message.chat
-                    ].messages,
+                ].messages,
                 payload.message.timetoken,
                 payload.message
             );
-            console.log("Message added")
-            store.state.methods.saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel)
+            console.log("Message added");
+            store.state.methods.saveMessagesToLocalStorage(
+                payload.message.message.group,
+                payload.message.message.chat,
+                payload.message.channel
+            );
         },
         addEvent(state, payload) {
             // TODO push to server
@@ -271,10 +279,14 @@ const store = new Vuex.Store({
             let newEvent = {
                 subject: payload.subject,
                 date: payload.date
-            }
+            };
 
             state.groups[payload.group].events.push(newEvent);
-            store.state.methods.saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel)
+            store.state.methods.saveMessagesToLocalStorage(
+                payload.message.message.group,
+                payload.message.message.chat,
+                payload.message.channel
+            );
         },
         addGroup(state, payload) {
             axios.post("/gruppen", {
