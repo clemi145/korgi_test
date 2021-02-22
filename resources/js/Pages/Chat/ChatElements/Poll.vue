@@ -33,7 +33,6 @@ export default {
     },
     methods: {
         addResult(answerKey) {
-            console.log("Add result")
             this.$store.commit('publishMessageAction', {
                 type: 'poll',
                 message: this.message,

@@ -148,7 +148,6 @@ export default {
     watch: {
         messages: {
             handler() {
-                console.log("Change in messages detected!");
                 let messagesElement = document.getElementById("messages");
                 let scrollPercentage = Math.ceil(
                     (100 * messagesElement.scrollTop) /
@@ -197,7 +196,6 @@ export default {
             this.scrollToBottom();
         },
         publishPoll(content) {
-            console.log("Publish Poll")
             this.$store.commit('publishPoll', {
                 subject: content.subject,
                 channel: this.channel.uuid,

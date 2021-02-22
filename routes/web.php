@@ -80,6 +80,8 @@ Route::get('einstellungen', function () {
 
 Route::inertia('offline', "Welcome")->name('offline');
 
+Route::inertia('offline', "Welcome")->name('offline');
+
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');

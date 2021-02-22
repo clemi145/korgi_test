@@ -164,8 +164,7 @@ const store = new Vuex.Store({
                     results: {},
                     messageType: "poll"
                 }
-            });
-            console.log("Poll published");
+            );
         },
         publishReply(state, payload) {
             state.pubnub.publish({
@@ -258,7 +257,6 @@ const store = new Vuex.Store({
             });
         },
         addMessage(state, payload) {
-            console.log(payload);
             Vue.set(
                 state.groups[payload.message.message.group].channels[
                     payload.message.message.chat
@@ -266,12 +264,7 @@ const store = new Vuex.Store({
                 payload.message.timetoken,
                 payload.message
             );
-            console.log("Message added");
-            store.state.methods.saveMessagesToLocalStorage(
-                payload.message.message.group,
-                payload.message.message.chat,
-                payload.message.channel
-            );
+            store.state.methods.saveMessagesToLocalStorage(payload.message.message.group, payload.message.message.chat, payload.message.channel)
         },
         addEvent(state, payload) {
             // TODO push to server
@@ -316,10 +309,6 @@ const store = new Vuex.Store({
             Object.keys(state.groups).forEach(groupKey => {
                 Object.keys(state.groups[groupKey].channels).forEach(
                     channelKey => {
-                        console.log(
-                            "Subscribed to channel: " +
-                                state.groups[groupKey].channels[channelKey].uuid
-                        );
                         uuids.push(
                             state.groups[groupKey].channels[channelKey].uuid
                         );

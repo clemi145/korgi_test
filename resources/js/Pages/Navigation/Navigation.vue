@@ -14,7 +14,7 @@
           ><span
         /></a>
       </div>
-      <p class="greeting">Willkommen zurück, {{ user }}!</p>
+      <p class="greeting">Willkommen zurück, {{ user.username }}!</p>
       <form method="POST" @submit.prevent="logout">
         <jet-responsive-nav-link as="button">
           Abmelden
@@ -92,7 +92,6 @@ export default {
     PageLayout,
   },
   props: {
-    user: String,
     bus: Object,
   },
   created() {
@@ -110,6 +109,11 @@ export default {
     //   }
     // });
   },
+    computed: {
+      user() {
+          return this.$store.getters.getUser
+        }
+    },
   data() {
     return {
       isActive: false,
