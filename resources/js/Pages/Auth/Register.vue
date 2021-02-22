@@ -114,7 +114,6 @@ img {
 
 #logo {
     width: 18vh;
-    cursor: pointer;
     align-self: flex-start;
     margin-top: 4vh;
     margin-left: 4vh;
