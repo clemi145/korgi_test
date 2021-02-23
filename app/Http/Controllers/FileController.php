@@ -14,7 +14,7 @@ class FileController extends Controller
 {
     function show(Request $request, $url)
     {
-        $team = Team::where("url", route("group.show", ["url" => $url]))->first();
+        $team = Team::where("url", $url)->first();
         $dirName = 'files/' . $team->name . "_" . $team->id;
         $files = Storage::disk("ftp")->files($dirName);
         return Inertia::render("Group/Files", [

@@ -109,9 +109,6 @@ export default {
       type: false,
     };
   },
-  created() {
-    console.log(this.chats);
-  },
   methods: {
     deleteGroup() {
       axios

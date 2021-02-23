@@ -146,7 +146,7 @@ class GroupController extends Controller
     function users(Request $request, $url)
     {
         $user = User::find(Auth::user()->id);
-        $team = $user->allTeams()->where("url", route("group.show", ["url" => $url]))->first();
+        $team = $user->allTeams()->where("url", $url)->first();
 
         return Inertia::render("Group/Users", [
             "group" => $team,

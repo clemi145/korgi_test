@@ -21,7 +21,6 @@ export default {
     };
   },
   created() {
-    console.log(this.group.uuid);
   },
   methods: {
     addUser() {
@@ -32,7 +31,7 @@ export default {
         .then((res) => console.log(res))
         .then(this.$inertia.visit(route("groups.show")));
 
-        
+
     },
   },
 };

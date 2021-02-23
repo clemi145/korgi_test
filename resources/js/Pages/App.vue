@@ -1,11 +1,9 @@
 <template>
-  <div id="app-window">
-    <!--        <date-picker :multiple="true"></date-picker>-->
-    <!--        <date-picker :multiple="false"></date-picker>-->
-    <Navbar :bus="bus" />
-    <Navigation :user="user.name" :bus="bus" />
-    <GroupView :groups="group_obj" :user="user"/>
-  </div>
+    <div id="app-window">
+        <Navbar :bus="bus"/>
+        <Navigation :bus="bus"/>
+        <GroupView :groups="group_obj"/>
+    </div>
 </template>
 
 <script>
@@ -68,7 +66,6 @@ export default {
         pubnubAddListener() {
             this.$store.state.pubnub.addListener({
                 message: (event) => {
-                    console.log("Message Received")
                     this.$store.commit('addMessage', {
                         message: event
                     });
@@ -104,10 +101,7 @@ export default {
                 Object.keys(this.$store.state.groups[group].channels).forEach(
                     (chat) => {
                         let channel = this.$store.state.groups[group].channels[chat].uuid;
-
-                        console.log(this.getMessagesFromLocalStorage(channel))
-
-                            let messages = this.getMessagesFromLocalStorage(channel);
+                        let messages = this.getMessagesFromLocalStorage(channel);
 
                         Object.keys(messages).forEach(timetoken => {
                             Vue.set(
@@ -130,7 +124,6 @@ export default {
             return this.uuid;
         },
         getAllMissedMessagesFromPubNub() {
-            console.log("getAllMissedMessagesFromPubnub")
             Object.keys(this.$store.state.groups).forEach((group) => {
                 Object.keys(this.$store.state.groups[group].channels).forEach(
                     (chat) => {

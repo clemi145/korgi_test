@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     upload() {
-      console.log(document.querySelector("#fileInput").files[0]);
       const data = new FormData();
       data.append("file", document.querySelector("#fileInput").files[0]);
       data.append("groupId", this.group.id);
@@ -39,7 +38,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
           this.$inertia.reload({ only: ["files"] });
         });
     },

@@ -18,7 +18,7 @@
             <div class="date">FR</div>
             <div class="date">SA</div>
             <div class="date" v-for="d in dates" :class="calculateDateClasses(d)" @click.shift="shiftToggleDate(d)"
-                 @click.exact="toggleDate(d)">
+                 @click.exact="toggleDate(d)" :key="d.getDate()">
                 {{ d.getDate() }}
             </div>
         </div>
