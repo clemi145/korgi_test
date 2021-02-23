@@ -1,43 +1,47 @@
 <template>
-  <div id="outer-wrapper">
-    <div id="group-view">
-      <!--<inertia-link :href="route('teams.create')">Create Team</inertia-link>-->
-      <dialog-window
-        :bus="groupInputBus"
-        title="Gruppe erstellen!"
-        @submit="createGroup"
-      >
-        <dialog-content-create-group :bus="groupInputBus" />
-      </dialog-window>
+  <page-layout>
+    <div id="outer-wrapper">
+      <div id="group-view">
+        <!--<inertia-link :href="route('teams.create')">Create Team</inertia-link>-->
+        <dialog-window
+          :bus="groupInputBus"
+          title="Gruppe erstellen!"
+          @submit="createGroup"
+        >
+          <dialog-content-create-group :bus="groupInputBus" />
+        </dialog-window>
 
-      <div class="group-view-header">
-        <h1 class="title">Gruppenübersicht</h1>
-      </div>
-      <div id="groups">
-        <group-card v-for="group in groups" :group="group" :key="group.url" :user="user"/>
-        <new-group-card @click="groupInputBus.$emit('open')" />
+        <div class="group-view-header">
+          <h1 class="title">Gruppenübersicht</h1>
+        </div>
+        <div id="groups">
+          <group-card v-for="group in groups" :group="group" :key="group.url" />
+          <new-group-card @click="groupInputBus.$emit('open')" />
+        </div>
       </div>
     </div>
-  </div>
+  </page-layout>
 </template>
 
 <script>
 import Vue from "vue";
+
+import PageLayout from '@/Layouts/PageLayout.vue';
+import Group from "@/Pages/Group/Group";
 import GroupCard from "@/Pages/Group/GroupCard";
 import NewGroupCard from "@/Pages/Group/NewGroupCard";
 import DialogWindow from "@/Pages/Dialog/dialog-window";
 import DialogContentCreateGroup from "@/Pages/Dialog/dialog-content-create-group";
-import Navbar from "@/Pages/Navigation/Navbar";
-import axios from "axios";
 
 export default {
   name: "GroupView",
   components: {
+    PageLayout,
+    Group,
     DialogContentCreateGroup,
     DialogWindow,
     NewGroupCard,
     GroupCard,
-    Navbar,
   },
   props: {
     groups: Object,
@@ -60,7 +64,7 @@ export default {
   methods: {
     createGroup(name) {
       this.$store.commit("addGroup", { name: name });
-      this.$inertia.reload({ only: ["groups"] });
+      this.$inertia.reload();//{ only: ["groups"] });
     },
   },
 };
@@ -68,7 +72,8 @@ export default {
 
 <style scoped>
 #outer-wrapper {
-  width: 100vw;
+  width: 100%;
+  height: 100%;
 }
 
 #group-view {
@@ -92,9 +97,9 @@ export default {
 }
 
 @media (max-width: 1200px) {
-    #groups {
-        padding-left: 3vh;
-    }
+  #groups {
+    padding-left: 3vh;
+  }
 }
 
 @media (max-width: 576px) {

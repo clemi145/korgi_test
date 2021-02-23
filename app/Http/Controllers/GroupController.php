@@ -95,8 +95,9 @@ class GroupController extends Controller
                 "Group/Group",
                 [
                     "group" => $group[$team->name],
-                    "chats" => $group[$team->name]["channels"],
-                    "user_is_admin" => $group[$team->name]["hasAdminPermissions"]
+                    "user" => User::find(Auth::user()->id)
+                    // "chats" => $group[$team->name]["channels"],
+                    // "user_is_admin" => $group[$team->name]["hasAdminPermissions"]
                 ]
             );
         }
