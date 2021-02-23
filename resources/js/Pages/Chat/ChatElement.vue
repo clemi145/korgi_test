@@ -11,7 +11,7 @@
                             :message="message"/>
     <file v-if="message.message.messageType === 'file'" :message="message" v-on:open="messageReplyBus.$emit('open')"/>
     <event-announcement v-if="message.message.messageType === 'eventAnnouncement'" :message="message"/>
-    <poll v-if="message.message.messageType === 'poll'" :message="message"/>
+    <poll v-if="message.message.messageType === 'poll'" :message="message" :group="group"/>
     <message-reply v-if="message.message.messageType === 'reply'" :message="message" v-on:open="messageReplyBus.$emit('open')"></message-reply>
   </div>
 </template>
@@ -35,7 +35,8 @@ export default {
     DialogContentMessageReply,
     DialogWindow, Poll, ImportantMessage, LessImportantMessage, EventAnnouncement, File, Message},
   props: {
-    message: Object
+    message: Object,
+    group: Object
   },
   data() {
     return {
@@ -51,6 +52,9 @@ export default {
         group: this.message.message.group,
         messageTimetoken: this.message.timetoken
       });
+
+      this.$inertia.reload(route("group.show", { url: this.group.url }));
+
       let messagesElement = document.getElementById('messages');
       messagesElement.scrollTo(0, messagesElement.scrollHeight);
     },
