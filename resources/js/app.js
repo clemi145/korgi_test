@@ -216,7 +216,7 @@ const store = new Vuex.Store({
                     url: payload.url,
                     messageType: "file"
                 }
-            );
+            });
         },
         publishEventAnnouncement(state, payload) {
             setLastMessage(payload.group);
@@ -230,7 +230,7 @@ const store = new Vuex.Store({
                     chat: payload.chat,
                     messageType: "eventAnnouncement"
                 }
-            );
+            });
 
             // Unnötig, wenn groups vom server kommen
             store.commit('addEvent', {
@@ -251,7 +251,7 @@ const store = new Vuex.Store({
                     chat: payload.chat,
                     messageType: "dateVoting"
                 }
-            );
+            });
         },
         addMessage(state, payload) {
             console.log(payload)

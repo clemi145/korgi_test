@@ -50,7 +50,7 @@ export default {
                 pubnub: new PubNub({
                     publishKey: this.getPublishKey(),
                     subscribeKey: this.getSubscribeKey(),
-                    uuid: this.getUUID(),
+                    uuid: this.user.uuid,
                 }),
                 user: {
                     username: this.getUsername(),
