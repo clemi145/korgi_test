@@ -102,7 +102,7 @@ export default {
 <style scoped>
 
 ::selection {
-    background-color: var(--secondary);
+    background-color: #ffcb8e;
     color: white;
 }
 
@@ -126,7 +126,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--primary);
+    background-color: #ffa88e;
     height: 100vh;
     justify-content: space-between;
 }
@@ -152,7 +152,7 @@ img {
 
 #registration-form {
     font-family: "Montserrat", sans-serif;
-    background-color: var(--background-color);
+    background-color: #FFFFFF;
     border-radius: 30px;
     padding: 4vh;
     display: flex;
@@ -165,7 +165,7 @@ img {
 }
 
 #greeting {
-    color: var(--font-color);
+    color: #000000;
     text-align: center;
     font-size: 1.5rem;
     font-weight: 600;
