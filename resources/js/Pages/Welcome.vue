@@ -631,7 +631,8 @@ img {
 
     #footer-content {
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-around;
+        width: 100%;
     }
 
     #footer {
@@ -692,6 +693,10 @@ img {
 
     #selection {
         display: flex;
+    }
+
+    .footer-link {
+        margin-left: 0;
     }
 }
 
