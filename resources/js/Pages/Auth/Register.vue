@@ -1,7 +1,9 @@
 <template>
     <div id="registration">
-        <img id="logo" src="/images/korgi_yellow_only.svg" alt="Logo">
-        <jet-validation-errors class="mb-4"/>
+        <inertia-link id="logo" :href="route('home')">
+            <img src="/images/korgi_yellow_only.svg" alt="Logo">
+        </inertia-link>
+        <!--        <jet-validation-errors class="mb-4"/>-->
 
         <form @submit.prevent="submit" id="registration-form">
             <h2 id="greeting">Registrierung</h2>
@@ -190,6 +192,16 @@ img {
 .input {
     width: 100%;
     margin-bottom: 2vh;
+    border: none;
+    background-color: #F3F3F3;
+    color: black;
+}
+
+.input:focus {
+    outline: 0;
+    box-shadow: none;
+    background-color: #eaeaea;
+    transition: 0.2s;
 }
 
 .btn {
@@ -202,12 +214,15 @@ img {
         height: 3rem;
         font-size: 1rem;
     }
+
     #registration-form {
         width: 85%;
     }
+
     #link-container {
         flex-direction: column;
     }
+
     #link-container a {
         margin-top: 1vh;
     }

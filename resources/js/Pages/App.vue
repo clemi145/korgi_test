@@ -414,7 +414,7 @@ html.darkmode {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     height: 3rem;
-    background-color: var(--background-color);
+    background-color: #F3F3F3;
 }
 
 .dialog-window .input {
