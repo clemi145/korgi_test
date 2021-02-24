@@ -29,7 +29,7 @@ class GroupController extends Controller
         return Inertia::render("App", [
             "user" => $user,
             "groups" => $groups,
-            "chats" => $chats
+//            "chats" => $chats
         ]);
     }
 
