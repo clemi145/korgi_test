@@ -49,6 +49,8 @@ Route::group(['prefix' => 'gruppen', "middleware" => ['auth:sanctum', 'verified'
     Route::get("join/{uuid}", [GroupController::class, 'join'])->name("group.join.show");
     Route::post('join', [UserController::class, "store"])->name("group.join");
 
+    Route::post("update", [GroupController::class, "update"])->name("group.update");
+
     Route::post("leave", [GroupController::class, "leave"])->name("group.leave");
 
     Route::post("delete", [GroupController::class, "delete"])->name("group.delete");
@@ -78,9 +80,7 @@ Route::get('einstellungen', function () {
     ]);
 })->name('settings.show');
 
-Route::inertia('offline', "Welcome")->name('offline');
-
-Route::inertia('offline', "Welcome")->name('offline');
+Route::inertia('offline', "Offline")->name('offline');
 
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

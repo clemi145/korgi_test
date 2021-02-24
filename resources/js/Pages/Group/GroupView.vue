@@ -53,6 +53,7 @@ export default {
     };
   },
   created() {
+    // console.log(this.groups[Object.keys(this.groups)[0]].hasAdminPermissions);
     this.$store.commit("setCurrentPage", { page: "Gruppenübersicht" });
     this.$store.commit("setShowArrow", { showArrow: false });
   },
@@ -64,7 +65,7 @@ export default {
   methods: {
     createGroup(name) {
       this.$store.commit("addGroup", { name: name });
-      this.$inertia.reload();//{ only: ["groups"] });
+      this.$inertia.visit(route("groups.show"), { only: ["groups"] });
     },
   },
 };
