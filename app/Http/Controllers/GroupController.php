@@ -56,18 +56,18 @@ class GroupController extends Controller
         $general_chat = Chat::create([
             "team_id" => $team->id,
             "type" => false,
-            "url" => route("group.show", [
-                "url" => $this->urlFormat($team->name)
-            ]),
+            // "url" => route("group.show", [
+                "url" => "allgemein",//$this->urlFormat($team->name),
+            // ]),
             "uuid" => DB::raw('UUID()')
         ]);
 
         $important_chat = Chat::create([
             "team_id" => $team->id,
             "type" => true,
-            "url" => route("group.show", [
-                "url" => $this->urlFormat($team->name)
-            ]),
+            // "url" => route("group.show", [
+                "url" => "wichtig",//$this->urlFormat($team->name),
+            // ]),
             "uuid" => DB::raw('UUID()')
         ]);
 
@@ -109,6 +109,16 @@ class GroupController extends Controller
             "user" => $user,
             "group" => $group,
         ]);
+    }
+
+    function update(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        $team = Team::find($request->groupId);
+
+        if ($user->hasTeamRole($team, "admin")) {
+            $team->update(["name" => $request->groupName, "url" => $this->urlFormat($request->groupName)]);
+        } else abort(500, "Insufficient Permissions");
     }
 
     function leave(Request $request)
