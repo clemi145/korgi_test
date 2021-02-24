@@ -4,7 +4,7 @@
             <div class="dialog-window" v-if="isOpen">
                 <h1 class="dialog-title">{{ title }}</h1>
                 <slot></slot>
-                <div class="buttons">
+                <div class="buttons" :class="{'center': infoOnly}">
                     <div class="btn warn-background" @click="close">
                         <p>Abbrechen</p>
                         <i class="fas fa-times"/>
@@ -120,6 +120,10 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+.buttons.center {
+    justify-content: center;
 }
 
 .buttons .btn {

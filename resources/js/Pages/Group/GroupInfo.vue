@@ -1,5 +1,9 @@
 <template>
     <div id="group-info" :class="{'active': active}">
+        <dialog-window :title="'Einladungslink'" :bus="dialogBus" :info-only="true">
+            <dialog-content-join-link :link="link"/>
+        </dialog-window>
+
         <div id="group-info-header">
             <div>Gruppeninfo</div>
             <div class="round-btn secondary-background" @click="toggleActive">
@@ -10,9 +14,9 @@
             <div class="section-header">Name</div>
             <div class="input-container">
                 <input class="alternate-input" type="text" name="groupname" value="groupname" placeholder="Gruppenname"
-                       v-model="groupname">
+                       v-model="groupName">
                 <div class="round-btn primary-background">
-                    <i class="fas fa-edit"/>
+                    <i class="fas fa-pen"/>
                 </div>
             </div>
         </div>
@@ -35,28 +39,45 @@
         </div>
         <div id="group-info-invitation">
             <div class="section-header">Einladungslink</div>
-            <div class="btn secondary-background">Link generieren</div>
+            <div class="btn secondary-background" @click="dialogBus.$emit('open')">Link generieren</div>
         </div>
-        <div id="group-info-delete">
-            <div class="btn warn-background">
+        <div id="group-info-delete" v-if="hasAdminPermissions && isEmpty">
+            <div class="btn warn-background" v-on:click="deleteGroup">
                 <p>Gruppe löschen</p>
                 <i class="fas fa-trash-alt"/>
+            </div>
+        </div>
+        <div id="group-info-leave" v-if="!hasAdminPermissions || !isEmpty">
+            <div class="btn warn-background" v-on:click="leaveGroup">
+                <p>Gruppe verlassen</p>
+                <i class="fas fa-sign-out-alt"></i>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import Vue from "vue";
 import Member from "@/Pages/Member";
+import axios from "axios";
+import DialogWindow from "@/Pages/Dialog/dialog-window";
+import DialogContentJoinLink from "@/Pages/Dialog/dialog-content-join-link";
+
 export default {
     name: "group-info",
-    components: {Member},
+    components: {DialogContentJoinLink, DialogWindow, Member},
     props: {
-        bus: Object
+        bus: Object,
+        group: Object,
+        hasAdminPermissions: Boolean
     },
     data() {
         return {
-            active: false
+            active: false,
+            groupName: this.group.name,
+            dialogBus: new Vue(),
+            link: route('group.join.show', { uuid: this.group.uuid }),
+            isEmpty: true
         }
     },
     created() {
@@ -67,7 +88,27 @@ export default {
     methods: {
         toggleActive() {
             this.active = !this.active;
-        }
+        },
+        deleteGroup() {
+            axios
+                .post(route("group.delete"), {
+                    uuid: this.group.uuid,
+                })
+                .then(() => this.$inertia.visit(route("groups.show")));
+        },
+        leaveGroup() {
+            axios
+                .post(route("group.leave"), {
+                    uuid: this.group.uuid,
+                }) /*.then(() => {
+        Object.values(this.$store.state.groups).filter((i, v, a) => {
+          return v.uuid != this.group.uuid;
+        });
+      })*/
+                .then(() => this.$inertia.visit(route("groups.show")));
+        },
+    },
+    mounted() {
     }
 }
 </script>
