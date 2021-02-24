@@ -1,130 +1,133 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <div id="settings">
-    <navigation :user="username" :bus="bus"/>
-    <div class="settings-header">
-      <h1 class="title">Einstellungen</h1>
-    </div>
-    <div id="item-container">
-      <div class="item">
-        <div class="subject">Benutzer</div>
-        <div class="content">
-          <div id="user">
-            <div class="flex-item-container">
-              <span class="small-headline">Name</span>
-              <input
-                class="alternate-input"
-                type="text"
-                name="username"
-                value="username"
-                placeholder="Username"
-                v-model="username"
-              />
-              <div class="round-btn primary-background">
-                <i class="fas fa-edit" />
+  <page-layout>
+    <div id="settings">
+      <!--navigation :user="username" :bus="bus"/-->
+      <div class="settings-header">
+        <h1 class="title">Einstellungen</h1>
+      </div>
+      <div id="item-container">
+        <div class="item">
+          <div class="subject">Benutzer</div>
+          <div class="content">
+            <div id="user">
+              <div class="flex-item-container">
+                <span class="small-headline">Name</span>
+                <input
+                  class="alternate-input"
+                  type="text"
+                  name="username"
+                  value="username"
+                  placeholder="Username"
+                  v-model="username"
+                />
+                <div class="round-btn primary-background">
+                  <i class="fas fa-edit" />
+                </div>
+              </div>
+              <div class="flex-item-container">
+                <span class="small-headline">E-Mail</span>
+                <input
+                  class="alternate-input"
+                  type="email"
+                  name="email"
+                  value="email"
+                  placeholder="E-Mail"
+                  v-model="usermail"
+                />
+                <div class="round-btn primary-background">
+                  <i class="fas fa-edit" />
+                </div>
+              </div>
+              <div class="link-container">
+                <a>Passwort ändern</a>
+                <a class="warn">Account löschen</a>
               </div>
             </div>
-            <div class="flex-item-container">
-              <span class="small-headline">E-Mail</span>
-              <input
-                class="alternate-input"
-                type="email"
-                name="email"
-                value="email"
-                placeholder="E-Mail"
-                v-model="usermail"
-              />
-              <div class="round-btn primary-background">
-                <i class="fas fa-edit" />
-              </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="subject">Privatsphäre</div>
+          <div class="content">
+            <div id="privacy">
+              <span class="small-headline"
+                >Alle gesammelten Daten anfordern</span
+              >
+              <br />
+              Chatnachrichten, Nutzerdaten, Verschickte Dateien, ...
+              <br />
+              <br />
+              Der Vorgang kann einzige Zeit in Anspruch nehmen. Nach Abschluss
+              erhältst du eine E-Mail mit den gesammelten Daten.
+              <br />
             </div>
-            <div class="link-container">
-              <a>Passwort ändern</a>
-              <a class="warn">Account löschen</a>
+            <div class="btn primary-background">Daten anfordern</div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="subject">Benachrichtigungen</div>
+          <div class="content">
+            <div id="messages">
+              <label class="checkbox-container">
+                E-Mail Benachrichtigungen
+                <input type="checkbox" name="email-msg" value="email-msg" />
+                <span class="checkbox"></span>
+              </label>
+              <label class="checkbox-container">
+                Push Benachrichtigungen
+                <input type="checkbox" name="push-msg" value="push-msg" />
+                <span class="checkbox"></span>
+              </label>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="item">
-        <div class="subject">Privatsphäre</div>
-        <div class="content">
-          <div id="privacy">
-            <span class="small-headline">Alle gesammelten Daten anfordern</span>
-            <br />
-            Chatnachrichten, Nutzerdaten, Verschickte Dateien, ...
-            <br />
-            <br />
-            Der Vorgang kann einzige Zeit in Anspruch nehmen. Nach Abschluss
-            erhältst du eine E-Mail mit den gesammelten Daten.
-            <br />
-          </div>
-          <div class="btn primary-background">Daten anfordern</div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="subject">Benachrichtigungen</div>
-        <div class="content">
-          <div id="messages">
-            <label class="checkbox-container">
-              E-Mail Benachrichtigungen
-              <input type="checkbox" name="email-msg" value="email-msg" />
-              <span class="checkbox"></span>
-            </label>
-            <label class="checkbox-container">
-              Push Benachrichtigungen
-              <input type="checkbox" name="push-msg" value="push-msg" />
-              <span class="checkbox"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="subject">Darstellung</div>
-        <div class="content">
-          <div id="presentation">
-            <label class="checkbox-container"
-              >Heller Modus
-              <input
-                type="radio"
-                :checked="!darkmode"
-                @change="toggleDarkmode"
-                name="Farbmodus"
-                value="lightmode"
-              />
-              <span class="radio"></span>
-            </label>
-            <label class="checkbox-container"
-              >Dunkler Modus
-              <input
-                type="radio"
-                :checked="darkmode"
-                @change="toggleDarkmode"
-                name="Farbmodus"
-                value="darkmode"
-              />
-              <span class="radio"></span>
-            </label>
+        <div class="item">
+          <div class="subject">Darstellung</div>
+          <div class="content">
+            <div id="presentation">
+              <label class="checkbox-container"
+                >Heller Modus
+                <input
+                  type="radio"
+                  :checked="!darkmode"
+                  @change="toggleDarkmode"
+                  name="Farbmodus"
+                  value="lightmode"
+                />
+                <span class="radio"></span>
+              </label>
+              <label class="checkbox-container"
+                >Dunkler Modus
+                <input
+                  type="radio"
+                  :checked="darkmode"
+                  @change="toggleDarkmode"
+                  name="Farbmodus"
+                  value="darkmode"
+                />
+                <span class="radio"></span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </page-layout>
 </template>
 
 <script>
 import Vue from "vue";
-import Navbar from "@/Pages/Navigation/Navbar";
+
+import PageLayout from '@/Layouts/PageLayout.vue';
 import Label from "@/Jetstream/Label";
-import Navigation from "@/Pages/Navigation/Navigation";
 
 export default {
   name: "Settings",
   components: {
+    PageLayout,
     Label,
-    Navbar,
-    Navigation,
   },
   props: {
     user: Object,

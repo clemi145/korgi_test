@@ -79,7 +79,7 @@ import JetDropdown from "@/Jetstream/Dropdown";
 import JetDropdownLink from "@/Jetstream/DropdownLink";
 import JetNavLink from "@/Jetstream/NavLink";
 import JetResponsiveNavLink from "@/Jetstream/ResponsiveNavLink";
-import PageLayout from "@/Pages/PageLayout";
+// import PageLayout from "@/Pages/PageLayout";
 export default {
   name: "Navigation",
   components: {
@@ -89,7 +89,7 @@ export default {
     JetNavLink,
     JetResponsiveNavLink,
     Button,
-    PageLayout,
+    // PageLayout,
   },
   props: {
     bus: Object,
@@ -128,7 +128,7 @@ export default {
     },
     deleteAccount() {
       axios.post(route("user.delete")).then((response) => {
-        this.$inertia.visit(route("home"));
+        // this.$inertia.visit(route("home"));
       });
     },
     toggleDarkmode() {
