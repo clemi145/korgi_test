@@ -6581,7 +6581,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     group: Object,
-    chats: Object,
     // chat: Object,
     user_is_admin: Boolean,
     user: Object
@@ -6589,7 +6588,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       type: false,
-      bus: new vue__WEBPACK_IMPORTED_MODULE_4__.default()
+      bus: new vue__WEBPACK_IMPORTED_MODULE_4__.default(),
+      chats: this.group.channels
     };
   },
   methods: {
@@ -6610,6 +6610,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    console.log("Test: ", this.chats);
     vue__WEBPACK_IMPORTED_MODULE_4__.default.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid);
     vue__WEBPACK_IMPORTED_MODULE_4__.default.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid);
     this.$store.commit("setCurrentPage", {
@@ -12598,7 +12599,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#group[data-v-12288036] {\r\n    display: flex;\r\n    flex-direction: row;\r\n    width: 100%;\r\n    height: 100%;\n}\n#group-content[data-v-12288036] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: 100%;\n}\n#group-header[data-v-12288036] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    box-shadow: 1px 0px 8px 3px var(--shadow-color);\r\n    -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);\r\n    -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);\r\n    padding: 2vh 2vh 0 2vh;\r\n    z-index: 30;\r\n    background-color: var(--background-color);\n}\n.btn[data-v-12288036] {\r\n    flex-grow: 0 !important;\r\n    width: -webkit-fit-content;\r\n    width: -moz-fit-content;\r\n    width: fit-content;\n}\nbutton[data-v-12288036]:focus {\r\n    outline: 0;\n}\n#chat-selection[data-v-12288036] {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\n}\n.chat-link[data-v-12288036] {\r\n    width: 6em;\r\n    text-align: center;\r\n    font-size: 1.2rem;\r\n    color: var(--font-color-light);\r\n    font-weight: 600;\r\n    transition: 0.2s ease;\n}\n.row[data-v-12288036] {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: space-between;\n}\n.chat-link[data-v-12288036]:hover {\r\n    color: #ffa88e;\n}\n.chat-link[data-v-12288036]::after {\r\n    content: \"\";\r\n    width: 0;\r\n    height: 4px;\r\n    display: block;\r\n    background-color: #ffa88e;\r\n    transition: 0.2s ease;\n}\n.chat-link.left[data-v-12288036]::after {\r\n    margin-left: 100%;\n}\n.chat-link.right[data-v-12288036]::after {\r\n    margin-left: 0;\n}\n.chat-link-current[data-v-12288036] {\r\n    color: #ffa88e;\n}\n.chat-link-current.left[data-v-12288036]::after {\r\n    width: 100%;\r\n    margin-left: 0;\n}\n.chat-link-current.right[data-v-12288036]::after {\r\n    width: 100%;\r\n    margin-left: 0;\n}\n@media (max-width: 576px) {\n.row[data-v-12288036] {\r\n        display: none;\n}\n#group[data-v-12288036] {\r\n        height: calc(100vh - 20vw);\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#group[data-v-12288036] {\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n    height: 100%;\n}\n#group-content[data-v-12288036] {\n    display: flex;\n    flex-direction: column;\n    width: 100%;\n}\n#group-header[data-v-12288036] {\n    display: flex;\n    flex-direction: column;\n    box-shadow: 1px 0px 8px 3px var(--shadow-color);\n    -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);\n    -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);\n    padding: 2vh 2vh 0 2vh;\n    z-index: 30;\n    background-color: var(--background-color);\n}\n.btn[data-v-12288036] {\n    flex-grow: 0 !important;\n    width: -webkit-fit-content;\n    width: -moz-fit-content;\n    width: fit-content;\n}\nbutton[data-v-12288036]:focus {\n    outline: 0;\n}\n#chat-selection[data-v-12288036] {\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n}\n.chat-link[data-v-12288036] {\n    width: 6em;\n    text-align: center;\n    font-size: 1.2rem;\n    color: var(--font-color-light);\n    font-weight: 600;\n    transition: 0.2s ease;\n}\n.row[data-v-12288036] {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    justify-content: space-between;\n}\n.chat-link[data-v-12288036]:hover {\n    color: #ffa88e;\n}\n.chat-link[data-v-12288036]::after {\n    content: \"\";\n    width: 0;\n    height: 4px;\n    display: block;\n    background-color: #ffa88e;\n    transition: 0.2s ease;\n}\n.chat-link.left[data-v-12288036]::after {\n    margin-left: 100%;\n}\n.chat-link.right[data-v-12288036]::after {\n    margin-left: 0;\n}\n.chat-link-current[data-v-12288036] {\n    color: #ffa88e;\n}\n.chat-link-current.left[data-v-12288036]::after {\n    width: 100%;\n    margin-left: 0;\n}\n.chat-link-current.right[data-v-12288036]::after {\n    width: 100%;\n    margin-left: 0;\n}\n@media (max-width: 576px) {\n.row[data-v-12288036] {\n        display: none;\n}\n#group[data-v-12288036] {\n        height: calc(100vh - 20vw);\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -89,7 +89,6 @@ export default {
     },
     props: {
         group: Object,
-        chats: Object,
         // chat: Object,
         user_is_admin: Boolean,
         user: Object
@@ -97,7 +96,8 @@ export default {
     data() {
         return {
             type: false,
-            bus: new Vue()
+            bus: new Vue(),
+            chats: this.group.channels
         };
     },
     methods: {
@@ -119,6 +119,7 @@ export default {
 
     },
     created() {
+        console.log("Test: ", this.chats)
         Vue.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid)
         Vue.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid)
         this.$store.commit("setCurrentPage", {page: this.group.name});
