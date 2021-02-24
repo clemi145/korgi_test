@@ -27,8 +27,11 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "moment": "^2.29.1",
         "pubnub": "^4.29.10",
         "qrcode": "^1.4.4",
+        "vue-chart": "^2.0.0",
+        "vue-morris": "^1.1.0",
         "vuex": "^3.6.0"
     }
 }

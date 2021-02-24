@@ -53,6 +53,7 @@ export default {
     };
   },
   created() {
+    console.log(this.groups[Object.keys(this.groups)[0]].hasAdminPermissions);
     this.$store.commit("setCurrentPage", { page: "Gruppenübersicht" });
     this.$store.commit("setShowArrow", { showArrow: false });
   },

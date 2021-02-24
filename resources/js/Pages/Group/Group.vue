@@ -58,17 +58,17 @@
             <Chat
                 :group="group"
                 :chat="chats['allgemein']"
-                :hasAdminPermissions="user_is_admin"
+                :hasAdminPermissions="group.hasAdminPermissions"
                 v-if="!type"
             />
             <Chat
                 :group="group"
                 :chat="chats['wichtig']"
-                :hasAdminPermissions="user_is_admin"
+                :hasAdminPermissions="group.hasAdminPermissions"
                 v-else
             />
         </div>
-        <group-info :group="group" :bus="bus" :hasAdminPermissions="user_is_admin"/>
+        <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
     </div>
 </template>
 
@@ -89,8 +89,6 @@ export default {
     },
     props: {
         group: Object,
-        // chat: Object,
-        user_is_admin: Boolean,
         user: Object
     },
     data() {
@@ -99,6 +97,9 @@ export default {
             bus: new Vue(),
             chats: this.group.channels
         };
+    },
+    created() {
+        console.log(this.group.hasAdminPermissions);
     },
     methods: {
         toggleGroupInfo() {

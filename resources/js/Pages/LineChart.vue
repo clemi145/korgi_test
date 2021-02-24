@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {Line} from "vue-chart.js";
+import {Line} from "vue-chart";
 export default {
     name: "Statistics2",
     extends:Line,

@@ -78,9 +78,7 @@ Route::get('einstellungen', function () {
     ]);
 })->name('settings.show');
 
-Route::inertia('offline', "Welcome")->name('offline');
-
-Route::inertia('offline', "Welcome")->name('offline');
+Route::inertia('offline', "Offline")->name('offline');
 
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
