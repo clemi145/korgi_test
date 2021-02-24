@@ -132,9 +132,12 @@ export default {
 }
 
 #login-form {
-    background-color: var(--background-color);
+    background-color: #FFFFFF;
     border-radius: 30px;
     padding: 4vh;
+    -webkit-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    -moz-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
 }
 
 .btn {
@@ -144,6 +147,9 @@ export default {
     font-size: 1.5rem;
     height: 4rem;
     border-radius: 2rem;
+}
+.btn:focus {
+    outline: 0;
 }
 
 #login-button-container {
@@ -161,6 +167,16 @@ export default {
 
 .input {
     width: 100%;
+    border: none;
+    background-color: #F3F3F3;
+    color: black;
+}
+
+.input:focus {
+    outline: 0;
+    border: none;
+    background-color: #eaeaea;
+    box-shadow: none;
 }
 
 /*Checkbox*/

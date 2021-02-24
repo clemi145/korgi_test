@@ -2772,10 +2772,6 @@
                 "laravel",
                 "php"
             ],
-            "support": {
-                "issues": "https://github.com/soarecostin/file-vault/issues",
-                "source": "https://github.com/soarecostin/file-vault/tree/v1.2.0"
-            },
             "time": "2020-11-01T10:19:41+00:00"
         },
         {

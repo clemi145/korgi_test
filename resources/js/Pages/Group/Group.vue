@@ -4,24 +4,22 @@
         <div id="group-content">
             <div id="group-header">
                 <div class="row">
-                    <inertia-link
-                        :href="route('groups.show')"
-                        class="round-btn secondary-background"
-                    ><i class="fas fa-arrow-left"></i
-                    ></inertia-link>
-                    <inertia-link
-                        :href="route('group.join.show', { uuid: group.uuid })"
-                        style="margin-left: 2%"
-                        class="headline"
-                    >
-                        {{ group.name }}
-                    </inertia-link>
+                    <div style="display: flex; flex-direction: row; align-items: center; flex-grow: 1">
+                        <inertia-link
+                            :href="route('groups.show')"
+                            class="round-btn secondary-background"
+                        ><i class="fas fa-arrow-left"></i
+                        ></inertia-link>
+                        <div
+                            style="margin-left: 2%"
+                            class="headline"
+                        >
+                            {{ group.name }}
+                        </div>
+                    </div>
 
-                    <button v-on:click="leave" style="margin-left: 2%" class="headline">
-                        Leave
-                    </button>
 
-                    <inertia-link
+                    <!--inertia-link
                         :href="route('group.users', { url: this.group.url })"
                         style="margin-left: 2%"
                         class="headline"
@@ -35,8 +33,7 @@
                         class="headline"
                     >
                         Files
-                    </inertia-link>
-
+                    </inertia-link-->
                     <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
                 </div>
                 <div id="chat-selection">
@@ -71,7 +68,7 @@
                 v-else
             />
         </div>
-        <group-info :group="group" :bus="bus"/>
+        <group-info :group="group" :bus="bus" :hasAdminPermissions="user_is_admin"/>
     </div>
 </template>
 
@@ -80,8 +77,6 @@ import Chat from "@/Pages/Chat/Chat";
 import Navbar from "@/Pages/Navigation/Navbar";
 import GroupInfo from "@/Pages/Group/GroupInfo";
 import Vue from "vue";
-
-import axios from "axios";
 import Navigation from "@/Pages/Navigation/Navigation";
 
 export default {
@@ -106,17 +101,6 @@ export default {
         };
     },
     methods: {
-        leave() {
-            axios
-                .post(route("group.leave"), {
-                    uuid: this.group.uuid,
-                }) /*.then(() => {
-        Object.values(this.$store.state.groups).filter((i, v, a) => {
-          return v.uuid != this.group.uuid;
-        });
-      })*/
-                .then(() => this.$inertia.visit(route("groups.show")));
-        },
         toggleGroupInfo() {
             this.bus.$emit("toggleGroupInfo");
         },
@@ -172,6 +156,10 @@ export default {
 .btn {
     flex-grow: 0 !important;
     width: fit-content;
+}
+
+button:focus {
+    outline: 0;
 }
 
 #chat-selection {

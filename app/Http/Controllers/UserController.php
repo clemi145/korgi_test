@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Jetstream\Events\TeamMemberAdded;
 use Laravel\Jetstream\Events\TeamMemberRemoved;
 
@@ -44,20 +45,21 @@ class UserController extends Controller
 
     function delete(Request $request)
     {
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
 
         // Log::info($user);
 
-        Auth::logout();
-        $teams = Team::where("user_id", $user->id);
+        $teams = $user->allTeams();
 
         foreach ($teams as $team) {
-            foreach (Chat::where("team_id", $team->id) as $chat) {
-
-                $chat->delete();
-            }
+            $team->chats()->delete();
+            $team->delete();
         }
-        $teams->delete();
-        $user->delete();
+
+        User::find($user->id)->delete();
+
+        Auth::logout();
+
+        Redirect::route("home");
     }
 }

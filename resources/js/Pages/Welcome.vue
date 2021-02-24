@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div id="about-content-right">
-                    <img src="/images/korgi_red.svg">
+                    <img src="/images/korgi_red_shadow.svg">
                 </div>
             </div>
         </div>
@@ -149,8 +149,8 @@
 }
 
 ::selection {
-    background: var(--secondary);
-    color: var(--font-color-alternate);
+    background: #FFCB8E;
+    color: #FFFFFF;
 }
 
 img {
@@ -163,7 +163,7 @@ img {
 
 #navigation {
     z-index: 10;
-    background-color: var(--background-color);
+    background-color: #FFFFFF;
     width: 100%;
     position: fixed;
     height: 7vh;
@@ -173,9 +173,9 @@ img {
     align-items: center;
     padding-left: 15%;
     padding-right: 15%;
-    -webkit-box-shadow: 5px 5px 40px 0px var(--shadow-color);
-    -moz-box-shadow: 5px 5px 40px 0px var(--shadow-color);
-    box-shadow: 5px 5px 40px 0px var(--shadow-color);
+    -webkit-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    -moz-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
 }
 
 #navigation #logo {
@@ -193,7 +193,7 @@ img {
     margin-right: 1.5vh;
     font-weight: 600;
     cursor: pointer;
-    color: var(--font-color);
+    color: #000000;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -203,7 +203,7 @@ img {
 }
 
 #navigation #link-container a:hover {
-    color: var(--secondary);
+    color: #FFCB8E;
     transition: 0.15s;
 }
 
@@ -215,11 +215,11 @@ img {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    color: var(--font-color)
+    color: #000000;
 }
 
 #slider a:hover {
-    color: var(--secondary);
+    color: #FFCB8E;
     transition: 0.15s;
 }
 
@@ -234,7 +234,7 @@ img {
     position: fixed;
     left: 100vw;
     z-index: 5;
-    background-color: var(--background-color);
+    background-color: #FFFFFF;
     transition: all 0.25s ease;
     align-items: center;
     justify-content: center;
@@ -256,14 +256,14 @@ img {
     z-index: 5;
     width: 30px;
     height: 4px;
-    background: var(--font-color);
+    background: #000000;
     transition: all 0.2s ease-in-out;
     border-radius: 3px;
 }
 
 #burger span:before, #burger span:after {
     position: absolute;
-    background: var(--font-color);
+    background: #000000;
     content: "";
     width: 30px;
     height: 4px;
@@ -285,12 +285,12 @@ img {
 
 #burger.active span:before {
     transform: rotate(45deg) translate(5px, 6px);
-    background: var(--font-color);
+    background: #000000;
 }
 
 #burger.active span:after {
     transform: rotate(-45deg) translate(5px, -6px);
-    background: var(--font-color);
+    background: #000000;
 }
 
 #logo {
@@ -304,7 +304,7 @@ img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--background-color);
+    background-color: #FFFFFF
 }
 
 #app-preview {
@@ -328,7 +328,7 @@ img {
 #header-content-left .separator {
     width: 55%;
     height: 6px;
-    background-color: var(--primary);
+    background-color: #FFA88E;
     margin-top: 4vh;
     margin-bottom: 4vh;
     border-radius: 10px;
@@ -337,7 +337,7 @@ img {
 #header-content-left .text {
     font-size: 1.5rem;
     width: 80%;
-    color: var(--font-color);
+    color: #000000;
 }
 
 #header-content-left .btn {
@@ -357,7 +357,7 @@ img {
 #login {
     height: 100vh;
     display: flex;
-    background-color: var(--primary);
+    background-color: #FFA88E;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -375,13 +375,13 @@ img {
     width: 8em;
     text-align: center;
     font-size: 1.1rem;
-    color: var(--white);
+    color: #FFFFFF;
     font-weight: 600;
     transition: 0.2s ease;
 }
 
 .selection-link:hover {
-    color: var(--secondary);
+    color: #FFCB8E;
 }
 
 .selection-link::after {
@@ -389,7 +389,7 @@ img {
     width: 0;
     height: 4px;
     display: block;
-    background-color: var(--secondary);
+    background-color: #FFCB8E;
     transition: 0.2s ease;
 }
 
@@ -402,7 +402,7 @@ img {
 }
 
 .selection-link-current {
-    color: var(--secondary);
+    color: #FFCB8E;
 }
 
 .selection-link-current.left::after {
@@ -434,9 +434,13 @@ img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--background-color);
+    background-color: #FFFFFF;
     border-radius: 30px;
     padding: 4vh;
+
+    -webkit-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    -moz-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
 }
 
 #logo-msg {
@@ -444,7 +448,7 @@ img {
 }
 
 #register-info {
-    color: var(--font-color);
+    color: #000000;
     font-size: 1.4rem;
     font-weight: 600;
     text-align: center;
@@ -471,7 +475,7 @@ img {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: var(--background-color);
+    background-color: #FFFFFF;
 }
 
 #about-content {
@@ -490,14 +494,14 @@ img {
 #about-content-left .text {
     font-size: 1rem;
     margin-bottom: 4vh;
-    color: var(--font-color);
+    color: #000000;
 }
 
 #about-content-left .section-headline {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1vh;
-    color: var(--font-color);
+    color: #000000;
 }
 
 #about-content-right {
@@ -512,7 +516,7 @@ img {
 
 #footer {
     height: 10vh;
-    background-color: var(--primary);
+    background-color: #FFA88E;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -528,7 +532,7 @@ img {
 
 .footer-link {
     font-size: 1.2rem;
-    color: var(--white);
+    color: #FFFFFF;
     margin-left: 6vh;
     text-decoration: underline;
     font-weight: 500;
@@ -537,12 +541,12 @@ img {
 
 .footer-cr {
     font-size: 1.2rem;
-    color: var(--white);
+    color: #FFFFFF;
     margin-right: 6vh;
 }
 
 .headline {
-    color: var(--secondary);
+    color: #FFCB8E;
     font-size: 3rem;
     margin-left: 10vh;
     margin-top: 10vh;
@@ -554,7 +558,7 @@ img {
     font-weight: 500;
     line-height: 4.5rem;
     width: 80%;
-    color: var(--font-color);
+    color: #000000;
 }
 
 @media (max-width: 576px) {
@@ -627,7 +631,8 @@ img {
 
     #footer-content {
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-around;
+        width: 100%;
     }
 
     #footer {
@@ -688,6 +693,10 @@ img {
 
     #selection {
         display: flex;
+    }
+
+    .footer-link {
+        margin-left: 0;
     }
 }
 
