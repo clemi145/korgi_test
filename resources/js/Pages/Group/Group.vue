@@ -1,75 +1,76 @@
 <template>
-    <div id="group">
-        <navigation :user="user.name"/>
-        <div id="group-content">
-            <div id="group-header">
-                <div class="row">
-                    <div style="display: flex; flex-direction: row; align-items: center; flex-grow: 1">
-                        <inertia-link
-                            :href="route('groups.show')"
-                            class="round-btn secondary-background"
-                        ><i class="fas fa-arrow-left"></i
-                        ></inertia-link>
-                        <div
+    <page-layout>
+        <div id="group">
+            <div id="group-content">
+                <div id="group-header">
+                    <div class="row">
+                        <div style="display: flex; flex-direction: row; align-items: center; flex-grow: 1">
+                            <inertia-link
+                                :href="route('groups.show')"
+                                class="round-btn secondary-background"
+                            ><i class="fas fa-arrow-left"></i
+                            ></inertia-link>
+                            <div
+                                style="margin-left: 2%"
+                                class="headline"
+                            >
+                                {{ group.name }}
+                            </div>
+                        </div>
+
+
+                        <!--inertia-link
+                            :href="route('group.users', { url: this.group.url })"
                             style="margin-left: 2%"
                             class="headline"
                         >
-                            {{ group.name }}
-                        </div>
+                            Users
+                        </inertia-link>
+
+                        <inertia-link
+                            :href="route('group.files.show', { url: this.group.url })"
+                            style="margin-left: 2%"
+                            class="headline"
+                        >
+                            Files
+                        </inertia-link-->
+                        <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
                     </div>
+                    <div id="chat-selection">
+                        <button
+                            as="button"
+                            class="chat-link left"
+                            :class="generalIsCurrentChat()"
+                            v-on:click="type = false"
+                        >
+                            Allgemein
+                        </button>
 
-
-                    <!--inertia-link
-                        :href="route('group.users', { url: this.group.url })"
-                        style="margin-left: 2%"
-                        class="headline"
-                    >
-                        Users
-                    </inertia-link>
-
-                    <inertia-link
-                        :href="route('group.files.show', { url: this.group.url })"
-                        style="margin-left: 2%"
-                        class="headline"
-                    >
-                        Files
-                    </inertia-link-->
-                    <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
+                        <button
+                            class="chat-link right"
+                            :class="importantIsCurrentChat()"
+                            v-on:click="type = true"
+                        >
+                            Wichtig
+                        </button>
+                    </div>
                 </div>
-                <div id="chat-selection">
-                    <button
-                        as="button"
-                        class="chat-link left"
-                        :class="generalIsCurrentChat()"
-                        v-on:click="type = false"
-                    >
-                        Allgemein
-                    </button>
-
-                    <button
-                        class="chat-link right"
-                        :class="importantIsCurrentChat()"
-                        v-on:click="type = true"
-                    >
-                        Wichtig
-                    </button>
-                </div>
+                <Chat
+                    :group="group"
+                    :chat="chats['allgemein']"
+                    :hasAdminPermissions="group.hasAdminPermissions"
+                    v-if="!type"
+                />
+                <Chat
+                    :group="group"
+                    :chat="chats['wichtig']"
+                    :hasAdminPermissions="group.hasAdminPermissions"
+                    v-else
+                />
             </div>
-            <Chat
-                :group="group"
-                :chat="chats['allgemein']"
-                :hasAdminPermissions="group.hasAdminPermissions"
-                v-if="!type"
-            />
-            <Chat
-                :group="group"
-                :chat="chats['wichtig']"
-                :hasAdminPermissions="group.hasAdminPermissions"
-                v-else
-            />
+            <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
         </div>
-        <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
-    </div>
+    </page-layout>
 </template>
 
 <script>
@@ -78,10 +79,12 @@ import Navbar from "@/Pages/Navigation/Navbar";
 import GroupInfo from "@/Pages/Group/GroupInfo";
 import Vue from "vue";
 import Navigation from "@/Pages/Navigation/Navigation";
+import PageLayout from "@/Layouts/PageLayout";
 
 export default {
     name: "Group",
     components: {
+        PageLayout,
         Navigation,
         Chat,
         Navbar,
