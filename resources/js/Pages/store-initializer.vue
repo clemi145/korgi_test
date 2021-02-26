@@ -1,37 +1,23 @@
 <template>
-    <div id="app">
-        <group-view :groups="group_obj"/>
-    </div>
+
 </template>
 
 <script>
-import GroupView from "@/Pages/Group/GroupView";
-import DatePicker from "@/Pages/Dialog/DatePicker";
-
 import Vue from "vue";
 import PubNub from "pubnub";
-import axios from "axios";
 
 export default {
-    name: "App",
-    components: {
-        GroupView,
-        DatePicker,
-    },
+    name: "store-initializer",
     props: {
         user: Object,
         groups: Array,
-        chats: Array,
     },
     data() {
         return {
-            bus: new Vue(),
-            uuid: undefined,
             messages: [],
-            group_obj: this.getGroups(),
         };
     },
-    mounted() {
+    created() {
         this.initStore();
         this.pubnubAddListener();
         this.pubnubSubscribe();
@@ -111,12 +97,6 @@ export default {
         getMessagesFromLocalStorage(channel) {
             return JSON.parse(localStorage.getItem(channel)) || {};
         },
-        getUUID() {
-            if (!this.uuid) {
-                this.uuid = this.generateUUID();
-            }
-            return this.uuid;
-        },
         getAllMissedMessagesFromPubNub() {
             Object.keys(this.$store.state.groups).forEach((group) => {
                 Object.keys(this.$store.state.groups[group].channels).forEach(
@@ -135,7 +115,6 @@ export default {
                 );
             });
         },
-
         getMissedMessagesFromPubNub(
             group,
             chat,
@@ -151,7 +130,6 @@ export default {
                     count: 25, // default/max is 25
                 },
                 function (status, response) {
-                    console.log("Yeet: ", status, response);
                     let newMessages = Object.values(response.channels)[0];
 
                     this.messages = this.messages.concat(newMessages);
@@ -219,17 +197,6 @@ export default {
             //     }
             // )
         },
-        generateUUID() {
-            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-                /[xy]/g,
-                function (c) {
-                    let r = (Math.random() * 16) | 0,
-                        v = c == "x" ? r : (r & 0x3) | 0x8;
-                    return v.toString(16);
-                }
-            );
-        },
-
         //TODO aus der Datenbank holen
         getPublishKey() {
             return "pub-c-b25ff12b-5bec-4fa8-b5c8-9d37331f3464";
@@ -250,10 +217,8 @@ export default {
         toObject(array) {
             let obj = {};
             array.forEach((element) => {
-                // console.log(element[Object.keys(element)[0]]);
                 obj[Object.keys(element)[0]] = element[Object.keys(element)[0]];
             });
-            // console.log(obj);
             return obj;
         },
 
@@ -266,18 +231,10 @@ export default {
             });
             return groups;
         },
-    },
-};
+    }
+}
 </script>
 
-
-<style>
-#app-window {
-    display: flex;
-    flex-direction: row;
-
-    width: 100%;
-    height: 100vh;
-}
+<style scoped>
 
 </style>
