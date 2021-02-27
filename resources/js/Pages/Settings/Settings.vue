@@ -1,5 +1,5 @@
 <template xmlns="http://www.w3.org/1999/html">
-    <page-layout>
+    <page-layout :user="user" :groups="groups">
         <div id="settings">
             <!--navigation :user="username" :bus="bus"/-->
             <div class="settings-header">
@@ -122,15 +122,18 @@ import Vue from "vue";
 
 import PageLayout from '@/Layouts/PageLayout.vue';
 import Label from "@/Jetstream/Label";
+import StoreInitializer from "@/Pages/store-initializer";
 
 export default {
     name: "Settings",
     components: {
+        StoreInitializer,
         PageLayout,
         Label,
     },
     props: {
         user: Object,
+        groups: Array
     },
     data() {
         return {

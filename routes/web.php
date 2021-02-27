@@ -69,14 +69,16 @@ Route::group(["prefix" => "users"], function () {
 // EVENTS
 Route::get('termine', function () {
     return Inertia::render("Events/Events", [
-        "user" => User::find(Auth::user()->id)
+        "user" => User::find(Auth::user()->id),
+        "groups"=>User::find(Auth::user()->id)->allTeams()
     ]);
 })->name('events.show');
 
 // SETTINGS
 Route::get('einstellungen', function () {
     return Inertia::render("Settings/Settings", [
-        "user" => User::find(Auth::user()->id)
+        "user" => User::find(Auth::user()->id),
+        "groups"=>User::find(Auth::user()->id)->allTeams()
     ]);
 })->name('settings.show');
 

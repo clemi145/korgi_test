@@ -1,5 +1,5 @@
 <template>
-    <page-layout>
+    <page-layout :user="user" :groups="groups">
         <div id="group">
             <div id="group-content">
                 <div id="group-header">
@@ -80,10 +80,12 @@ import GroupInfo from "@/Pages/Group/GroupInfo";
 import Vue from "vue";
 import Navigation from "@/Pages/Navigation/Navigation";
 import PageLayout from "@/Layouts/PageLayout";
+import StoreInitializer from "@/Pages/store-initializer";
 
 export default {
     name: "Group",
     components: {
+        StoreInitializer,
         PageLayout,
         Navigation,
         Chat,
@@ -92,6 +94,7 @@ export default {
     },
     props: {
         group: Object,
+        groups: Array,
         user: Object
     },
     data() {
@@ -100,9 +103,6 @@ export default {
             bus: new Vue(),
             chats: this.group.channels
         };
-    },
-    created() {
-        console.log(this.group.hasAdminPermissions);
     },
     methods: {
         toggleGroupInfo() {
@@ -123,12 +123,10 @@ export default {
 
     },
     created() {
-        console.log("Test: ", this.chats)
         Vue.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid)
         Vue.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid)
         this.$store.commit("setCurrentPage", {page: this.group.name});
         this.$store.commit("setShowArrow", {showArrow: true});
-        // console.log("Group", this.chats['wichtig'])
     },
 }
 </script>

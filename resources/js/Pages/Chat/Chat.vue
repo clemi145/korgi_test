@@ -285,7 +285,6 @@ export default {
         },
     },
     created() {
-        // console.log(this.chat)
     },
 };
 </script>

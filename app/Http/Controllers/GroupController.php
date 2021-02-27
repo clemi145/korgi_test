@@ -25,7 +25,7 @@ class GroupController extends Controller
 
         $groups = $this->formatGroupsEloquentCollection($user, $teams);
 
-        return Inertia::render("App", [
+        return Inertia::render("Group/GroupView", [
             "user" => $user,
             "groups" => $groups,
         ]);
@@ -82,6 +82,10 @@ class GroupController extends Controller
         // route("group.show", ["url" => $url])
         $team = Team::where("url", $url)->first();
 
+        $teams = $user->allTeams()->where("personal_team", 0);
+
+        $groups = $groups = $this->formatGroupsEloquentCollection($user, $teams);
+
         // Log::info($team);
 
         if ($team == null) {
@@ -93,7 +97,8 @@ class GroupController extends Controller
                 "Group/Group",
                 [
                     "group" => $group[$team->name],
-                    "user" => User::find(Auth::user()->id)
+                    "user" => User::find(Auth::user()->id),
+                    "groups" => $groups
                     // "chats" => $group[$team->name]["channels"],
                     // "user_is_admin" => $group[$team->name]["hasAdminPermissions"]
                 ]
@@ -105,9 +110,11 @@ class GroupController extends Controller
     {
         $user = Auth::user();
         $group = Team::where("uuid", $uuid)->first();
+
+
         return Inertia::render("Group/JoinGroup", [
             "user" => $user,
-            "group" => $group,
+            "group" => $group
         ]);
     }
 
