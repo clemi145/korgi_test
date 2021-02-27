@@ -16,13 +16,13 @@
       </div>
       <p class="greeting">Willkommen zurück, {{ user.username }}!</p>
       <form method="POST" @submit.prevent="logout">
-        <jet-responsive-nav-link as="button">
+        <jet-responsive-nav-link class="link" as="button">
           Abmelden
         </jet-responsive-nav-link>
       </form>
 
       <form method="POST" @submit.prevent="deleteAccount">
-        <jet-responsive-nav-link as="button">
+        <jet-responsive-nav-link class="link" as="button">
           Konto löschen
         </jet-responsive-nav-link>
       </form>
@@ -230,6 +230,14 @@ export default {
     cursor: pointer;
 }
 
+/*.link {*/
+/*    color: white;*/
+/*    text-decoration: underline;*/
+/*    font-size: 1rem;*/
+/*    font-weight: 600;*/
+/*    cursor: pointer;*/
+/*}*/
+
 .navigation-item-active {
     background-color: #ff8f6e;
 }
@@ -245,7 +253,8 @@ export default {
     color: white;
     text-decoration: underline;
     font-size: 1.2rem;
-    font-weight: bold;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 #header {
