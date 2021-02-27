@@ -79,6 +79,7 @@ export default {
 
 .checkbox-container {
     margin-top: 2vh;
+    color: var(--font-color);
 }
 
 </style>

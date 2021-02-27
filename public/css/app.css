@@ -32989,7 +32989,6 @@ html.darkmode {
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
-  color: var(--font-color);
 }
 
 .checkbox-container input,
