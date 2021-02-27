@@ -41,4 +41,9 @@ main {
     width: 100vw;
     height: 100vh;
 }
+@media (max-width: 576px) {
+    #wrapper {
+        flex-direction: column;
+    }
+}
 </style>

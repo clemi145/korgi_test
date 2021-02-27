@@ -110,6 +110,7 @@ export default {
         flex-direction: column;
         flex-wrap: nowrap;
         align-items: center;
+        padding-left: 0;
     }
 
     .group-view-header {

@@ -12,7 +12,7 @@
         <div id="input-group">
             <dialog-window
                 :bus="fileInputBus"
-                title="Datei senden!"
+                title="Datei senden"
                 @submit="publishFile"
             >
                 <dialog-content-send-file :bus="fileInputBus"/>
