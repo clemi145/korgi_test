@@ -66,7 +66,7 @@ export default {
     methods: {
         createGroup(name) {
             this.$store.commit("addGroup", {name: name});
-            this.$inertia.visit(route("groups.show"), {only: ["groups"]});
+            this.$inertia.reload(route("groups.show"), {only: ["groups"]});
         },
     },
 };
