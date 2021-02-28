@@ -1,32 +1,37 @@
 <template>
-    <page-layout :user="user" :groups="groups">
-        <div id="outer-wrapper">
-            <div id="group-view">
-                <!--<inertia-link :href="route('teams.create')">Create Team</inertia-link>-->
-                <dialog-window
-                    :bus="groupInputBus"
-                    title="Gruppe erstellen"
-                    @submit="createGroup"
-                >
-                    <dialog-content-create-group :bus="groupInputBus"/>
-                </dialog-window>
+  <page-layout :user="user" :groups="groups">
+    <div id="outer-wrapper">
+      <div id="group-view">
+        <!--<inertia-link :href="route('teams.create')">Create Team</inertia-link>-->
+        <dialog-window
+          :bus="groupInputBus"
+          title="Gruppe erstellen"
+          @submit="createGroup"
+        >
+          <dialog-content-create-group :bus="groupInputBus" />
+        </dialog-window>
 
-                <div class="group-view-header">
-                    <h1 class="title">Gruppenübersicht</h1>
-                </div>
-                <div id="groups">
-                    <group-card v-for="group in groupsObject" :group="group" :key="group.url"/>
-                    <new-group-card @click="groupInputBus.$emit('open')"/>
-                </div>
-            </div>
+        <div class="group-view-header">
+          <h1 class="title">Gruppenübersicht</h1>
         </div>
-    </page-layout>
+        <div id="groups">
+          <group-card
+            v-for="group in groupsObject"
+            :group="group"
+            :key="group.url"
+          />
+          <new-group-card @click="groupInputBus.$emit('open')" />
+        </div>
+      </div>
+    </div>
+  </page-layout>
 </template>
 
 <script>
 import Vue from "vue";
+// import { Inertia } from "@inertiajs/inertia";
 
-import PageLayout from '@/Layouts/PageLayout.vue';
+import PageLayout from "@/Layouts/PageLayout.vue";
 import Group from "@/Pages/Group/Group";
 import GroupCard from "@/Pages/Group/GroupCard";
 import NewGroupCard from "@/Pages/Group/NewGroupCard";
@@ -35,103 +40,103 @@ import DialogContentCreateGroup from "@/Pages/Dialog/dialog-content-create-group
 import StoreInitializer from "@/Pages/store-initializer";
 
 export default {
-    name: "GroupView",
-    components: {
-        StoreInitializer,
-        PageLayout,
-        Group,
-        DialogContentCreateGroup,
-        DialogWindow,
-        NewGroupCard,
-        GroupCard,
+  name: "GroupView",
+  components: {
+    StoreInitializer,
+    PageLayout,
+    Group,
+    DialogContentCreateGroup,
+    DialogWindow,
+    NewGroupCard,
+    GroupCard,
+  },
+  props: {
+    user: Object,
+    groups: Array,
+  },
+  data() {
+    return {
+      groupInputBus: new Vue(),
+    };
+  },
+  created() {
+    this.$store.commit("setCurrentPage", { page: "Gruppenübersicht" });
+    this.$store.commit("setShowArrow", { showArrow: false });
+  },
+  computed: {
+    groupsObject: function () {
+      return this.$store.getters.getGroups;
     },
-    props: {
-        user: Object,
-        groups: Array
+  },
+  methods: {
+    createGroup(name) {
+      this.$store.commit("addGroup", { name: name });
+      this.$inertia.visit(route("groups.show"), { only: ["groups"] });
     },
-    data() {
-        return {
-            groupInputBus: new Vue(),
-        };
-    },
-    created() {
-        this.$store.commit("setCurrentPage", {page: "Gruppenübersicht"});
-        this.$store.commit("setShowArrow", {showArrow: false});
-    },
-    computed: {
-        groupsObject: function () {
-            return this.$store.getters.getGroups;
-        },
-    },
-    methods: {
-        createGroup(name) {
-            this.$store.commit("addGroup", {name: name});
-            this.$inertia.reload(route("groups.show"), {only: ["groups"]});
-        },
-    },
+  },
 };
 </script>
 
 <style scoped>
 #outer-wrapper {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #group-view {
-    height: 100%;
-    width: 100%;
-    background-color: var(--background-color-alternate);
-    overflow: auto;
+  height: 100%;
+  width: 100%;
+  background-color: var(--background-color-alternate);
+  overflow: auto;
 }
 
 .group-view-header {
-    padding: 2%;
+  padding: 2%;
 }
 
 #groups {
-    margin-top: 2%;
-    display: flex;
-    position: relative;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  margin-top: 2%;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 @media (max-width: 1200px) {
-    #groups {
-        padding-left: 3vh;
-    }
+  #groups {
+    padding-left: 3vh;
+  }
 }
 
 @media (max-width: 576px) {
-    #groups {
-        /*margin-top: 25%;*/
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: center;
-        padding-left: 0;
-    }
+  #groups {
+    /*margin-top: 25%;*/
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-left: 0;
+  }
 
-    .group-view-header {
-        display: none;
-    }
+  .group-view-header {
+    display: none;
+  }
 }
 
 @media (min-width: 576px) {
-    #group-view::-webkit-scrollbar {
-        margin-left: -1rem;
-        width: 1rem;
-    }
+  #group-view::-webkit-scrollbar {
+    margin-left: -1rem;
+    width: 1rem;
+  }
 
-    #group-view::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 0.5rem;
-    }
+  #group-view::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 0.5rem;
+  }
 
-    #group-view::-webkit-scrollbar-thumb {
-        background-color: #ffa88e;
-        border-radius: 0.5rem;
-    }
+  #group-view::-webkit-scrollbar-thumb {
+    background-color: #ffa88e;
+    border-radius: 0.5rem;
+  }
 }
 </style>
