@@ -48,6 +48,8 @@ html {
     --message-right-color: var(--secondary-lighter);
     --shadow-color: rgba(92, 86, 86, 0.3);
     --subject-color: var(--warn);
+    --input-focus-color: #eaeaea;
+    --answered-poll-color: var(--primary-darker);
     overflow: hidden;
 }
 
@@ -67,6 +69,8 @@ html.darkmode {
     --message-right-color: var(--primary-darker);
     --shadow-color: rgb(31, 31, 31);
     --subject-color: var(--secondary);
+    --answered-poll-color: var(--secondary);
+    --input-focus-color: #292b2f;
 }
 
 .headline {
@@ -129,23 +133,35 @@ html.darkmode {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     height: 3rem;
-    background-color: var(--background-color);
+    background-color: var(--background-color-alternate);
+    border: none;
 }
 
-.dialog-window .input {
-    background-color: var(--background-color-alternate);
+.input:focus {
+    outline: 0;
+    box-shadow: none;
+    background-color: var(--input-focus-color);
+    transition: 0.2s;
 }
 
 .textarea {
     font-size: 1rem;
     outline: 0;
-    border-radius: 1.5rem;
-    color: #707070;
+    border-radius: 1rem;
+    color: var(--font-color);
     font-weight: 600;
+    border: none;
 
     padding: 1.5rem;
-    background-color: #e1e1e1;
+    background-color: var(--background-color-alternate);
     resize: none;
+}
+
+.textarea:focus {
+    outline: 0;
+    border: none;
+    box-shadow: none;
+    background-color: var(--input-focus-color);
 }
 
 .input::placeholder {

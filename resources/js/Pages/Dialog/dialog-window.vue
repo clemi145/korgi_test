@@ -157,6 +157,7 @@ export default {
     .dialog-window {
         width: 90vw;
         border-radius: 2rem;
+        padding: 4%;
     }
 }
 

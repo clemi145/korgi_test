@@ -266,7 +266,7 @@ export default {
 @media (max-width: 1200px) {
     #group-info.active {
         position: absolute;
-        width: 70%;
+        width: 75%;
         height: 100%;
         padding: 2vh;
         z-index: 35;

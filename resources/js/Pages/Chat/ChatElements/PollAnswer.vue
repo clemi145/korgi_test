@@ -33,7 +33,7 @@ export default {
             return Math.round((Object.values(this.message.message.results).filter(value => value === this.answerKey).length / this.totalAnswers) * 100);
         },
         cssVars () {
-            return this.isSelected ? {'--percentage': this.delayedPercentage + '%', '--fill-color': 'var(--primary-darker)'} : {'--percentage': this.delayedPercentage + '%', '--fill-color': 'var(--primary)'}
+            return this.isSelected ? {'--percentage': this.delayedPercentage + '%', '--fill-color': 'var(--answered-poll-color)'} : {'--percentage': this.delayedPercentage + '%', '--fill-color': 'var(--primary)'}
         },
         isOwn() {
             return this.message.publisher === this.$store.state.pubnub.getUUID()

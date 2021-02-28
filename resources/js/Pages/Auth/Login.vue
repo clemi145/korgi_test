@@ -124,7 +124,7 @@ export default {
 }
 
 #greeting {
-    color: var(--font-color);
+    color: #000000;
     text-align: center;
     font-size: 1.5rem;
     font-weight: 600;
@@ -208,8 +208,8 @@ export default {
     border-radius: 30%;
     height: 20px;
     width: 20px;
-    background-color: var(--background-color);
-    border: 2px solid var(--font-color);
+    background-color: #ffffff;
+    border: 2px solid #000000;
 }
 
 input:checked ~ .checkbox {
@@ -232,7 +232,7 @@ input:checked ~ .checkbox:after {
     top: 3px;
     width: 5px;
     height: 10px;
-    border: solid var(--white);
+    border: solid #ffffff;
     border-width: 0 3px 3px 0;
     border-radius: 1px;
     -webkit-transform: rotate(45deg);

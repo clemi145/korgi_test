@@ -83,6 +83,7 @@ export default {
 .fa-reply {
     color: var(--header-color);
     cursor: pointer;
+    margin-left: 1rem;
 }
 
 .fa-reply:hover {

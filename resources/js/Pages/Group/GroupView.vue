@@ -5,7 +5,7 @@
                 <!--<inertia-link :href="route('teams.create')">Create Team</inertia-link>-->
                 <dialog-window
                     :bus="groupInputBus"
-                    title="Gruppe erstellen!"
+                    title="Gruppe erstellen"
                     @submit="createGroup"
                 >
                     <dialog-content-create-group :bus="groupInputBus"/>
@@ -110,6 +110,7 @@ export default {
         flex-direction: column;
         flex-wrap: nowrap;
         align-items: center;
+        padding-left: 0;
     }
 
     .group-view-header {

@@ -4,14 +4,14 @@
             <div id="group-content">
                 <div id="group-header">
                     <div class="row">
-                        <div style="display: flex; flex-direction: row; align-items: center; flex-grow: 1">
+                        <div style="display: flex; align-items: center; flex-grow: 1">
                             <inertia-link
                                 :href="route('groups.show')"
                                 class="round-btn secondary-background"
                             ><i class="fas fa-arrow-left"></i
                             ></inertia-link>
                             <div
-                                style="margin-left: 2%"
+                                style="margin-left: 3vh"
                                 class="headline"
                             >
                                 {{ group.name }}

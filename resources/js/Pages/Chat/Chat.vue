@@ -12,7 +12,7 @@
         <div id="input-group">
             <dialog-window
                 :bus="fileInputBus"
-                title="Datei senden!"
+                title="Datei senden"
                 @submit="publishFile"
             >
                 <dialog-content-send-file :bus="fileInputBus"/>
@@ -291,7 +291,7 @@ export default {
 
 <style scoped>
 #chat {
-    background-color: #f3f3f3;
+    background-color: var(--background-color-alternate);
     flex-grow: 1;
     width: 100%;
     height: 100%;
@@ -305,7 +305,7 @@ export default {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 2%;
+    padding: 2vh;
     overflow-y: auto;
 }
 
@@ -325,32 +325,33 @@ export default {
 }
 
 #message-input {
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 3vh;
+    margin-right: 3vh;
     flex-grow: 1;
 }
 
 #input-group {
     position: relative;
     display: flex;
-    padding: 1% 2% 1% 2%;
-    box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);
-    -webkit-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);
-    -moz-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.3);
+    padding: 1.5vh 3vh 1.5vh 3vh;
+    box-shadow: 1px 0 15px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0 15px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0 15px 3px var(--shadow-color);
     justify-content: space-between;
+    background-color: var(--background-color);
 }
 
 .special-messages-container {
-    margin-bottom: 2%;
-    background-color: white;
-    padding: 1%;
+    background-color: var(--background-color);
+    margin-bottom: 2vh;
+    padding: 1vh;
     height: 19rem;
     position: absolute;
     bottom: 100%;
     border-radius: 1rem;
-    box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);
-    -webkit-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);
-    -moz-box-shadow: 1px 0 15px 3px rgba(92, 86, 86, 0.75);
+    box-shadow: 1px 0 15px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0 15px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0 15px 3px var(--shadow-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -370,6 +371,8 @@ export default {
 @media (max-width: 576px) {
     #message-input {
         max-width: 68%; /*Irgendwie dumm, aber sonst funktioniert nix*/
+        margin-left: 0.5vh;
+        margin-right: 0.5vh;
     }
 
     #input-group {
