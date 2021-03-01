@@ -380,6 +380,14 @@ select option {
     background-color: var(--background-color);
 }
 
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 @media (max-width: 1200px) {
     .title {
         font-size: 2rem;

@@ -1,19 +1,28 @@
 <template>
-    <div class="group-card" @click="linkToGroup">
+    <div class="group-card" @mouseleave="hideMenu" @click.self="linkToGroup">
         <div class="group-card-icon">{{ group.name.substring(0, 1) }}</div>
         <h1 class="group-card-name">{{ group.name }}</h1>
-        <i class="fas fa-ellipsis-h group-card-menu"></i>
+        <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu"></i>
         <!-- Nur mal ein Versuch, denk nicht, dass wir das so machen können aber idk -->
+        <context-menu :bus="bus"/>
     </div>
 </template>
 
 <script>
 import axios from "axios";
+import Vue from "vue";
+import ContextMenu from "@/Pages/ContextMenu";
 
 export default {
     name: "GroupCard",
+    components: {ContextMenu},
     props: {
         group: Object,
+    },
+    data() {
+        return {
+            bus: new Vue(),
+        }
     },
     methods: {
         linkToGroup() {
@@ -49,6 +58,12 @@ export default {
                 seconds
             );
         },
+        showMenu() {
+            this.bus.$emit("showMenu");
+        },
+        hideMenu() {
+            this.bus.$emit("hideMenu");
+        }
     },
 };
 </script>
@@ -95,7 +110,7 @@ export default {
     align-items: center;
     border-radius: 100%;
     order: 2;
-    margin-top: 5%;
+    margin-top: 0;
 }
 
 .group-card-name {
@@ -111,8 +126,9 @@ export default {
     align-self: flex-end;
     order: 1;
     color: var(--font-color);
-    margin-top: 1vh;
-    margin-right: 1vh;
+    margin-top: 0.8vh;
+    margin-right: 1.5vh;
+    padding: 2%;
 }
 
 @media (max-width: 1200px) {
