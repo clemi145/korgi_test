@@ -120,7 +120,7 @@ export default {
                 .post(route("group.delete"), {
                     uuid: this.group.uuid,
                 })
-                .then(() => this.$inertia.visit(route("groups.show")));
+                .then(() => this.$inertia.visit(route("groups.show"), { only: ["groups"] }));
         },
         leaveGroup() {
             axios
