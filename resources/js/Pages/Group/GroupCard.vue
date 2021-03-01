@@ -95,7 +95,7 @@ export default {
     align-items: center;
     border-radius: 100%;
     order: 2;
-    margin-top: 0.5vh;
+    margin-top: 5%;
 }
 
 .group-card-name {
@@ -103,7 +103,7 @@ export default {
     font-weight: 700;
     color: var(--header-color);
     order: 3;
-    margin-top: 1.5vh;
+    margin-top: 10%;
 }
 
 .group-card-menu {
@@ -123,10 +123,12 @@ export default {
 
     .group-card-name {
         font-size: 1rem;
+        margin-top: 5%;
     }
 
     .group-card-icon {
         font-size: 2.5rem;
+        margin-top: 2%;
     }
 }
 
