@@ -1,7 +1,13 @@
 <template>
     <div id="context-menu" class="no-select" :class="{ active: active }">
-        <div class="option">Option 1</div>
-        <div class="option">Option 2</div>
+        <div class="option warn">
+            <p>Gruppe löschen</p>
+            <i class="fas fa-trash-alt"></i>
+        </div>
+        <div class="option">
+            <p>Farbe ändern</p>
+            <i class="fas fa-palette"></i>
+        </div>
     </div>
 </template>
 
@@ -46,7 +52,7 @@ export default {
     position: absolute;
     border-radius: 0.5rem;
     right: 7%;
-    top: 14%;
+    top: 15%;
 }
 
 #context-menu.active {
@@ -57,8 +63,20 @@ export default {
     padding: 10px;
     color: var(--font-color);
     border-radius: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 .option:hover {
     background-color: var(--background-color-alternate);
+}
+
+.warn {
+    color: var(--warn)
+}
+
+i {
+    margin-left: 1rem;
 }
 </style>
