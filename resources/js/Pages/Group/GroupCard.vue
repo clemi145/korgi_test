@@ -1,5 +1,5 @@
 <template>
-    <div class="group-card" @mouseleave="hideMenu" @click.self="linkToGroup">
+    <div class="group-card no-select" @mouseleave="hideMenu" @click.self="linkToGroup">
         <div class="group-card-icon">{{ group.name.substring(0, 1) }}</div>
         <h1 class="group-card-name">{{ group.name }}</h1>
         <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu"></i>
