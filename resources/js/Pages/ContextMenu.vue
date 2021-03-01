@@ -79,4 +79,11 @@ export default {
 i {
     margin-left: 1rem;
 }
+
+@media (max-width: 576px) {
+    #context-menu {
+        right: 14%;
+    }
+}
+
 </style>

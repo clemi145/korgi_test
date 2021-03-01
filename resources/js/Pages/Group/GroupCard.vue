@@ -159,6 +159,8 @@ export default {
         -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);
         -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);
         border: #ffa88e solid 4px;
+
+        -webkit-tap-highlight-color: transparent;
     }
 
     .group-card-icon {

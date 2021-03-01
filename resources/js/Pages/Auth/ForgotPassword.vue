@@ -1,6 +1,6 @@
 <template>
     <div id="forgot-password">
-        <inertia-link id="logo" :href="route('home')">
+        <inertia-link id="logo" class="no-select" :href="route('home')">
             <img src="/images/korgi_yellow_only.svg" alt="Logo">
         </inertia-link>
 
@@ -82,6 +82,11 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+}
+
+::selection {
+    background-color: var(--secondary);
+    color: white;
 }
 
 #logo {

@@ -78,6 +78,11 @@ export default {
     align-items: center;
 }
 
+::selection {
+    background-color: var(--secondary);
+    color: white;
+}
+
 #logo {
     width: 18vh;
     align-self: flex-start;
