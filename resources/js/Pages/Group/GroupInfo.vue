@@ -191,7 +191,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 700;
 }
 
 #group-info-name {
@@ -217,7 +217,7 @@ export default {
 }
 
 .section-header {
-    font-weight: 900;
+    font-weight: 600;
     margin-top: 2.5vh;
     margin-bottom: 0.6vh;
 }

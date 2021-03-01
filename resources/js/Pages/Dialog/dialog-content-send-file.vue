@@ -47,6 +47,11 @@ export default {
     align-items: center;
 }
 
+#send-file-input:focus {
+    outline: 0;
+    border-color: var(--primary);
+}
+
 .send-file-message {
     width: 100%;
     margin-bottom: 10%;
