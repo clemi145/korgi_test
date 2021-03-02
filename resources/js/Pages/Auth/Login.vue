@@ -1,6 +1,6 @@
 <template>
     <div id="login-container">
-        <jet-validation-errors class="mb-4"/>
+        <jet-validation-errors id="error"/>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
@@ -114,6 +114,21 @@ export default {
 ::selection {
     background-color: var(--secondary);
     color: white;
+}
+
+#error {
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+    color: #FFFFFF;
+    background-color: var(--warn);
+    border-radius: 1rem;
+    padding: 1%;
+    font-weight: 600;
+
+    box-shadow: 1px 0px 10px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0px 10px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0px 10px 3px var(--shadow-color);
 }
 
 #login-container {

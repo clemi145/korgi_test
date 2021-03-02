@@ -3,7 +3,7 @@
         <inertia-link id="logo" :href="route('home')">
             <img src="/images/korgi_yellow_only.svg" alt="Logo">
         </inertia-link>
-        <!--        <jet-validation-errors class="mb-4"/>-->
+        <jet-validation-errors id="error"/>
 
         <form @submit.prevent="submit" id="registration-form">
             <h2 id="greeting">Registrierung</h2>
@@ -104,6 +104,21 @@ export default {
 ::selection {
     background-color: #ffcb8e;
     color: white;
+}
+
+#error {
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+    color: #FFFFFF;
+    background-color: var(--warn);
+    border-radius: 1rem;
+    padding: 1%;
+    font-weight: 600;
+
+    box-shadow: 1px 0px 10px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0px 10px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0px 10px 3px var(--shadow-color);
 }
 
 img {
