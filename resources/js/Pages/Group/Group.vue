@@ -36,7 +36,7 @@
                         </inertia-link>
                         <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
                     </div>
-                    <div id="chat-selection">
+                    <div id="chat-selection" class="no-select">
                         <button
                             as="button"
                             class="chat-link left"

@@ -212,7 +212,7 @@ export default {
 
 .subject {
     margin: 2%;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.3rem;
     color: var(--font-color);
 }
@@ -290,7 +290,7 @@ export default {
 }
 
 .small-headline {
-    font-weight: bolder;
+    font-weight: 600;
     font-size: 1.1rem;
 }
 

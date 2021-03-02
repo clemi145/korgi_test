@@ -1,6 +1,6 @@
 <template>
     <div id="login-container">
-        <jet-validation-errors class="mb-4"/>
+        <jet-validation-errors id="error"/>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
