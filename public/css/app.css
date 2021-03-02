@@ -32726,6 +32726,7 @@ select{
   padding: 0;
   transition: all 0.15s ease;
   font-family: "Montserrat", sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :root {
@@ -32945,15 +32946,15 @@ html.darkmode {
   filter: saturate(0.3);
 }
 
-.warn-background:hover {
+.warn-background:hover, .warn-background:focus {
   background-color: var(--warn-darker);
 }
 
-.primary-background:hover {
+.primary-background:hover, .primary-background:focus {
   background-color: var(--primary-darker);
 }
 
-.secondary-background:hover {
+.secondary-background:hover, .secondary-background:focus {
   background-color: var(--secondary-darker);
 }
 
