@@ -179,6 +179,8 @@ export default {
     height: 100%;
 
     background-color: var(--primary);
+    /*padding: 1rem;*/
+
 }
 
 .navigation-item {
@@ -190,12 +192,13 @@ export default {
     color: white;
     font-size: 1.2rem;
     font-weight: 600;
+    /*border-radius: 1rem;*/
 
-    margin-top: 1em;
-    margin-bottom: 1em;
+    /*margin-top: 1em;*/
+    /*margin-bottom: 0.5rem;*/
     background-color: #FFA88E;
     transition: 0.2s ease;
-    margin: 0;
+    /*margin: 0;*/
 }
 
 .greeting {
@@ -219,7 +222,6 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 5%;
-    padding-right: 3%;
 }
 
 #top a {
