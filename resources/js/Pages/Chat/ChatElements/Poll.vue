@@ -73,6 +73,16 @@ export default {
   margin-bottom: 0.5vh;
 }
 
+.subject {
+    color: var(--warn);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.own .subject {
+    color: var(--subject-color);
+}
+
 .timetoken {
   align-self: flex-end;
   color: var(--font-color-light);

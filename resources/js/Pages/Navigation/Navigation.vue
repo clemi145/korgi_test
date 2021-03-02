@@ -203,7 +203,7 @@ export default {
 
 .greeting {
     font-size: 1.4rem;
-    font-weight: bold;
+    font-weight: 700;
     color: white;
     margin-top: 5%;
     margin-bottom: 5%;
