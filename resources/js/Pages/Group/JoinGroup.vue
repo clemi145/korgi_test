@@ -6,12 +6,12 @@
         <!--        <h1>Join Group {{ group.name }} with UUID {{ group.uuid }}</h1>-->
         <div id="join-group-content">
             <h1 id="question">Möchtest du {{ group.name }} beitreten?</h1>
-            <div class="group-icon">
+            <div class="group-icon no-select">
                 <div class="group-card-icon" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
                 <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
             </div>
             <div id="button-container">
-                <inertia-link class="btn warn-background" :href="route('home')">Lieber nicht...</inertia-link>
+<!--                <inertia-link class="btn warn-background" :href="route('home')">Lieber nicht...</inertia-link>-->
                 <button class="btn secondary-background" v-on:click="addUser">Na klar!</button>
             </div>
         </div>
@@ -148,6 +148,43 @@ export default {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
+}
+
+@media (max-width: 576px) {
+    #join-group-content {
+        width: 85%;
+        margin-top: 40%;
+    }
+    .group-icon {
+        width: 95%;
+        height: 20vw;
+        flex-direction: row;
+        justify-content: flex-start;
+
+        box-shadow: 1px 0px 8px 3px var(--shadow-color);
+        -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);
+        -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);
+        border: #ffa88e solid 4px;
+
+        -webkit-tap-highlight-color: transparent;
+    }
+    .group-card-icon {
+        order: 0;
+        width: 23%;
+        height: 80%;
+        font-size: 2rem;
+        margin: 10px;
+    }
+
+    .group-card-name {
+        order: 0;
+        font-size: 1.3rem;
+        margin-top: 0;
+        margin-left: 0.5rem;
+    }
+    .btn {
+        width: 60%;
+    }
 }
 </style>
