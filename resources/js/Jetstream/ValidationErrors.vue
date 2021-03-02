@@ -30,6 +30,12 @@
     }
 </script>
 <style scoped>
+
+::selection {
+    background-color: var(--secondary);
+    color: white;
+}
+
 #error {
     position: fixed;
     bottom: 5%;
