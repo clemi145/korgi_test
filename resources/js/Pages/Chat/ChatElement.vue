@@ -1,19 +1,24 @@
 <template>
-  <div class="chat-element" :id="message.timetoken">
-    <dialog-window :bus="messageReplyBus" title="Antworten" @submit="publishMessageReply">
-      <dialog-content-message-reply :bus="messageReplyBus"/>
-    </dialog-window>
+    <Transition name="fade-up">
+        <div class="chat-element" :class="{own: isOwn}" :id="message.timetoken" v-if="showMessage">
+            <dialog-window :bus="messageReplyBus" title="Antworten" @submit="publishMessageReply">
+                <dialog-content-message-reply :bus="messageReplyBus"/>
+            </dialog-window>
 
-    <message v-if="message.message.messageType === 'message' && message.message.chat === 'allgemein'"
-             :message="message" v-on:open="messageReplyBus.$emit('open')"/>
-    <important-message v-if="message.message.messageType === 'importantMessage'" :message="message"/>
-    <less-important-message v-if="message.message.messageType === 'message' && message.message.chat === 'wichtig'"
-                            :message="message"/>
-    <file v-if="message.message.messageType === 'file'" :group="group" :message="message" v-on:open="messageReplyBus.$emit('open')"/>
-    <event-announcement v-if="message.message.messageType === 'eventAnnouncement'" :message="message"/>
-    <poll v-if="message.message.messageType === 'poll'" :message="message" :group="group"/>
-    <message-reply v-if="message.message.messageType === 'reply'" :message="message" v-on:open="messageReplyBus.$emit('open')"></message-reply>
-  </div>
+            <message v-if="message.message.messageType === 'message' && message.message.chat === 'allgemein'"
+                     :message="message" v-on:open="messageReplyBus.$emit('open')"/>
+            <important-message v-if="message.message.messageType === 'importantMessage'" :message="message"/>
+            <less-important-message
+                v-if="message.message.messageType === 'message' && message.message.chat === 'wichtig'"
+                :message="message"/>
+            <file v-if="message.message.messageType === 'file'" :group="group" :message="message"
+                  v-on:open="messageReplyBus.$emit('open')"/>
+            <event-announcement v-if="message.message.messageType === 'eventAnnouncement'" :message="message"/>
+            <poll v-if="message.message.messageType === 'poll'" :message="message" :group="group"/>
+            <message-reply v-if="message.message.messageType === 'reply'" :message="message"
+                           v-on:open="messageReplyBus.$emit('open')"></message-reply>
+        </div>
+    </Transition>
 </template>
 
 <script>
@@ -29,48 +34,87 @@ import Vue from "vue";
 import MessageReply from "@/Pages/Chat/ChatElements/MessageReply";
 
 export default {
-  name: "ChatElement",
-  components: {
-    MessageReply,
-    DialogContentMessageReply,
-    DialogWindow, Poll, ImportantMessage, LessImportantMessage, EventAnnouncement, File, Message},
-  props: {
-    message: Object,
-    group: Object
-  },
-  data() {
-    return {
-      messageReplyBus: new Vue()
-    };
-  },
-  methods: {
-    publishMessageReply(content) {
-      this.$store.commit('publishReply', {
-        message: content.text,
-        channel: this.message.channel,
-        chat: this.message.message.chat,
-        group: this.message.message.group,
-        messageTimetoken: this.message.timetoken
-      });
-
-      this.$inertia.reload(route("group.show", { url: this.group.url }));
-
-      let messagesElement = document.getElementById('messages');
-      messagesElement.scrollTo(0, messagesElement.scrollHeight);
+    name: "ChatElement",
+    components: {
+        MessageReply,
+        DialogContentMessageReply,
+        DialogWindow, Poll, ImportantMessage, LessImportantMessage, EventAnnouncement, File, Message
     },
-  }
+    props: {
+        message: Object,
+        group: Object
+    },
+    computed: {
+        isOwn() {
+            return this.message.publisher === this.$store.state.pubnub.getUUID()
+        },
+    },
+    data() {
+        return {
+            messageReplyBus: new Vue(),
+            playAnimation: false,
+            showMessage: true
+        };
+    },
+    created() {
+        if (!this.message.notNew) {
+            this.message.notNew = true;
+            this.playAnimation = true;
+            this.showMessage = false;
+
+            this.$store.state.methods.saveMessagesToLocalStorage(this.message.message.group, this.message.message.chat, this.message.channel)
+        }
+    },
+    mounted() {
+        if (this.playAnimation) {
+            this.showMessage = true;
+        }
+    },
+    methods: {
+        publishMessageReply(content) {
+            this.$store.commit('publishReply', {
+                message: content.text,
+                channel: this.message.channel,
+                chat: this.message.message.chat,
+                group: this.message.message.group,
+                messageTimetoken: this.message.timetoken
+            });
+
+            this.$inertia.reload(route("group.show", {url: this.group.url}));
+
+            let messagesElement = document.getElementById('messages');
+            messagesElement.scrollTo(0, messagesElement.scrollHeight);
+        },
+    }
 }
 </script>
 
 <style scoped>
 .chat-element {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  padding-left: 10vh;
-  padding-right: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    padding-left: 10vh;
+    padding-right: 10vh;
+}
+
+.fade-up-enter-active,
+.fade-up-leave-active {
+    transition: all .5s ease;
+}
+
+.fade-up-enter, .fade-up-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+    transform: translateX(-50%);
+    opacity: 0;
+}
+
+.own.fade-up-enter, .fade-up-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+    transform: translateX(50%);
+    opacity: 0;
 }
 
 @media (max-width: 1200px) {
@@ -81,11 +125,11 @@ export default {
 }
 
 @media (max-width: 576px) {
-  .chat-element {
-    padding-left: 4%;
-    padding-right: 2%;
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
+    .chat-element {
+        padding-left: 4%;
+        padding-right: 2%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
 }
 </style>

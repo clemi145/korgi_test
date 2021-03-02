@@ -187,22 +187,25 @@ export default {
                 );
                 if (scrollPercentage >= 100 || isNaN(scrollPercentage)) {
                     setTimeout(() => {
-                        messagesElement.scrollTop = messagesElement.scrollHeight;
-                    }, 1);
+                        this.scrollToBottom();
+                    }, 10);
                 }
+
             },
             deep: true,
         },
     },
     mounted() {
-        setTimeout(() => {
-            this.scrollToBottom();
-        }, 1);
+            this.jumpToBottom();
     },
     methods: {
-        scrollToBottom() {
+        jumpToBottom() {
             let messagesElement = document.getElementById("messages");
             messagesElement.scrollTo(0, messagesElement.scrollHeight);
+        },
+        scrollToBottom() {
+            let messagesElement = document.getElementById("messages");
+            messagesElement.scrollTo({ top: messagesElement.scrollHeight, left: 0, behavior: "smooth" });
         },
         publishMessage() {
             if (this.message.length) {
@@ -216,7 +219,6 @@ export default {
                 this.$inertia.reload(route("group.show", {url: this.group.url}));
 
                 this.message = "";
-                this.scrollToBottom();
             }
         },
         publishImportantMessage(content) {
@@ -229,8 +231,7 @@ export default {
             });
 
             this.$inertia.reload(route("group.show", {url: this.group.url}));
-
-            this.scrollToBottom();
+            this.jumpToBottom();
         },
         publishPoll(content) {
             this.$store.commit("publishPoll", {
@@ -243,8 +244,6 @@ export default {
             });
 
             this.$inertia.reload(route("group.show", {url: this.group.url}));
-
-            this.scrollToBottom();
         },
         publishFile(content) {
             // TODO Upload File
@@ -274,7 +273,6 @@ export default {
 
             this.$inertia.reload(route("group.show", {url: this.group.url}));
 
-            this.scrollToBottom();
         },
         publishEventAnnouncement(eventAnnouncement) {
             // TODO add event to group in database
@@ -287,8 +285,6 @@ export default {
             });
 
             this.$inertia.reload(route("group.show", {url: this.group.url}));
-
-            this.scrollToBottom();
         },
         hasAccess() {
             if (this.chat.url === "wichtig") {
@@ -323,6 +319,7 @@ export default {
     flex-grow: 1;
     padding: 2vh;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #messages::-webkit-scrollbar {

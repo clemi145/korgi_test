@@ -4,10 +4,9 @@
             <div class="group-card-icon" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
             <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
             <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
-            <!-- Nur mal ein Versuch, denk nicht, dass wir das so machen können aber idk -->
-            <!--transition name="fade">
+            <transition name="fade">
                 <context-menu v-if="showMenu"/>
-            </transition-->
+            </transition>
         </div>
     </Transition>
 
