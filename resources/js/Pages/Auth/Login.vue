@@ -116,21 +116,6 @@ export default {
     color: white;
 }
 
-#error {
-    position: fixed;
-    bottom: 5%;
-    right: 5%;
-    color: #FFFFFF;
-    background-color: var(--warn);
-    border-radius: 1rem;
-    padding: 1%;
-    font-weight: 600;
-
-    box-shadow: 1px 0px 10px 3px var(--shadow-color);
-    -webkit-box-shadow: 1px 0px 10px 3px var(--shadow-color);
-    -moz-box-shadow: 1px 0px 10px 3px var(--shadow-color);
-}
-
 #login-container {
     font-family: "Montserrat", sans-serif;
     display: flex;
