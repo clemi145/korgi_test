@@ -60,7 +60,7 @@
                         :group="group"
                         :chat="chats['allgemein']"
                         :hasAdminPermissions="group.hasAdminPermissions"
-                        v-if="type==='allgemein'"
+                        v-if="typeDelayed==='allgemein'"
                     />
                 </transition>
 
@@ -69,7 +69,7 @@
                         :group="group"
                         :chat="chats['wichtig']"
                         :hasAdminPermissions="group.hasAdminPermissions"
-                        v-if="type==='wichtig'"
+                        v-if="typeDelayed==='wichtig'"
                     />
                 </transition>
             </div>
@@ -105,6 +105,7 @@ export default {
     data() {
         return {
             type: "allgemein",
+            typeDelayed: "allgemein",
             bus: new Vue(),
             chats: this.group.channels
         };
@@ -127,17 +128,19 @@ export default {
         },
         setTypeTrue() {
             if (this.type !== "allgemein") {
-                this.type = undefined;
+                this.typeDelayed = undefined;
+                this.type = "allgemein"
                 setTimeout(() => {
-                    this.type = "allgemein";
+                    this.typeDelayed = "allgemein";
                 }, 200)
             }
         },
         setTypeFalse() {
             if (this.type !== "wichtig") {
-                this.type = undefined;
+                this.typeDelayed = undefined;
+                this.type="wichtig"
                 setTimeout(() => {
-                    this.type = "wichtig";
+                    this.typeDelayed = "wichtig";
                 }, 200)
             }
         }
