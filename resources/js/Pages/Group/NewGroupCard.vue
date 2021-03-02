@@ -1,13 +1,33 @@
 <template>
-    <div class="new-group-card" @click="$emit('click')">
-        <i class="fas fa-plus new-group-card-icon"></i>
-        <h1 class="new-group-card-text">Neue Gruppe erstellen</h1>
-    </div>
+    <Transition name="fade-up">
+        <div v-if="mounted" class="new-group-card" @click="$emit('click')">
+            <i class="fas fa-plus new-group-card-icon"></i>
+            <h1 class="new-group-card-text">Neue Gruppe erstellen</h1>
+        </div>
+    </Transition>
 </template>
 
 <script>
+import Vue from "vue";
+
 export default {
-    name: "NewGroupCard"
+    name: "NewGroupCard",
+    props: {
+        delay: Number
+    },
+    data() {
+        return {
+            mounted: false
+        }
+    },
+    mounted() {
+        console.log(this.delay)
+
+        setTimeout(() => {
+            this.mounted = true
+        }, this.delay)
+
+    },
 }
 </script>
 
@@ -55,14 +75,27 @@ h1 {
     text-align: center;
 }
 
+.fade-up-enter-active,
+.fade-up-leave-active {
+    transition: all .5s ease;
+}
+
+.fade-up-enter, .fade-up-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+    transform: translateY(50%);
+    opacity: 0;
+}
+
 @media (max-width: 1200px) {
     .new-group-card {
         width: 18vw;
         height: 18vw;
     }
+
     .new-group-card-text {
         font-size: 1rem;
     }
+
     .new-group-card-icon {
         font-size: 2.5rem;
     }
@@ -80,6 +113,7 @@ h1 {
         -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);
         -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);
     }
+
     .new-group-card-icon {
         width: 17%;
         height: 80%;
