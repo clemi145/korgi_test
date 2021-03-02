@@ -1,31 +1,42 @@
 <template>
-    <div class="group-card no-select" @mouseleave="showMenu=false" @click.self="linkToGroup">
-        <div class="group-card-icon" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
-        <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
-        <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
-        <!-- Nur mal ein Versuch, denk nicht, dass wir das so machen können aber idk -->
-        <transition name="fade">
-            <context-menu v-if="showMenu"/>
-        </transition>
-    </div>
+    <Transition name="fade-up">
+        <div v-if="mounted" class="group-card no-select" @mouseleave="showMenu=false" @click.self="linkToGroup">
+            <div class="group-card-icon" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
+            <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
+            <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
+            <!-- Nur mal ein Versuch, denk nicht, dass wir das so machen können aber idk -->
+            <!--transition name="fade">
+                <context-menu v-if="showMenu"/>
+            </transition-->
+        </div>
+    </Transition>
+
 </template>
 
 <script>
 import axios from "axios";
 import Vue from "vue";
-import ContextMenu from "@/Pages/ContextMenu";
+import ContextMenu from "@/Pages/Group/ContextMenu";
 
 export default {
     name: "GroupCard",
     components: {ContextMenu},
     props: {
         group: Object,
+        delay: Number
     },
     data() {
         return {
             bus: new Vue(),
             showMenu: false,
+            mounted: false
         }
+    },
+    mounted() {
+        setTimeout(() => {
+            this.mounted = true
+        }, this.delay)
+
     },
     methods: {
         linkToGroup() {
@@ -135,6 +146,17 @@ export default {
 
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
 {
+    opacity: 0;
+}
+
+.fade-up-enter-active,
+.fade-up-leave-active {
+    transition: all .5s ease;
+}
+
+.fade-up-enter, .fade-up-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+    transform: translateY(50%);
     opacity: 0;
 }
 
