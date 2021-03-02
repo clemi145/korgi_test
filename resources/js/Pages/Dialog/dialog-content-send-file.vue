@@ -1,7 +1,11 @@
 <template>
     <div class="dialog-content">
         <input class="input send-file-message" type="text" placeholder="Nachricht" v-model="message" @input="saveContent">
-        <input id="send-file-input" type="file" @change="saveContent">
+        <label for="send-file-input" id="send-file-input-container">
+            <input id="send-file-input" type="file" @change="saveContent">
+            <i class="fas fa-file"></i>
+            <span class="text">Klicken um Datei hochzuladen</span>
+        </label>
     </div>
 </template>
 
@@ -34,7 +38,17 @@ export default {
     width: 100%;
 }
 
-#send-file-input {
+input[type="file"] {
+    height: 100%;
+    opacity: 0;
+    z-index: 102;
+}
+
+input[type="file"]:focus {
+    outline: 0;
+}
+
+#send-file-input-container {
     border-radius: 2rem;
     background-color: lightgray;
     border: gray dashed 5px;
@@ -47,7 +61,20 @@ export default {
     align-items: center;
 }
 
-#send-file-input:focus {
+i {
+    position: absolute;
+    font-size: 6rem;
+    z-index: 101;
+    color: var(--dark-grey);
+}
+
+.text {
+    z-index: 101;
+    font-weight: 700;
+    color: var(--dark-grey);
+}
+
+#send-file-input-container:hover {
     outline: 0;
     border-color: var(--primary);
 }

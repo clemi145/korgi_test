@@ -173,7 +173,7 @@ export default {
     flex-direction: column;
     align-content: flex-start;
     justify-content: space-between;
-    z-index: 120;
+    z-index: 100;
 
     width: 20vw;
     height: 100%;
