@@ -1,10 +1,12 @@
 <template>
-    <div class="group-card no-select" @mouseleave="hideMenu" @click.self="linkToGroup">
+    <div class="group-card no-select" @mouseleave="showMenu=false" @click.self="linkToGroup">
         <div class="group-card-icon" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
         <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
-        <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu"></i>
+        <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
         <!-- Nur mal ein Versuch, denk nicht, dass wir das so machen können aber idk -->
-        <context-menu :bus="bus"/>
+        <transition name="fade">
+            <context-menu v-if="showMenu"/>
+        </transition>
     </div>
 </template>
 
@@ -22,6 +24,7 @@ export default {
     data() {
         return {
             bus: new Vue(),
+            showMenu: false,
         }
     },
     methods: {
@@ -58,12 +61,6 @@ export default {
                 seconds
             );
         },
-        showMenu() {
-            this.bus.$emit("showMenu");
-        },
-        hideMenu() {
-            this.bus.$emit("hideMenu");
-        }
     },
 };
 </script>
@@ -129,6 +126,16 @@ export default {
     margin-top: 0.8vh;
     margin-right: 1.5vh;
     padding: 2%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.15s ease;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+    opacity: 0;
 }
 
 @media (max-width: 1200px) {

@@ -22,22 +22,22 @@ export default {
             active: false
         }
     },
-    created() {
-        this.bus.$on("showMenu", () => {
-            this.toggleActive();
-        });
-        this.bus.$on("hideMenu", () => {
-            this.hideMenu();
-        });
-    },
-    methods: {
-        toggleActive() {
-            this.active = !this.active;
-        },
-        hideMenu() {
-            this.active= false;
-        }
-    }
+    // created() {
+    //     this.bus.$on("showMenu", () => {
+    //         this.toggleActive();
+    //     });
+    //     this.bus.$on("hideMenu", () => {
+    //         this.hideMenu();
+    //     });
+    // },
+    // methods: {
+    //     toggleActive() {
+    //         this.active = !this.active;
+    //     },
+    //     hideMenu() {
+    //         this.active= false;
+    //     }
+    // }
 }
 </script>
 
@@ -47,16 +47,12 @@ export default {
     box-shadow: 1px 0px 10px 3px var(--shadow-color);
     -webkit-box-shadow: 1px 0px 10px 3px var(--shadow-color);
     -moz-box-shadow: 1px 0px 10px 3px var(--shadow-color);
-    display: none;
+    display: flex;
     flex-direction: column;
     position: absolute;
     border-radius: 0.5rem;
     right: 7%;
     top: 15%;
-}
-
-#context-menu.active {
-    display: flex;
 }
 
 .option {

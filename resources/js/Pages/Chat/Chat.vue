@@ -135,10 +135,13 @@ import ChatElement from "@/Pages/Chat/ChatElement";
 import Navbar from "@/Pages/Navigation/Navbar";
 import DialogContentPoll from "@/Pages/Dialog/dialog-content-poll";
 import DialogContentImportantMessage from "@/Pages/Dialog/dialog-content-important-message";
+import axios from "axios";
+import Files from "@/Pages/Group/Files";
 
 export default {
     name: "Chat",
     components: {
+        Files,
         DialogContentImportantMessage,
         DialogContentPoll,
         ChatElement,
@@ -245,6 +248,21 @@ export default {
         },
         publishFile(content) {
             // TODO Upload File
+
+            const data = new FormData();
+            data.append("file", content.file);
+            data.append("groupId", this.group.id);
+            axios
+                .post(route("group.files.store"), data, {
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                })
+                .then((res) => {
+                    console.log(res)
+
+
+                });
             this.$store.commit("publishFile", {
                 message: content.message,
                 channel: this.chat.uuid,
@@ -252,7 +270,6 @@ export default {
                 group: this.group.url,
                 fileName: content.file.name,
                 fileType: content.file.type,
-                fileUrl: "",
             });
 
             this.$inertia.reload(route("group.show", {url: this.group.url}));
@@ -292,7 +309,6 @@ export default {
 <style scoped>
 #chat {
     background-color: var(--background-color-alternate);
-    flex-grow: 1;
     width: 100%;
     height: 100%;
     display: flex;

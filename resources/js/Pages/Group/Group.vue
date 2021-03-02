@@ -25,7 +25,7 @@
                             class="headline"
                         >
                             Users
-                        </inertia-link>
+                        </inertia-link-->
 
                         <inertia-link
                             :href="route('group.files.show', { url: this.group.url })"
@@ -33,7 +33,7 @@
                             class="headline"
                         >
                             Files
-                        </inertia-link-->
+                        </inertia-link>
                         <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
                     </div>
                     <div id="chat-selection">
@@ -41,7 +41,7 @@
                             as="button"
                             class="chat-link left"
                             :class="generalIsCurrentChat()"
-                            v-on:click="type = false"
+                            v-on:click="setTypeTrue"
                         >
                             Allgemein
                         </button>
@@ -49,24 +49,29 @@
                         <button
                             class="chat-link right"
                             :class="importantIsCurrentChat()"
-                            v-on:click="type = true"
+                            v-on:click="setTypeFalse"
                         >
                             Wichtig
                         </button>
                     </div>
                 </div>
-                <Chat
-                    :group="group"
-                    :chat="chats['allgemein']"
-                    :hasAdminPermissions="group.hasAdminPermissions"
-                    v-if="!type"
-                />
-                <Chat
-                    :group="group"
-                    :chat="chats['wichtig']"
-                    :hasAdminPermissions="group.hasAdminPermissions"
-                    v-else
-                />
+                <transition name="slide-left">
+                    <Chat
+                        :group="group"
+                        :chat="chats['allgemein']"
+                        :hasAdminPermissions="group.hasAdminPermissions"
+                        v-if="type==='allgemein'"
+                    />
+                </transition>
+
+                <transition name="slide-right">
+                    <Chat
+                        :group="group"
+                        :chat="chats['wichtig']"
+                        :hasAdminPermissions="group.hasAdminPermissions"
+                        v-if="type==='wichtig'"
+                    />
+                </transition>
             </div>
             <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
         </div>
@@ -99,7 +104,7 @@ export default {
     },
     data() {
         return {
-            type: false,
+            type: "allgemein",
             bus: new Vue(),
             chats: this.group.channels
         };
@@ -109,18 +114,33 @@ export default {
             this.bus.$emit("toggleGroupInfo");
         },
         generalIsCurrentChat() {
-            if (!this.type) {
+            if (this.type === "allgemein") {
                 //document.URL.includes("allgemein")) {
                 return "chat-link-current";
             }
         },
         importantIsCurrentChat() {
-            if (this.type) {
+            if (this.type === "wichtig") {
                 //document.URL.includes("wichtig")) {
                 return "chat-link-current";
             }
         },
-
+        setTypeTrue() {
+            if (this.type !== "allgemein") {
+                this.type = undefined;
+                setTimeout(() => {
+                    this.type = "allgemein";
+                }, 200)
+            }
+        },
+        setTypeFalse() {
+            if (this.type !== "wichtig") {
+                this.type = undefined;
+                setTimeout(() => {
+                    this.type = "wichtig";
+                }, 200)
+            }
+        }
     },
     created() {
         Vue.set(this.chats['wichtig'], "uuid", this.chats['wichtig'].uuid.uuid)
@@ -221,6 +241,27 @@ button:focus {
 .chat-link-current.right::after {
     width: 100%;
     margin-left: 0;
+}
+
+.slide-left-enter-active,
+.slide-left-leave-active {
+    transition: all 0.2s ease;
+
+}
+
+.slide-left-enter, .slide-left-leave-to {
+    transform: translateX(-25%);
+    opacity: 0;
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active {
+    transition: all 0.2s ease;
+}
+
+.slide-right-enter, .slide-right-leave-to {
+    transform: translateX(25%);
+    opacity: 0;
 }
 
 @media (max-width: 576px) {

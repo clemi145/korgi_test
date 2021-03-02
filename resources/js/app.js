@@ -216,7 +216,6 @@ const store = new Vuex.Store({
                     user: state.user,
                     group: payload.group,
                     chat: payload.chat,
-                    url: payload.url,
                     messageType: "file"
                 }
             });

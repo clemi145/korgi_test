@@ -2,8 +2,8 @@
     <div id="join-link-dialog">
         <img id="qrCode" :alt="'QR-Code für: ' + link" :src="qrCodeDataUrl">
         <div id="buttons">
-            <div class="btn secondary-background" @click="printQrCode"><p>QR-Code drucken</p><i class="fas fa-print"></i></div>
-            <div class="btn secondary-background" @click="copyLink"><p>Link kopieren</p><i class="fas fa-clipboard"></i></div>
+            <div class="btn secondary-background" @click="printQrCode"><p>Drucken</p><i class="fas fa-print"></i></div>
+            <div class="btn secondary-background" @click="copyLink"><p>Kopieren</p><i class="fas fa-clipboard"></i></div>
         </div>
     </div>
 </template>
@@ -28,8 +28,8 @@ export default {
             quality: 1,
             margin: 0,
             color: {
-                dark:"#000000",
-                light:"#FFFFFF"
+                dark: this.$store.getters.getUser.settings.darkmode ? "#FFFFFF" : "#2c2f33",
+                light: this.$store.getters.getUser.settings.darkmode ? "#505050" : "#FFFFFF"
             }
         })
             .then(url => {

@@ -9,7 +9,7 @@
     <important-message v-if="message.message.messageType === 'importantMessage'" :message="message"/>
     <less-important-message v-if="message.message.messageType === 'message' && message.message.chat === 'wichtig'"
                             :message="message"/>
-    <file v-if="message.message.messageType === 'file'" :message="message" v-on:open="messageReplyBus.$emit('open')"/>
+    <file v-if="message.message.messageType === 'file'" :group="group" :message="message" v-on:open="messageReplyBus.$emit('open')"/>
     <event-announcement v-if="message.message.messageType === 'eventAnnouncement'" :message="message"/>
     <poll v-if="message.message.messageType === 'poll'" :message="message" :group="group"/>
     <message-reply v-if="message.message.messageType === 'reply'" :message="message" v-on:open="messageReplyBus.$emit('open')"></message-reply>
