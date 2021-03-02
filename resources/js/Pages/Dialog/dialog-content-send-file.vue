@@ -1,10 +1,14 @@
 <template>
     <div class="dialog-content">
-        <input class="input send-file-message" type="text" placeholder="Nachricht" v-model="message" @input="saveContent">
+        <input class="input send-file-message" type="text" placeholder="Nachricht" v-model="message"
+               @input="saveContent">
         <label for="send-file-input" id="send-file-input-container">
             <input id="send-file-input" type="file" @change="saveContent">
-            <i class="fas fa-file"></i>
-            <span class="text">Klicken um Datei hochzuladen</span>
+            <div id="container">
+                <i class="fas fa-file"></i>
+                <span class="text" v-if="!file">Datei hochladen</span>
+                <span class="text" v-if="file">{{ file.name }}</span>
+            </div>
         </label>
     </div>
 </template>
@@ -42,6 +46,8 @@ input[type="file"] {
     height: 100%;
     opacity: 0;
     z-index: 102;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 input[type="file"]:focus {
@@ -61,17 +67,28 @@ input[type="file"]:focus {
     align-items: center;
 }
 
-i {
+#container {
     position: absolute;
-    font-size: 6rem;
     z-index: 101;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+i {
+    font-size: 6rem;
     color: var(--dark-grey);
+    margin-bottom: 2vh;
+    margin-right: 0;
 }
 
 .text {
-    z-index: 101;
     font-weight: 700;
     color: var(--dark-grey);
+    word-break: break-word;
+    text-align: center;
 }
 
 #send-file-input-container:hover {
@@ -83,4 +100,23 @@ i {
     width: 100%;
     margin-bottom: 10%;
 }
+
+@media (max-width: 576px) {
+    #send-file-input-container {
+        height: 16vh;
+    }
+
+    i {
+        font-size: 3rem;
+        left: 14%;
+        margin-bottom: 0;
+        margin-right: 0.3rem;
+    }
+
+    #container {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+
 </style>

@@ -21,11 +21,11 @@
         </jet-responsive-nav-link>
       </form>
 
-      <form method="POST" @submit.prevent="deleteAccount">
-        <jet-responsive-nav-link class="link" as="button">
-          Konto löschen
-        </jet-responsive-nav-link>
-      </form>
+<!--      <form method="POST" @submit.prevent="deleteAccount">-->
+<!--        <jet-responsive-nav-link class="link" as="button">-->
+<!--          Konto löschen-->
+<!--        </jet-responsive-nav-link>-->
+<!--      </form>-->
     </div>
     <div id="center">
       <div @click="toggleMenu" v-bind:class="{ active: isActive }">
