@@ -1,40 +1,42 @@
-<template>
-
-</template>
+<template></template>
 
 <script>
-import {Line} from "vue-chart";
+import { Line } from "vue-chart";
 export default {
-    name: "Statistics2",
-    extends:Line,
-    props:{
-        label:{
-            type: String
-        },
-        chartData:{
-            type: Array
-        },
-        options:{
-            type:Object
-        }
+  name: "LineChart",
+  extends: Line,
+  props: {
+    label: {
+      type: String,
     },
-    mounted() {
-        const dates =this.chartData.map(d=>d.date).reverse();
-        const totals=this.chartData.map(d=>d.total).reverse();
-        this.renderChart({
-                labels:dates,
-                datasets:[{
-                    label:this.label,
-                    data:totals,
-
-                }],
-            },
-            this.options);
-    }
-
-}
+    chartData: {
+      type: Array,
+    },
+    options: {
+      type: Object,
+    },
+  },
+  methods: {
+      renderChart() {}
+  },
+  mounted() {
+    const dates = this.chartData.map((d) => d.date).reverse();
+    const totals = this.chartData.map((d) => d.total).reverse();
+    this.renderChart(
+      {
+        labels: dates,
+        datasets: [
+          {
+            label: this.label,
+            data: totals,
+          },
+        ],
+      },
+      this.options
+    );
+  },
+};
 </script>
 
 <style scoped>
-
 </style>
