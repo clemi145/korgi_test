@@ -27,7 +27,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "chart.js": "^2.9.4",
+        "moment": "^2.29.1",
         "pubnub": "^4.29.11",
+        "vue-chart.js": "^0.2.0",
         "vuex": "^3.6.2"
     }
 }
