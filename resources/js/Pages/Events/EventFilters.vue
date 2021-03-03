@@ -89,7 +89,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 700;
     margin-bottom: 4vh;
 }
 
@@ -101,7 +101,7 @@ export default {
 }
 
 .section-header {
-    font-weight: 900;
+    font-weight: 600;
     margin-top: 2.5vh;
     margin-bottom: 1.2vh;
 }

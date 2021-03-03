@@ -37,6 +37,7 @@ export default {
 #message-reply-text-input {
     height: 20vh;
     overflow: auto;
+    cursor: auto;
 }
 
 #message-reply-text-input::-webkit-scrollbar {
@@ -46,11 +47,11 @@ export default {
 
 #message-reply-text-input::-webkit-scrollbar-track {
     background: transparent;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
 }
 
 #message-reply-text-input::-webkit-scrollbar-thumb {
     background-color: #FFA88E;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
 }
 </style>

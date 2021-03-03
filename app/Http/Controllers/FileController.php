@@ -31,10 +31,13 @@ class FileController extends Controller
             Storage::makeDirectory($dirName);
         }
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
-            $filename = Storage::disk("ftp")->put($dirName, $request->file('file'));
+            $filename = Storage::putFileAs($dirName, $request->file('file'), $request->file('file')->getClientOriginalName());
 
             if ($filename) {
-                FileVault::disk("ftp")->encrypt($filename);
+                FileVault::disk("ftp")->encrypt(
+                    $dirName . "/" . $request->file('file')->getClientOriginalName(),
+                    $dirName . "/" . $request->file('file')->getClientOriginalName() . ".enc"
+                );
             }
         }
 

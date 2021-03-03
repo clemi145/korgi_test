@@ -3,7 +3,7 @@
         <inertia-link id="logo" :href="route('home')">
             <img src="/images/korgi_yellow_only.svg" alt="Logo">
         </inertia-link>
-        <!--        <jet-validation-errors class="mb-4"/>-->
+        <jet-validation-errors id="error"/>
 
         <form @submit.prevent="submit" id="registration-form">
             <h2 id="greeting">Registrierung</h2>

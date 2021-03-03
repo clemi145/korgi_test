@@ -216,7 +216,6 @@ const store = new Vuex.Store({
                     user: state.user,
                     group: payload.group,
                     chat: payload.chat,
-                    url: payload.url,
                     messageType: "file"
                 }
             });
@@ -284,6 +283,8 @@ const store = new Vuex.Store({
         addGroup(state, payload) {
             axios.post("/gruppen", {
                 name: payload.name
+            }).then(() => {
+
             });
         }
     },

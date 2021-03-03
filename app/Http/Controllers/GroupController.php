@@ -19,17 +19,15 @@ class GroupController extends Controller
 
     function index(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
 
         $teams = $user->allTeams()->where("personal_team", 0);
 
         $groups = $this->formatGroupsEloquentCollection($user, $teams);
-        $chats = $this->getChatsFromEloquentCollection($teams);
 
-        return Inertia::render("App", [
+        return Inertia::render("Group/GroupView", [
             "user" => $user,
             "groups" => $groups,
-            "chats" => $chats
         ]);
     }
 
@@ -45,7 +43,7 @@ class GroupController extends Controller
             "personal_team" => false,
             "user_id" => $user->id,
             //"url" => route("group.show", [
-                "url" => $this->urlFormat($request->input("name")),
+            "url" => $this->urlFormat($request->input("name")),
             //])
             "uuid" => DB::raw('UUID()')
         ]);
@@ -58,18 +56,18 @@ class GroupController extends Controller
         $general_chat = Chat::create([
             "team_id" => $team->id,
             "type" => false,
-            "url" => route("group.show", [
-                "url" => $this->urlFormat($team->name)
-            ]),
+            // "url" => route("group.show", [
+                "url" => "allgemein",//$this->urlFormat($team->name),
+            // ]),
             "uuid" => DB::raw('UUID()')
         ]);
 
         $important_chat = Chat::create([
             "team_id" => $team->id,
             "type" => true,
-            "url" => route("group.show", [
-                "url" => $this->urlFormat($team->name)
-            ]),
+            // "url" => route("group.show", [
+                "url" => "wichtig",//$this->urlFormat($team->name),
+            // ]),
             "uuid" => DB::raw('UUID()')
         ]);
 
@@ -84,6 +82,10 @@ class GroupController extends Controller
         // route("group.show", ["url" => $url])
         $team = Team::where("url", $url)->first();
 
+        $teams = $user->allTeams()->where("personal_team", 0);
+
+        $groups = $groups = $this->formatGroupsEloquentCollection($user, $teams);
+
         // Log::info($team);
 
         if ($team == null) {
@@ -95,7 +97,8 @@ class GroupController extends Controller
                 "Group/Group",
                 [
                     "group" => $group[$team->name],
-                    "user" => User::find(Auth::user()->id)
+                    "user" => User::find(Auth::user()->id),
+                    "groups" => $groups
                     // "chats" => $group[$team->name]["channels"],
                     // "user_is_admin" => $group[$team->name]["hasAdminPermissions"]
                 ]
@@ -107,10 +110,22 @@ class GroupController extends Controller
     {
         $user = Auth::user();
         $group = Team::where("uuid", $uuid)->first();
+
+
         return Inertia::render("Group/JoinGroup", [
             "user" => $user,
-            "group" => $group,
+            "group" => $group
         ]);
+    }
+
+    function update(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        $team = Team::find($request->groupId);
+
+        if ($user->hasTeamRole($team, "admin")) {
+            $team->update(["name" => $request->groupName, "url" => $this->urlFormat($request->groupName)]);
+        } else abort(500, "Insufficient Permissions");
     }
 
     function leave(Request $request)
@@ -165,7 +180,8 @@ class GroupController extends Controller
         }
     }
 
-    function get(Request $request) {
+    function get(Request $request)
+    {
         return Team::where("name", $request->groupName)->first();
     }
 
@@ -189,6 +205,8 @@ class GroupController extends Controller
 
             // Log::info(implode(", ", $uuids));
             // Log::info($chat->uuid);
+
+            // Log::info($user->hasTeamRole($team, "admin"));
 
             array_push($groups, [
                 $this->urlFormat($team->name) => [

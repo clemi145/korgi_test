@@ -5,7 +5,7 @@
             <i class="fas fa-reply" @click="$emit('open')"></i>
         </div>
         <p class="text">{{message.message.text}}</p>
-        <div class="file-container primary-background">
+        <div class="file-container primary-background" @click="download">
             <i class="file-icon far fa-file-pdf"></i>
             <p class="text">{{message.message.fileName}}</p>
         </div>
@@ -20,10 +20,13 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "File",
     props: {
-        message: Object
+        message: Object,
+        group: Object
     },
     computed: {
         isOwn() {
@@ -35,7 +38,20 @@ export default {
             if (this.isOwn) {
                 return 'right';
             }
-        }
+        },
+        download() {
+            console.log(this.message.message.fileName);
+            console.log(this.group.id);
+            axios
+                .post(route("group.files.download"), {
+                    filename: this.message.message.filename,
+                    groupId: this.group.id,
+                })
+                .then((res) => {
+                    console.log(res);
+                    // this.$inertia.reload({ only: ["files"] });
+                });
+        },
     }
 }
 </script>

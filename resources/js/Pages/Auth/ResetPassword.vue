@@ -1,9 +1,8 @@
 <template>
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
-
+    <div id="reset-password">
+        <inertia-link id="logo" :href="route('home')">
+            <img src="/images/korgi_yellow_only.svg" alt="Logo">
+        </inertia-link>
         <jet-validation-errors class="mb-4" />
 
         <form @submit.prevent="submit">
@@ -28,7 +27,7 @@
                 </jet-button>
             </div>
         </form>
-    </jet-authentication-card>
+    </div>
 </template>
 
 <script>
@@ -74,3 +73,21 @@
         }
     }
 </script>
+<style scoped>
+#reset-password {
+    background-color: #ffa88e;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#logo {
+    width: 18vh;
+    align-self: flex-start;
+    margin-top: 4vh;
+    margin-left: 4vh;
+}
+</style>

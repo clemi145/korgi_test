@@ -1,9 +1,11 @@
 <template>
     <div class="dialog-content">
-        <input type="text" class="input"  v-model="subject" placeholder="Bezeichnung" @input="saveContent">
-        <input type="text" class="input" v-for="answerKey in Object.keys(answers)" v-model="answers[answerKey]" :placeholder="'Antwort ' + answerKey" @input="saveContent">
+        <input type="text" class="input" id="subject" v-model="subject" placeholder="Bezeichnung" @input="saveContent">
+        <div class="answer-container"><input type="text" class="input" v-for="answerKey in Object.keys(answers)"
+                                             v-model="answers[answerKey]"
+                                             :placeholder="'Antwort ' + answerKey" @input="saveContent"></div>
         <div class="btn secondary-background" @click="addAnswer">Antwort hinzufügen</div>
-        <label class="row flex-start checkbox-container">
+        <label class="checkbox-container">
             Mehrfachantworten erlauben
             <input type="checkbox" v-model="allowMultiple">
             <span class="checkbox"></span>
@@ -14,6 +16,7 @@
 <script>
 import Input from "@/Pages/Input";
 import Vue from "vue";
+
 export default {
     name: "dialog-content-poll",
     components: {Input},
@@ -45,7 +48,7 @@ export default {
             }
         },
         addAnswer() {
-            Vue.set(this.answers, Object.keys(this.answers).length+1, "");
+            Vue.set(this.answers, Object.keys(this.answers).length + 1, "");
             Vue.set(this.results, Object.keys(this.answers).length, 0);
             this.saveContent();
         }
@@ -54,5 +57,29 @@ export default {
 </script>
 
 <style scoped>
+
+#subject {
+    margin-bottom: 2rem;
+}
+
+.input {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.dialog-content {
+    width: 100%;
+}
+
+.answer-container {
+    width: 100%;
+    overflow-y: auto;
+    max-height: 12rem;
+}
+
+.checkbox-container {
+    margin-top: 2vh;
+    color: var(--font-color);
+}
 
 </style>

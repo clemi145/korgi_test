@@ -1,10 +1,10 @@
 <template>
     <div>
-        <button :class="classes" class="w-full text-left" v-if="as == 'button'">
+        <button v-if="as == 'button'">
             <slot></slot>
         </button>
 
-        <inertia-link :href="href" :class="classes" v-else>
+        <inertia-link :href="href"  v-else>
             <slot></slot>
         </inertia-link>
     </div>
@@ -23,3 +23,19 @@
         }
     }
 </script>
+
+<style scoped>
+/* Muss leider hier rein, habs ned anders hinbekommen */
+button {
+    color: white;
+    text-decoration: underline;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1vh;
+}
+
+button:focus {
+    outline: 0;
+}
+</style>

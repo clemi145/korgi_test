@@ -16,16 +16,16 @@
       </div>
       <p class="greeting">Willkommen zurück, {{ user.username }}!</p>
       <form method="POST" @submit.prevent="logout">
-        <jet-responsive-nav-link as="button">
+        <jet-responsive-nav-link class="link" as="button">
           Abmelden
         </jet-responsive-nav-link>
       </form>
 
-      <form method="POST" @submit.prevent="deleteAccount">
-        <jet-responsive-nav-link as="button">
-          Konto löschen
-        </jet-responsive-nav-link>
-      </form>
+<!--      <form method="POST" @submit.prevent="deleteAccount">-->
+<!--        <jet-responsive-nav-link class="link" as="button">-->
+<!--          Konto löschen-->
+<!--        </jet-responsive-nav-link>-->
+<!--      </form>-->
     </div>
     <div id="center">
       <div @click="toggleMenu" v-bind:class="{ active: isActive }">
@@ -173,12 +173,14 @@ export default {
     flex-direction: column;
     align-content: flex-start;
     justify-content: space-between;
-    z-index: 120;
+    z-index: 100;
 
     width: 20vw;
     height: 100%;
 
     background-color: var(--primary);
+    /*padding: 1rem;*/
+
 }
 
 .navigation-item {
@@ -190,17 +192,18 @@ export default {
     color: white;
     font-size: 1.2rem;
     font-weight: 600;
+    /*border-radius: 1rem;*/
 
-    margin-top: 1em;
-    margin-bottom: 1em;
+    /*margin-top: 1em;*/
+    /*margin-bottom: 0.5rem;*/
     background-color: #FFA88E;
     transition: 0.2s ease;
-    margin: 0;
+    /*margin: 0;*/
 }
 
 .greeting {
     font-size: 1.4rem;
-    font-weight: bold;
+    font-weight: 700;
     color: white;
     margin-top: 5%;
     margin-bottom: 5%;
@@ -219,7 +222,6 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 5%;
-    padding-right: 3%;
 }
 
 #top a {
@@ -229,6 +231,14 @@ export default {
     font-weight: bold;
     cursor: pointer;
 }
+
+/*.link {*/
+/*    color: white;*/
+/*    text-decoration: underline;*/
+/*    font-size: 1rem;*/
+/*    font-weight: 600;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .navigation-item-active {
     background-color: #ff8f6e;
@@ -245,7 +255,8 @@ export default {
     color: white;
     text-decoration: underline;
     font-size: 1.2rem;
-    font-weight: bold;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 #header {

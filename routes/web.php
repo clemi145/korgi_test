@@ -49,6 +49,8 @@ Route::group(['prefix' => 'gruppen', "middleware" => ['auth:sanctum', 'verified'
     Route::get("join/{uuid}", [GroupController::class, 'join'])->name("group.join.show");
     Route::post('join', [UserController::class, "store"])->name("group.join");
 
+    Route::post("update", [GroupController::class, "update"])->name("group.update");
+
     Route::post("leave", [GroupController::class, "leave"])->name("group.leave");
 
     Route::post("delete", [GroupController::class, "delete"])->name("group.delete");
@@ -67,20 +69,21 @@ Route::group(["prefix" => "users"], function () {
 // EVENTS
 Route::get('termine', function () {
     return Inertia::render("Events/Events", [
-        "user" => User::find(Auth::user()->id)
+        "user" => User::find(Auth::user()->id),
+        "groups"=>User::find(Auth::user()->id)->allTeams()
     ]);
 })->name('events.show');
 
 // SETTINGS
 Route::get('einstellungen', function () {
     return Inertia::render("Settings/Settings", [
-        "user" => User::find(Auth::user()->id)
+        "user" => User::find(Auth::user()->id),
+        "groups"=>User::find(Auth::user()->id)->allTeams()
     ]);
 })->name('settings.show');
 
-Route::inertia('offline', "Welcome")->name('offline');
-
-Route::inertia('offline', "Welcome")->name('offline');
+Route::inertia('offline', "Offline")->name('offline');
+Route::inertia('stats', "Statistics")->name('stats');
 
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
