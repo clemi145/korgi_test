@@ -216,8 +216,6 @@ export default {
                     group: this.group.url,
                 });
 
-                this.$inertia.reload(route("group.show", {url: this.group.url}));
-
                 this.message = "";
             }
         },
@@ -230,7 +228,6 @@ export default {
                 group: this.group.url,
             });
 
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
             this.jumpToBottom();
         },
         publishPoll(content) {
@@ -242,8 +239,6 @@ export default {
                 allowMultiple: content.allowMultiple,
                 answers: content.answers,
             });
-
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
         },
         publishFile(content) {
             // TODO Upload File
@@ -271,8 +266,6 @@ export default {
                 fileType: content.file.type,
             });
 
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
-
         },
         publishEventAnnouncement(eventAnnouncement) {
             // TODO add event to group in database
@@ -283,8 +276,6 @@ export default {
                 group: this.group.url,
                 date: eventAnnouncement.date,
             });
-
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
         },
         hasAccess() {
             if (this.chat.url === "wichtig") {
