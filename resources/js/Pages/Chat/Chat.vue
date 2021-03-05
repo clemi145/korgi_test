@@ -115,7 +115,7 @@
             />
             <div
                 class="round-btn secondary-background"
-                :class="hasAccess() && message.length ? '' : 'disabled'"
+                :class="hasAccess() && message.replaceAll(' ', '').length ? '' : 'disabled'"
                 v-on:click="publishMessage"
             >
                 <i class="fas fa-paper-plane"/>
@@ -208,7 +208,7 @@ export default {
             messagesElement.scrollTo({ top: messagesElement.scrollHeight, left: 0, behavior: "smooth" });
         },
         publishMessage() {
-            if (this.message.length) {
+            if (this.message.replaceAll(' ', '').length) {
                 this.$store.commit("publishMessage", {
                     message: this.message,
                     channel: this.chat.uuid,
