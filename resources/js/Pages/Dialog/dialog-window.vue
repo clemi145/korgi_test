@@ -50,7 +50,13 @@ export default {
             this.isOpen = false;
         },
         validate(content) {
-            if (content && !(Object.values(content).includes("") || Object.values(content).includes(undefined)) ) {
+            if (
+                content &&
+                !(
+                    Object.values(content).includes(undefined) ||
+                    Object.values(content).includes("")
+                )
+            ) {
                 this.isValid = true;
                 this.content = content;
             } else {

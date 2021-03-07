@@ -7,7 +7,7 @@
         </div>
 
         <form @submit.prevent="submit" id="login-form">
-            <h2 id="greeting">Wilkommen!</h2>
+            <h2 id="greeting">Willkommen!</h2>
             <div>
                 <jet-input
                     id="email"

@@ -49,6 +49,8 @@ export default {
                     this.$store.commit("addMessage", {
                         message: event,
                     });
+
+                    this.$inertia.reload(route("group.show", {url: event.message.group}));
                 },
                 messageAction: (event) => {
                     let value = JSON.parse(event.data.value);
@@ -67,6 +69,7 @@ export default {
                             });
                             break;
                     }
+                    this.$inertia.reload(route("group.show", {url: value.group}));
                 },
             });
         },

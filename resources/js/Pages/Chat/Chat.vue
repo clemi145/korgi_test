@@ -115,7 +115,7 @@
             />
             <div
                 class="round-btn secondary-background"
-                :class="hasAccess() && message.length ? '' : 'disabled'"
+                :class="hasAccess() && message.replaceAll(' ', '').length ? '' : 'disabled'"
                 v-on:click="publishMessage"
             >
                 <i class="fas fa-paper-plane"/>
@@ -208,15 +208,13 @@ export default {
             messagesElement.scrollTo({ top: messagesElement.scrollHeight, left: 0, behavior: "smooth" });
         },
         publishMessage() {
-            if (this.message.length) {
+            if (this.message.replaceAll(' ', '').length) {
                 this.$store.commit("publishMessage", {
                     message: this.message,
                     channel: this.chat.uuid,
                     chat: this.chat.url,
                     group: this.group.url,
                 });
-
-                this.$inertia.reload(route("group.show", {url: this.group.url}));
 
                 this.message = "";
             }
@@ -230,7 +228,6 @@ export default {
                 group: this.group.url,
             });
 
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
             this.jumpToBottom();
         },
         publishPoll(content) {
@@ -242,8 +239,6 @@ export default {
                 allowMultiple: content.allowMultiple,
                 answers: content.answers,
             });
-
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
         },
         publishFile(content) {
             // TODO Upload File
@@ -271,8 +266,6 @@ export default {
                 fileType: content.file.type,
             });
 
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
-
         },
         publishEventAnnouncement(eventAnnouncement) {
             // TODO add event to group in database
@@ -283,8 +276,6 @@ export default {
                 group: this.group.url,
                 date: eventAnnouncement.date,
             });
-
-            this.$inertia.reload(route("group.show", {url: this.group.url}));
         },
         hasAccess() {
             if (this.chat.url === "wichtig") {
