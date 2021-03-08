@@ -102,9 +102,8 @@
             <!--<div>Groups: {{ Object.values($store.state.groups).length }}</div>-->
             <input
                 type="text"
-                class="input"
+                class="input message-input"
                 :class="hasAccess() ? '' : 'disabled'"
-                id="message-input"
                 v-model="message"
                 @keypress.enter="publishMessage"
                 :placeholder="
@@ -328,7 +327,7 @@ export default {
     border-radius: 0.5rem;
 }
 
-#message-input {
+.message-input {
     margin-left: 3vh;
     margin-right: 3vh;
     flex-grow: 1;
@@ -373,7 +372,7 @@ export default {
 }
 
 @media (max-width: 576px) {
-    #message-input {
+    .message-input {
         max-width: 68%; /*Irgendwie dumm, aber sonst funktioniert nix*/
         margin-left: 0.5vh;
         margin-right: 0.5vh;
