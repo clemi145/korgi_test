@@ -65,7 +65,6 @@
                                 :group="group"
                                 :chat="chats['allgemein']"
                                 :hasAdminPermissions="group.hasAdminPermissions"
-                                v-if="true || typeDelayed==='allgemein'"
                             />
                         </div>
                         <div class="swiper-slide">
@@ -73,7 +72,6 @@
                                 :group="group"
                                 :chat="chats['wichtig']"
                                 :hasAdminPermissions="group.hasAdminPermissions"
-                                v-if="true || typeDelayed==='wichtig'"
                             />
                         </div>
                     </div>
