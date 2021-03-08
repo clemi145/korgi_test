@@ -1,10 +1,10 @@
 <template>
     <div id="context-menu" class="no-select" :class="{ active: active }">
-        <div class="option warn">
+        <div class="option warn" @click="$emit('delete')">
             <p>Gruppe löschen</p>
             <i class="fas fa-trash-alt"></i>
         </div>
-        <div class="option">
+        <div class="option" @click="$emit('changeColor')">
             <p>Farbe ändern</p>
             <i class="fas fa-palette"></i>
         </div>
