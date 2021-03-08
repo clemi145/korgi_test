@@ -116,14 +116,15 @@
                         Personal, auf ein Minimum zu reduzieren.
                     </div>
                     <h2 class="section-headline">Wieso KORGI?</h2>
-                    <div class="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                        diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                        aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo.
+                    <div class="text">Nicht selten ist es der Fall, dass die Kommunikation zwischen
+                        Eltern und PädagogInnen anfällig für Missverständnisse ist.
+                        Dem wollen wir mit Korgi Abhilfe verschaffen, indem wir ein zentrales, benutzerfreundliches
+                        Werkzeug für die KOmmunikation und Organisation zur Verfügung stellen.
                     </div>
                     <h2 class="section-headline">Was kann die App?</h2>
-                    <div class="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                        diam nonumy eirmod tempor invidunt ut labore et dolore magna
-                        aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo.
+                    <div class="text">Mit Korgi können Sie auf einfachste Weise Gruppen erstellen, in
+                        denen Sie mit den Mitgliedern per Textnachrichten kommunizieren können. Zusätzlich bieten
+                        wir Ihnen die Möglichkeit Umfragen durchzuführen und Termine festzulegen.
                     </div>
                 </div>
                 <div id="about-content-right">

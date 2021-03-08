@@ -25,7 +25,7 @@
                             class="headline"
                         >
                             Users
-                        </inertia-link-->
+                        </inertia-link>
 
                         <inertia-link
                             :href="route('group.files.show', { url: this.group.url })"
@@ -33,7 +33,7 @@
                             class="headline"
                         >
                             Files
-                        </inertia-link>
+                        </inertia-link-->
                         <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
                     </div>
                     <div id="chat-selection" class="no-select">
