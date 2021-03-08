@@ -121,6 +121,7 @@ export default {
 .fa-reply {
     color: var(--header-color);
     cursor: pointer;
+    margin-left: 1rem;
 }
 
 .fa-reply:hover {
@@ -130,6 +131,14 @@ export default {
 @media (max-width: 576px) {
     .file-element {
         padding: 2.5%;
+        font-size: 0.8rem;
+        margin: 0.2vh;
+    }
+    .sender {
+        font-size: 0.9rem;
+    }
+    .timetoken {
+        font-size: 0.7rem;
     }
 }
 </style>
