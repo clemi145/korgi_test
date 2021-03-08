@@ -389,6 +389,9 @@ export default {
     .special-messages-container {
         padding: 4%;
     }
+    #messages {
+        padding: 0.5vh;
+    }
 }
 </style>
 
