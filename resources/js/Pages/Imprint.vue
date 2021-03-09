@@ -91,6 +91,7 @@ export default {
     align-self: center;
     width: 100%;
     margin-top: 4vh;
+    margin-bottom: 4vh;
 }
 
 #logo {
@@ -103,9 +104,8 @@ export default {
 #imprint-content {
     background-color: #ffffff;
     border-radius: 30px;
-    padding: 4vh;
+    padding: 6.5vh;
     width: 80%;
-    margin-top: 4vh;
     margin-bottom: 8vh;
 }
 
@@ -168,5 +168,17 @@ p {
 
 img {
     display: inline-block;
+}
+
+@media (max-width: 576px) {
+    #imprint-content {
+        width: 90%;
+        padding: 2vh;
+    }
+    #greeting {
+        font-size: 2rem;
+        margin-top: 2vh;
+        margin-bottom: 2vh;
+    }
 }
 </style>
