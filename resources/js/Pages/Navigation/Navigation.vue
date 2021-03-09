@@ -21,11 +21,11 @@
         </jet-responsive-nav-link>
       </form>
 
-<!--      <form method="POST" @submit.prevent="deleteAccount">-->
-<!--        <jet-responsive-nav-link class="link" as="button">-->
-<!--          Konto löschen-->
-<!--        </jet-responsive-nav-link>-->
-<!--      </form>-->
+      <!--      <form method="POST" @submit.prevent="deleteAccount">-->
+      <!--        <jet-responsive-nav-link class="link" as="button">-->
+      <!--          Konto löschen-->
+      <!--        </jet-responsive-nav-link>-->
+      <!--      </form>-->
     </div>
     <div id="center">
       <div @click="toggleMenu" v-bind:class="{ active: isActive }">
@@ -66,8 +66,12 @@
       </div>
     </div>
     <div id="bottom">
-      <a>Impressum</a>
-      <a>Datenschutzerklärung</a>
+      <inertia-link :href="route('imprint')" class="footer-link"
+        >Impressum</inertia-link
+      >
+      <inertia-link :href="route('tos')" class="footer-link"
+        >Datenschutzerklärung</inertia-link
+      >
     </div>
   </div>
 </template>
@@ -109,11 +113,11 @@ export default {
     //   }
     // });
   },
-    computed: {
-      user() {
-          return this.$store.getters.getUser
-        }
+  computed: {
+    user() {
+      return this.$store.getters.getUser;
     },
+  },
   data() {
     return {
       isActive: false,
@@ -162,74 +166,71 @@ export default {
 </script>
 
 <style scoped>
-
 .logo {
-    width: 100%;
+  width: 100%;
 }
 
-
 #navigation {
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
-    justify-content: space-between;
-    z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: space-between;
+  z-index: 100;
 
-    width: 20vw;
-    height: 100%;
+  width: 20vw;
+  height: 100%;
 
-    background-color: var(--primary);
-    /*padding: 1rem;*/
-
+  background-color: var(--primary);
+  /*padding: 1rem;*/
 }
 
 .navigation-item {
-    padding: 5%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    /*border-radius: 1rem;*/
+  padding: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  /*border-radius: 1rem;*/
 
-    /*margin-top: 1em;*/
-    /*margin-bottom: 0.5rem;*/
-    background-color: #FFA88E;
-    transition: 0.2s ease;
-    /*margin: 0;*/
+  /*margin-top: 1em;*/
+  /*margin-bottom: 0.5rem;*/
+  background-color: #ffa88e;
+  transition: 0.2s ease;
+  /*margin: 0;*/
 }
 
 .greeting {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: white;
-    margin-top: 5%;
-    margin-bottom: 5%;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .navigation-item i {
-    width: 1.2rem;
-    font-size: 1.5rem;
+  width: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .navigation-item:hover {
-    background-color: #ff8f6e;
+  background-color: #ff8f6e;
 }
 
 #top {
-    display: flex;
-    flex-direction: column;
-    padding: 5%;
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
 }
 
 #top a {
-    color: white;
-    text-decoration: underline;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
+  color: white;
+  text-decoration: underline;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /*.link {*/
@@ -241,133 +242,133 @@ export default {
 /*}*/
 
 .navigation-item-active {
-    background-color: #ff8f6e;
+  background-color: #ff8f6e;
 }
 
 #bottom {
-    display: flex;
-    flex-direction: column;
-    padding: 5%;
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
 }
 
 #bottom a {
-    margin-top: 5%;
-    color: white;
-    text-decoration: underline;
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
+  margin-top: 5%;
+  color: white;
+  text-decoration: underline;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 #header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 #burger {
-    display: none;
-    cursor: pointer;
-    margin-left: auto;
-    align-self: center;
-    padding: 10px;
+  display: none;
+  cursor: pointer;
+  margin-left: auto;
+  align-self: center;
+  padding: 10px;
 }
 
 #burger span {
-    position: relative;
-    display: block;
-    z-index: 5;
-    width: 30px;
-    height: 4px;
-    background: #ffffff;
-    transition: all 0.2s ease-in-out;
-    border-radius: 3px;
+  position: relative;
+  display: block;
+  z-index: 5;
+  width: 30px;
+  height: 4px;
+  background: #ffffff;
+  transition: all 0.2s ease-in-out;
+  border-radius: 3px;
 }
 
-#burger span:before, #burger span:after {
-    position: absolute;
-    background: #ffffff;
-    content: "";
-    width: 30px;
-    height: 4px;
-    transition: all 0.2s ease-in-out;
-    border-radius: 3px;
+#burger span:before,
+#burger span:after {
+  position: absolute;
+  background: #ffffff;
+  content: "";
+  width: 30px;
+  height: 4px;
+  transition: all 0.2s ease-in-out;
+  border-radius: 3px;
 }
 
 #burger span:before {
-    top: -8px;
+  top: -8px;
 }
 
 #burger span:after {
-    top: 8px;
+  top: 8px;
 }
 
 #burger.active span {
-    background: transparent;
+  background: transparent;
 }
 
 #burger.active span:before {
-    transform: rotate(45deg) translate(5px, 6px);
-    background: #ffffff;
+  transform: rotate(45deg) translate(5px, 6px);
+  background: #ffffff;
 }
 
 #burger.active span:after {
-    transform: rotate(-45deg) translate(5px, -6px);
-    background: #ffffff;
+  transform: rotate(-45deg) translate(5px, -6px);
+  background: #ffffff;
 }
 
 @media (max-width: 1200px) {
-    #navigation {
-        width: 35%;
-    }
+  #navigation {
+    width: 35%;
+  }
 }
 
 @media (max-width: 768px) {
-    #navigation {
-        width: 45%;
-    }
-    .greeting {
-        font-size: 1.2rem;
-    }
-    .navigation-item {
-        font-size: 1rem;
-    }
-    .navigation-item i {
-        width: 1.2rem;
-        font-size: 1.2rem;
-    }
-    #bottom a {
-        font-size: 1rem;
-    }
+  #navigation {
+    width: 45%;
+  }
+  .greeting {
+    font-size: 1.2rem;
+  }
+  .navigation-item {
+    font-size: 1rem;
+  }
+  .navigation-item i {
+    width: 1.2rem;
+    font-size: 1.2rem;
+  }
+  #bottom a {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 576px) {
-    #navigation {
-        position: absolute;
-        right: -80vw;
-        width: 80vw;
-        height: 100vh;
+  #navigation {
+    position: absolute;
+    right: -80vw;
+    width: 80vw;
+    height: 100vh;
 
-        box-shadow: 1px 0px 15px 3px var(--shadow-color);
-        -webkit-box-shadow: 1px 0px 15px 3px var(--shadow-color);
-        -moz-box-shadow: 1px 0px 15px 3px var(--shadow-color);
-        transition: 0.3s ease;
-    }
+    box-shadow: 1px 0px 15px 3px var(--shadow-color);
+    -webkit-box-shadow: 1px 0px 15px 3px var(--shadow-color);
+    -moz-box-shadow: 1px 0px 15px 3px var(--shadow-color);
+    transition: 0.3s ease;
+  }
 
-    #navigation.navigation-active {
-        right: 0;
-        transition: 0.3s ease;
-    }
+  #navigation.navigation-active {
+    right: 0;
+    transition: 0.3s ease;
+  }
 
-    .logo {
-        width: 70%;
-    }
-    .hide {
-        display: none !important;
-    }
-    #burger {
-        display: inline;
-    }
+  .logo {
+    width: 70%;
+  }
+  .hide {
+    display: none !important;
+  }
+  #burger {
+    display: inline;
+  }
 }
-
 </style>
