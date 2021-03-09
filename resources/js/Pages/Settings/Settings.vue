@@ -39,8 +39,8 @@
                                 </div>
                             </div>
                             <div class="link-container">
-                                <a>Passwort ändern</a>
-                                <a class="warn">Account löschen</a>
+                                <inertia-link>Passwort ändern</inertia-link>
+                                <a @click="deleteAccount" class="warn">Account löschen</a>
                             </div>
                         </div>
                     </div>
@@ -124,6 +124,8 @@ import PageLayout from '@/Layouts/PageLayout.vue';
 import Label from "@/Jetstream/Label";
 import StoreInitializer from "@/Pages/store-initializer";
 
+import axios from "axios";
+
 export default {
     name: "Settings",
     components: {
@@ -166,6 +168,11 @@ export default {
         toggleDarkmode() {
             this.$store.commit("toggleDarkmode");
         },
+        deleteAccount() {
+            axios.post(route("user.delete")).then((response) => {
+                // this.$inertia.visit(route("home"));
+            });
+        }
     },
 };
 </script>

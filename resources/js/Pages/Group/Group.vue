@@ -1,7 +1,7 @@
 <template>
     <page-layout :user="user" :groups="groups">
         <div id="group">
-            <div id="group-content">
+            <div id="group-content" :class="{'active': active}">
                 <div id="group-header">
                     <div class="row">
                         <div style="display: flex; align-items: center; flex-grow: 1">
@@ -95,8 +95,8 @@
                     />
                 </transition-->
             </div>
-            <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
         </div>
+        <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
     </page-layout>
 </template>
 
@@ -134,6 +134,7 @@ export default {
             bus: new Vue(),
             chats: this.group.channels,
             current: 0,
+            active: false,
         };
     },
     mounted() {
@@ -167,6 +168,10 @@ export default {
         Vue.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid)
         this.$store.commit("setCurrentPage", {page: this.group.name});
         this.$store.commit("setShowArrow", {showArrow: true});
+
+        this.bus.$on("toggleGroupInfo", () => {
+            this.active = !this.active;
+        });
     },
 }
 </script>
@@ -185,6 +190,10 @@ export default {
     flex-direction: column;
     width: 100%;
     height: 100%;
+}
+
+#group-content.active {
+    width: 60vw;
 }
 
 #group-header {

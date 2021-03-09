@@ -99,9 +99,6 @@
     </div>
     <div id="login">
       <h2 class="headline">Anmeldung</h2>
-      <inertia-link :href="route('auth.google')">
-        <strong>Login With Google</strong>
-      </inertia-link>
       <div id="selection">
         <button
           as="button"
@@ -175,8 +172,8 @@
     </div>
     <div id="footer">
       <div id="footer-content">
-        <a class="footer-link">Impressum</a>
-        <a class="footer-link">Datenschutzerklärung</a>
+        <inertia-link :href="route('imprint')" class="footer-link">Impressum</inertia-link>
+        <inertia-link :href="route('tos')" class="footer-link">Datenschutzerklärung</inertia-link>
       </div>
       <div class="footer-cr">© 2021 KORGI</div>
     </div>

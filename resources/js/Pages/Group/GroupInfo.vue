@@ -6,7 +6,7 @@
 
         <div id="group-info-header">
             <div>Gruppeninfo</div>
-            <div class="round-btn secondary-background" @click="toggleActive">
+            <div class="round-btn secondary-background" @click="toggleGroupInfo">
                 <i class="fas fa-times"></i>
             </div>
         </div>
@@ -58,7 +58,7 @@
         <div id="group-info-invitation">
             <div class="section-header">Einladungslink</div>
             <div class="btn secondary-background" @click="dialogBus.$emit('open')">
-                Link generieren
+                Leute einladen
             </div>
         </div>
         <div id="group-info-delete" v-if="hasAdminPermissions && isEmpty">
@@ -105,7 +105,7 @@ export default {
     },
     created() {
         this.bus.$on("toggleGroupInfo", () => {
-            this.toggleActive();
+            this.active = !this.active;
         });
         this.group.users = this.group.users.sort((a, b) => {
             if (a.isAdmin && !b.isAdmin) {
@@ -120,8 +120,8 @@ export default {
         })
     },
     methods: {
-        toggleActive() {
-            this.active = !this.active;
+        toggleGroupInfo() {
+            this.bus.$emit("toggleGroupInfo");
         },
         deleteGroup() {
             axios
@@ -167,7 +167,12 @@ export default {
 
 <style scoped>
 #group-info {
-    width: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+
+    width: 20vw;
+    height: 100%;
     color: var(--font-color);
     overflow: hidden;
     z-index: 100;
@@ -179,14 +184,13 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 1% 0 1% 0;
+    padding: 1%;
 
-    transition: 0.2s ease;
+    transform: translateX(100%);
 }
 
 #group-info.active {
-    width: 28%;
-    padding: 1%;
+    transform: translateX(0);
 }
 
 ::placeholder {
