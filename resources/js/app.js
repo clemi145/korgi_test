@@ -283,8 +283,8 @@ const store = new Vuex.Store({
         addGroup(state, payload) {
             axios.post("/gruppen", {
                 name: payload.name
-            }).then(() => {
-
+            }).then((response) => {
+                console.log(response)
             });
         }
     },

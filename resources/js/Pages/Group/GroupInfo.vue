@@ -23,7 +23,6 @@
                     placeholder="Gruppenname"
                     v-model="groupName"
                 />
-
                 <Transition name="fade">
                     <div class="round-btn warn-background" v-if="nameInputActive" @click="cancelName">
                         <i class="fas fa-times"/>

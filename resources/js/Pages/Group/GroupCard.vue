@@ -5,7 +5,7 @@
             <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
             <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
             <transition name="fade">
-                <context-menu v-if="showMenu"/>
+                <context-menu v-if="showMenu" @delete="deleteGroup"/>
             </transition>
         </div>
     </Transition>
@@ -38,6 +38,13 @@ export default {
 
     },
     methods: {
+        deleteGroup() {
+            axios
+                .post(route("group.delete"), {
+                    uuid: this.group.uuid,
+                })
+                .then(() => this.$inertia.visit(route("groups.show"), { only: ["groups"] }));
+        },
         linkToGroup() {
             axios
                 .post(route("group.set"), {

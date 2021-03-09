@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             // $uuid = DB::raw('UUID()');
             $table->uuid("uuid")->nullable();//default($uuid);
             $table->timestamp('last_message')->nullable();
+            $table->id("google_id");
             $table->timestamps();
         });
     }
