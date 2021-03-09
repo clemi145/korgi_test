@@ -73,6 +73,8 @@ class GroupController extends Controller
 
         $general_chat->team()->associate($team);
         $important_chat->team()->associate($team);
+
+        return $this->formatGroupTeam(User::find($user->id), $team);
     }
 
     function show(Request $request, $url)

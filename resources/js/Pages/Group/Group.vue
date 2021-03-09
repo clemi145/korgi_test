@@ -25,7 +25,7 @@
                             class="headline"
                         >
                             Users
-                        </inertia-link-->
+                        </inertia-link>
 
                         <inertia-link
                             :href="route('group.files.show', { url: this.group.url })"
@@ -33,29 +33,51 @@
                             class="headline"
                         >
                             Files
-                        </inertia-link>
+                        </inertia-link-->
                         <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
                     </div>
                     <div id="chat-selection" class="no-select">
                         <button
                             as="button"
                             class="chat-link left"
-                            :class="generalIsCurrentChat()"
-                            v-on:click="setTypeTrue"
+                            :class="{'current': !current}"
+                            v-on:click="switchToGeneral"
                         >
                             Allgemein
                         </button>
 
                         <button
                             class="chat-link right"
-                            :class="importantIsCurrentChat()"
-                            v-on:click="setTypeFalse"
+                            :class="{'current': current}"
+                            v-on:click="switchToImportant"
                         >
                             Wichtig
                         </button>
                     </div>
                 </div>
-                <transition name="slide-left">
+
+                <div class="swiper-container">
+                    <!-- Additional required wrapper -->
+                    <div class="swiper-wrapper">
+                        <!-- Slides -->
+                        <div class="swiper-slide">
+                            <Chat
+                                :group="group"
+                                :chat="chats['allgemein']"
+                                :hasAdminPermissions="group.hasAdminPermissions"
+                            />
+                        </div>
+                        <div class="swiper-slide">
+                            <Chat
+                                :group="group"
+                                :chat="chats['wichtig']"
+                                :hasAdminPermissions="group.hasAdminPermissions"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!--transition name="slide-left">
                     <Chat
                         :group="group"
                         :chat="chats['allgemein']"
@@ -71,7 +93,7 @@
                         :hasAdminPermissions="group.hasAdminPermissions"
                         v-if="typeDelayed==='wichtig'"
                     />
-                </transition>
+                </transition-->
             </div>
             <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
         </div>
@@ -86,6 +108,9 @@ import Vue from "vue";
 import Navigation from "@/Pages/Navigation/Navigation";
 import PageLayout from "@/Layouts/PageLayout";
 import StoreInitializer from "@/Pages/store-initializer";
+
+import Swiper from 'swiper';
+import 'swiper/swiper-bundle.css';
 
 export default {
     name: "Group",
@@ -107,42 +132,34 @@ export default {
             type: "allgemein",
             typeDelayed: "allgemein",
             bus: new Vue(),
-            chats: this.group.channels
+            chats: this.group.channels,
+            current: 0,
         };
+    },
+    mounted() {
+        this.swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            direction: 'horizontal',
+            loop: false,
+            allowSlidePrev: false,
+            allowTouchMove: window.matchMedia('(max-width: 576px)').matches
+        });
+
+        this.swiper.on('slideChange', e => {
+            this.current = e.activeIndex;
+            this.swiper.allowSlideNext = !e.activeIndex;
+            this.swiper.allowSlidePrev = !!e.activeIndex;
+        })
     },
     methods: {
         toggleGroupInfo() {
             this.bus.$emit("toggleGroupInfo");
         },
-        generalIsCurrentChat() {
-            if (this.type === "allgemein") {
-                //document.URL.includes("allgemein")) {
-                return "chat-link-current";
-            }
+        switchToGeneral() {
+            this.swiper.slideTo(0);
         },
-        importantIsCurrentChat() {
-            if (this.type === "wichtig") {
-                //document.URL.includes("wichtig")) {
-                return "chat-link-current";
-            }
-        },
-        setTypeTrue() {
-            if (this.type !== "allgemein") {
-                this.typeDelayed = undefined;
-                this.type = "allgemein"
-                setTimeout(() => {
-                    this.typeDelayed = "allgemein";
-                }, 200)
-            }
-        },
-        setTypeFalse() {
-            if (this.type !== "wichtig") {
-                this.typeDelayed = undefined;
-                this.type="wichtig"
-                setTimeout(() => {
-                    this.typeDelayed = "wichtig";
-                }, 200)
-            }
+        switchToImportant() {
+            this.swiper.slideTo(1);
         }
     },
     created() {
@@ -179,6 +196,15 @@ export default {
     padding: 2vh 2vh 0 2vh;
     z-index: 30;
     background-color: var(--background-color);
+}
+
+.swiper-container {
+    height: 100%;
+    width: 100%;
+}
+
+.swiper-slide {
+    width: 100% !important;
 }
 
 .btn {
@@ -233,16 +259,16 @@ button:focus {
     margin-left: 0;
 }
 
-.chat-link-current {
+.chat-link.current {
     color: #ffa88e;
 }
 
-.chat-link-current.left::after {
+.chat-link.current.left::after {
     width: 100%;
     margin-left: 0;
 }
 
-.chat-link-current.right::after {
+.chat-link.current.right::after {
     width: 100%;
     margin-left: 0;
 }

@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\LoginController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -84,6 +85,11 @@ Route::get('einstellungen', function () {
 
 Route::inertia('offline', "Offline")->name('offline');
 Route::inertia('stats', "Statistics")->name('stats');
+Route::inertia('impressum', "Imprint")->name('imprint');
+Route::inertia('datenschutz', "Privacy")->name('tos');
+
+Route::get('auth/google', [LoginController::class, 'redirectToGoogle'])->name("auth.google");
+Route::get('auth/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
