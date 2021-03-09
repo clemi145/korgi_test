@@ -2,8 +2,8 @@
     <div id="container">
         <div id="member">
             <div id="name">
-                <p class="role">Admin</p>
-                <p>Jakob Fischer</p>
+                <p class="role" v-if="member.isAdmin">Admin</p>
+                <p>{{member.name}}</p>
             </div>
             <div class="round-btn primary-background">
                 <i class="fas fa-ellipsis-h"></i>
@@ -15,7 +15,10 @@
 
 <script>
 export default {
-    name: "member"
+    name: "member",
+    props: {
+        member: Object,
+    }
 }
 </script>
 

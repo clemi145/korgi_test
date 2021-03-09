@@ -42,18 +42,15 @@
         </div>
         <div id="group-info-members">
             <div class="section-header">Mitglieder</div>
-            <!--            <member v-for="member in members" :group="member"/>-->
-            <member></member>
-            <member></member>
-            <member></member>
-            <div class="button-container">
-                <div class="btn secondary-background">
-                    <p>Mehr</p>
+            <member v-for="member in showAll ? group.users : group.users.slice(0, 5)" :member="member"></member>
+            <div class="button-container" v-if="group.users.length > 5">
+                <div class="btn secondary-background" v-if="!showAll"  @click="showAll=true">
+                    <p>{{group.users.length-5}} weitere</p>
                     <i class="fas fa-angle-down"/>
                 </div>
-                <div class="btn secondary-background">
-                    <p>Statistik</p>
-                    <i class="fas fa-chart-bar"/>
+                <div class="btn secondary-background" v-if="showAll" @click="showAll=false">
+                    <p>weniger</p>
+                    <i class="fas fa-angle-up"/>
                 </div>
             </div>
         </div>
@@ -81,7 +78,7 @@
 
 <script>
 import Vue from "vue";
-import Member from "@/Pages/Member";
+import Member from "@/Pages/Group/Member";
 import axios from "axios";
 import DialogWindow from "@/Pages/Dialog/dialog-window";
 import DialogContentJoinLink from "@/Pages/Dialog/dialog-content-join-link";
@@ -101,14 +98,26 @@ export default {
             groupName: this.group.name,
             dialogBus: new Vue(),
             link: route("group.join.show", {uuid: this.group.uuid}),
-            isEmpty: true,
+            isEmpty: this.group.users.length < 2,
             nameInputActive: false,
+            showAll: false,
         };
     },
     created() {
         this.bus.$on("toggleGroupInfo", () => {
             this.toggleActive();
         });
+        this.group.users = this.group.users.sort((a, b) => {
+            if (a.isAdmin && !b.isAdmin) {
+                return -1;
+            }
+
+            if (b.isAdmin && !a.isAdmin) {
+                return 1;
+            }
+
+            return a.name.localeCompare(b.name);
+        })
     },
     methods: {
         toggleActive() {
@@ -226,11 +235,15 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 #group-info-members .btn {
-    width: 48%;
+    width: fit-content;
+}
+
+#group-info-members .btn .fas {
+    margin-left: 0.5rem;
 }
 
 #group-info-invitation .btn {
@@ -239,7 +252,11 @@ export default {
 }
 
 #group-info-delete .btn {
-    width: 80%;
+    width: 100%;
+}
+
+#group-info-leave .btn {
+    width: 100%;
 }
 
 .input-container {
