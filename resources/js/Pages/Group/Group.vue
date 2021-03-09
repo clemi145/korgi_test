@@ -143,7 +143,9 @@ export default {
             direction: 'horizontal',
             loop: false,
             allowSlidePrev: false,
-            allowTouchMove: window.matchMedia('(max-width: 576px)').matches
+            allowTouchMove: window.matchMedia('(max-width: 576px)').matches,
+            cssMode: true,
+            speed: 150
         });
 
         this.swiper.on('slideChange', e => {
