@@ -56,6 +56,12 @@
                 </jet-button>
             </div>
         </form>
+        <div id="google-button-container">
+            <inertia-link id="google-login" :href="route('auth.google')">
+                <img class="google-icon" src="/images/google-icon.svg">
+                <span id="google-button-text">Login With Google</span>
+            </inertia-link>
+        </div>
     </div>
 </template>
 
@@ -111,6 +117,33 @@ export default {
 
 <style scoped>
 
+#google-button-text {
+    font-weight: 700;
+}
+
+#google-login {
+    padding: 1rem;
+    background-color: #FFFFFF;
+    -webkit-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    -moz-box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    box-shadow: 5px 5px 40px 0px rgba(92, 86, 86, 0.3);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+}
+
+.google-icon {
+    width: 8%;
+    margin-right: 1rem;
+}
+
+#google-login:hover {
+    background-color: #F3F3F3;
+}
+
 ::selection {
     background-color: var(--secondary);
     color: white;
@@ -148,11 +181,20 @@ export default {
     height: 4rem;
     border-radius: 2rem;
 }
+
 .btn:focus {
     outline: 0;
 }
 
 #login-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+#google-button-container {
+    margin-top: 3vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -244,6 +286,10 @@ input:checked ~ .checkbox:after {
     .btn {
         height: 3rem;
         font-size: 1rem;
+    }
+
+    #google-login {
+        width: 80%;
     }
 }
 </style>

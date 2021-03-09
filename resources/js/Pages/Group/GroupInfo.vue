@@ -61,7 +61,7 @@
         <div id="group-info-invitation">
             <div class="section-header">Einladungslink</div>
             <div class="btn secondary-background" @click="dialogBus.$emit('open')">
-                Link generieren
+                Leute einladen
             </div>
         </div>
         <div id="group-info-delete" v-if="hasAdminPermissions && isEmpty">
