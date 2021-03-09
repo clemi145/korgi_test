@@ -241,6 +241,16 @@ class GroupController extends Controller
     {
         $uuids = Chat::where("team_id", $team->id)->get(["uuid"]);
 
+        $users = [];
+
+        foreach ($team->allUsers() as $user) {
+            array_push($users, [
+                "id" => $user->id,
+                "name" => $user->name,
+                "isAdmin" => $user->hasTeamRole($team, "admin")
+            ]);
+        }
+
         return [
             $team->name => [
                 "id" => $team->id,
@@ -260,7 +270,8 @@ class GroupController extends Controller
                         "url" => "wichtig",
                         "uuid" => $uuids[1],
                     ]
-                ]
+                ],
+                "users" =>  $users 
             ]
         ];
     }
