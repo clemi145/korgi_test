@@ -71,7 +71,7 @@ Route::group(["prefix" => "users"], function () {
 Route::get('termine', function () {
     return Inertia::render("Events/Events", [
         "user" => User::find(Auth::user()->id),
-        "groups"=>User::find(Auth::user()->id)->allTeams()
+        "groups" => User::find(Auth::user()->id)->allTeams()
     ]);
 })->name('events.show');
 
@@ -79,7 +79,7 @@ Route::get('termine', function () {
 Route::get('einstellungen', function () {
     return Inertia::render("Settings/Settings", [
         "user" => User::find(Auth::user()->id),
-        "groups"=>User::find(Auth::user()->id)->allTeams()
+        "groups" => User::find(Auth::user()->id)->allTeams()
     ]);
 })->name('settings.show');
 

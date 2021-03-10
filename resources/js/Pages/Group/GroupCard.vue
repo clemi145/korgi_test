@@ -1,7 +1,7 @@
 <template>
     <Transition name="fade-up">
-        <div v-if="mounted" class="group-card no-select" @mouseleave="showMenu=false" @click.self="linkToGroup">
-            <div class="group-card-icon" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
+        <div v-if="mounted" class="group-card no-select" v-bind:style="{borderColor: group.color}" @mouseleave="showMenu=false" @click.self="linkToGroup">
+            <div class="group-card-icon" v-bind:style="{backgroundColor: group.color}" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
             <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
             <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
             <transition name="fade">
@@ -32,10 +32,11 @@ export default {
         }
     },
     mounted() {
+        // document.getElementsByClassName("group-card")[0].style.borderColor = this.group.color;
+        // console.log(document.getElementsByClassName("group-card")[0])
         setTimeout(() => {
             this.mounted = true
         }, this.delay)
-
     },
     methods: {
         deleteGroup() {
@@ -90,7 +91,9 @@ export default {
 
     width: 15vw;
     height: 15vw;
-    border: #ffa88e solid 5px;
+    /*border: #ffa88e solid 5px;*/
+    border-style: solid;
+    border-width: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -113,7 +116,7 @@ export default {
 .group-card-icon {
     width: 50%;
     height: 50%;
-    background-color: var(--primary);
+    /*background-color: var(--primary);*/
     color: white;
     font-size: 3rem;
     font-weight: 600;
@@ -193,7 +196,9 @@ export default {
         box-shadow: 1px 0px 8px 3px var(--shadow-color);
         -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);
         -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);
-        border: #ffa88e solid 4px;
+        /* border: #ffa88e solid 4px; */
+        border-style: solid;
+        border-width: 4px;
 
         -webkit-tap-highlight-color: transparent;
     }

@@ -74,9 +74,13 @@ export default {
         },
     },
     methods: {
+        reload() {
+            this.$inertia.visit(route("groups.show"));
+            Object.values(this.groupsObject).forEach(obj => console.log(obj.color));
+        },
         createGroup(name) {
             this.$store.commit("addGroup", {name: name});
-            this.$inertia.visit(route("groups.show"));
+            this.reload();
         },
     },
 };
