@@ -45,6 +45,7 @@ import DialogContentCreateGroup from "@/Pages/Dialog/dialog-content-create-group
 import StoreInitializer from "@/Pages/store-initializer";
 import DialogWindow from "@/Pages/Dialog/dialog-window";
 import DialogContentColorPicker from "@/Pages/Dialog/DialogContentColorPicker";
+import axios from "axios";
 
 export default {
     name: "GroupView",
@@ -85,13 +86,16 @@ export default {
         submitColorChange(payload) {
             this.$store.commit("changeGroupColor", payload)
         },
-        reload() {
-            this.$inertia.visit(route("groups.show"));
-            Object.values(this.groupsObject).forEach(obj => console.log(obj.color));
-        },
         createGroup(name) {
             this.$store.commit("addGroup", {name: name});
-            this.reload();
+
+            // weniger schön, geht aber garantiert falls das andere irgendwann versagen sollte
+            // axios.post("/gruppen", {
+            //     name: name,
+            //     color: "#FFC78E"
+            // }).then(() => {
+            //     this.$inertia.visit(route("groups.show"));
+            // });
         },
     },
 };

@@ -290,9 +290,9 @@ const store = new Vuex.Store({
         addGroup(state, payload) {
             axios.post("/gruppen", {
                 name: payload.name,
-                color: `#${generateHEXColor()}`
+                color: "#FFC78E"
             }).then((response) => {
-                console.log(response)
+                Vue.set(state.groups, response.data[payload.name].url, response.data[payload.name]);
             });
         }
     },

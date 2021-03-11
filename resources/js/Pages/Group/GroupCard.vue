@@ -87,6 +87,7 @@ export default {
 <style scoped>
 .group-card {
     cursor: pointer;
+    user-select: none;
 
     background-color: var(--background-color);
 

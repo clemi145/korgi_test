@@ -34,6 +34,7 @@ export default {
 <style scoped>
 .new-group-card {
     cursor: pointer;
+    user-select: none;
 
     background-color: var(--background-color);
 
