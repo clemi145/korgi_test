@@ -11,6 +11,10 @@
                     <dialog-content-create-group :bus="groupInputBus"/>
                 </dialog-window>
 
+                <dialog-window title="Farbe ändern" :bus="colorPickerBus" @submit="submitColorChange">
+                    <DialogContentColorPicker :bus="colorPickerBus"/>
+                </dialog-window>
+
                 <div class="group-view-header">
                     <h1 class="title">Gruppenübersicht</h1>
                 </div>
@@ -20,6 +24,7 @@
                         :group="group"
                         :key="group.url"
                         :delay="index * 200"
+                        :color-picker-bus="colorPickerBus"
                     />
                     <new-group-card v-if="mounted" :delay="Object.values(groupsObject).length * 200" @click="groupInputBus.$emit('open')"/>
                 </div>
@@ -36,9 +41,10 @@ import PageLayout from "@/Layouts/PageLayout.vue";
 import Group from "@/Pages/Group/Group";
 import GroupCard from "@/Pages/Group/GroupCard";
 import NewGroupCard from "@/Pages/Group/NewGroupCard";
-import DialogWindow from "@/Pages/Dialog/dialog-window";
 import DialogContentCreateGroup from "@/Pages/Dialog/dialog-content-create-group";
 import StoreInitializer from "@/Pages/store-initializer";
+import DialogWindow from "@/Pages/Dialog/dialog-window";
+import DialogContentColorPicker from "@/Pages/Dialog/DialogContentColorPicker";
 
 export default {
     name: "GroupView",
@@ -47,6 +53,7 @@ export default {
         PageLayout,
         Group,
         DialogContentCreateGroup,
+        DialogContentColorPicker,
         DialogWindow,
         NewGroupCard,
         GroupCard,
@@ -59,6 +66,7 @@ export default {
         return {
             mounted: false,
             groupInputBus: new Vue(),
+            colorPickerBus: new Vue()
         };
     },
     mounted() {
@@ -74,6 +82,9 @@ export default {
         },
     },
     methods: {
+        submitColorChange(payload) {
+            this.$store.commit("changeGroupColor", payload)
+        },
         reload() {
             this.$inertia.visit(route("groups.show"));
             Object.values(this.groupsObject).forEach(obj => console.log(obj.color));

@@ -5,11 +5,10 @@
             <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
             <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
             <transition name="fade">
-                <context-menu v-if="showMenu" @delete="deleteGroup"/>
+                <context-menu v-if="showMenu" @delete="deleteGroup" @changeColor="colorPickerBus.$emit('open', {'group': group})"/>
             </transition>
         </div>
     </Transition>
-
 </template>
 
 <script>
@@ -22,13 +21,15 @@ export default {
     components: {ContextMenu},
     props: {
         group: Object,
-        delay: Number
+        delay: Number,
+        colorPickerBus: Object
     },
     data() {
         return {
             bus: new Vue(),
             showMenu: false,
-            mounted: false
+            mounted: false,
+
         }
     },
     mounted() {

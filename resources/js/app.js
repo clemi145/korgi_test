@@ -86,6 +86,9 @@ const store = new Vuex.Store({
             Vue.set(state, "user", payload.user);
             Vue.set(state, "groups", payload.groups);
         },
+        changeGroupColor(state, payload) {
+            state.groups[payload.group].color = payload.color;
+        },
         setShowArrow(state, payload) {
             state.showArrow = payload.showArrow;
         },
