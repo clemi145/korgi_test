@@ -292,9 +292,24 @@ const store = new Vuex.Store({
                 name: payload.name,
                 color: "#FFC78E"
             }).then((response) => {
-                Vue.set(state.groups, response.data[payload.name].url, response.data[payload.name]);
+                Vue.set(
+                    state.groups,
+                    response.data[payload.name].url,
+                    response.data[payload.name]
+                );
             });
-        }
+        },
+        deleteGroup(state, payload) {
+            axios
+                .post(route("group.delete"), {
+                    uuid: payload.group.uuid,
+                });
+
+            Vue.delete(
+                state.groups,
+                payload.group.url
+            );
+        },
     },
     getters: {
         getUser: state => {

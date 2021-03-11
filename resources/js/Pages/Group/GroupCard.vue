@@ -41,11 +41,13 @@ export default {
     },
     methods: {
         deleteGroup() {
-            axios
-                .post(route("group.delete"), {
-                    uuid: this.group.uuid,
-                })
-                .then(() => this.$inertia.visit(route("groups.show"), { only: ["groups"] }));
+            this.$store.commit("deleteGroup", {"group": this.group})
+
+            // axios
+            //     .post(route("group.delete"), {
+            //         uuid: this.group.uuid,
+            //     })
+            //     .then(() => this.$inertia.visit(route("groups.show"), { only: ["groups"] }));
         },
         linkToGroup() {
             axios
