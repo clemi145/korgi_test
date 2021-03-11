@@ -110,7 +110,7 @@ import PageLayout from "@/Layouts/PageLayout";
 import StoreInitializer from "@/Pages/store-initializer";
 
 import Swiper from 'swiper';
-import 'swiper/swiper-bundle.css';
+import 'swiper/swiper.min.css';
 
 export default {
     name: "Group",
@@ -137,15 +137,25 @@ export default {
             active: false,
         };
     },
+    computed: {
+        width() {
+            return document.getElementById('group-content').offsetWidth;
+        }
+    },
+    watcher: {
+        width() {
+            console.log(this.width)
+        }
+    },
     mounted() {
         this.swiper = new Swiper('.swiper-container', {
-            slidesPerView: 1,
+            init:true,
+            slidesPerView:'auto',
             direction: 'horizontal',
             loop: false,
             allowSlidePrev: false,
             allowTouchMove: window.matchMedia('(max-width: 576px)').matches,
             cssMode: true,
-            speed: 150
         });
 
         this.swiper.on('slideChange', e => {
@@ -159,9 +169,11 @@ export default {
             this.bus.$emit("toggleGroupInfo");
         },
         switchToGeneral() {
+            this.current = 0;
             this.swiper.slideTo(0);
         },
         switchToImportant() {
+            this.current = 1;
             this.swiper.slideTo(1);
         }
     },
@@ -214,8 +226,11 @@ export default {
     width: 100%;
 }
 
+.swiper-wrapper {
+
+}
+
 .swiper-slide {
-    width: 100% !important;
 }
 
 .btn {
