@@ -54,6 +54,10 @@ function setLastMessage(groupName) {
     });
 }
 
+function generateHEXColor() {
+    return Math.floor(Math.random()*16777215).toString(16);
+}
+
 const store = new Vuex.Store({
     state: {
         pubnub: {},
@@ -282,7 +286,8 @@ const store = new Vuex.Store({
         },
         addGroup(state, payload) {
             axios.post("/gruppen", {
-                name: payload.name
+                name: payload.name,
+                color: `#${generateHEXColor()}`
             }).then((response) => {
                 console.log(response)
             });

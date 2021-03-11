@@ -50,7 +50,10 @@ class GroupController extends Controller
 
         $team->users()->attach(
             $user->id,
-            ["role" => "admin"]
+            [
+                "role" => "admin",
+                "color" => $request->color
+            ]
         );
 
         $general_chat = Chat::create([
@@ -218,6 +221,10 @@ class GroupController extends Controller
                     "url" => $this->urlFormat($team->name),
                     "hasAdminPermissions" => $user->hasTeamRole($team, "admin"),
                     "events" => [],
+                    "color" => DB::table("team_user")->where([
+                        ["user_id", "=", $user->id],
+                        ["team_id", "=", $team->id]
+                    ])->pluck("color")->first(),
                     "channels" => [
                         "allgemein" => [
                             "name" => "Allgemein",
@@ -259,6 +266,10 @@ class GroupController extends Controller
                 "url" => $this->urlFormat($team->name),
                 "hasAdminPermissions" => $user->hasTeamRole($team, "admin"),
                 "events" => [],
+                "color" => DB::table("team_user")->where([
+                    ["user_id", "=", $user->id],
+                    ["team_id", "=", $team->id]
+                ])->pluck("color")->first(),
                 "channels" => [
                     "allgemein" => [
                         "name" => "Allgemein",
@@ -271,7 +282,7 @@ class GroupController extends Controller
                         "uuid" => $uuids[1],
                     ]
                 ],
-                "users" =>  $users 
+                "users" =>  $users
             ]
         ];
     }
