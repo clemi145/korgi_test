@@ -2,11 +2,13 @@
     <div id="context-menu" class="no-select" :class="{ active: active }">
         <div class="option warn">
             <p>Mitglied entfernen</p>
-            <i class="fas fa-trash-alt"></i>
+            <div class="option-icon">
+            <i class="fas fa-times"></i>
+            </div>
         </div>
         <div class="option">
             <p>Administrator ernennen</p>
-            <i class="fas fa-palette"></i>
+            <div class="option-icon"><i class="fas fa-crown"></i></div>
         </div>
     </div>
 </template>
@@ -37,6 +39,7 @@ export default {
     border-radius: 0.5rem;
     right: 14%;
     cursor: pointer;
+    width: fit-content;
 }
 
 .option {
@@ -57,7 +60,15 @@ export default {
 }
 
 i {
-    margin-left: 1rem;
+}
+
+p {
+    margin-right: 1rem;
+}
+
+.option-icon {
+    width: 8%;
+    text-align: center;
 }
 
 @media (max-width: 576px) {
