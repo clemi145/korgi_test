@@ -187,6 +187,7 @@ const store = new Vuex.Store({
             });
         },
         publishMessage(state, payload) {
+            console.log("App.js: publish Message", payload)
             state.pubnub.publish({
                 channel: payload.channel,
                 message: {

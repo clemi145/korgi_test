@@ -46,6 +46,7 @@ export default {
         pubnubAddListener() {
             this.$store.state.pubnub.addListener({
                 message: (event) => {
+                    console.log("App.vue: Received Message")
                     this.$store.commit("addMessage", {
                         message: event,
                     });
