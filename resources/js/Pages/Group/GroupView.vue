@@ -115,7 +115,7 @@ export default {
 }
 
 .group-view-header {
-    padding: 2%;
+    padding: 4vh;
 }
 
 #groups {

@@ -298,7 +298,7 @@ export default {
 @media (max-width: 1200px) {
     #group-info.active {
         position: absolute;
-        width: 75%;
+        width: 65vw;
         height: 100%;
         padding: 2vh;
         z-index: 35;
@@ -307,7 +307,7 @@ export default {
     #group-info {
         position: absolute;
         width: 100%;
-        height: 0;
+        height: 100%;
         box-shadow: none;
         z-index: 0;
     }
@@ -330,7 +330,7 @@ export default {
         display: none;
         position: absolute;
         width: 100%;
-        height: 0;
+        height: 100%;
         box-shadow: none;
         z-index: 0;
     }

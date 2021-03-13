@@ -114,7 +114,7 @@ export default {
 @media (max-width: 1200px) {
     #filters.active {
         position: absolute;
-        width: 70%;
+        width: 65vw;
         height: 100%;
         padding: 2vh;
     }
@@ -131,7 +131,7 @@ export default {
 
 @media (max-width: 768px) {
     #filters.active {
-        width: 70%;
+        width: 55vw;
     }
 }
 

@@ -181,12 +181,16 @@ export default {
 
     .group-card-name {
         font-size: 1rem;
-        margin-top: 5%;
+        margin-top: 3%;
     }
 
     .group-card-icon {
         font-size: 2.5rem;
-        margin-top: 2%;
+    }
+
+    .group-card-menu {
+        margin-top: 0.4vh;
+        margin-right: 0.8vh;
     }
 }
 
