@@ -6,7 +6,7 @@
 
         <div id="group-info-header">
             <div>Gruppeninfo</div>
-            <div class="round-btn secondary-background" @click="toggleActive">
+            <div class="round-btn secondary-background" @click="toggleGroupInfo">
                 <i class="fas fa-times"></i>
             </div>
         </div>
@@ -23,38 +23,36 @@
                     placeholder="Gruppenname"
                     v-model="groupName"
                 />
+                <div id="group-info-name-buttons">
+                    <Transition name="fade">
+                        <div class="round-btn warn-background" v-if="nameInputActive" @click="cancelName">
+                            <i class="fas fa-times"/>
+                        </div>
+                    </Transition>
 
-                <Transition name="fade">
-                    <div class="round-btn warn-background" v-if="nameInputActive" @click="cancelName">
-                        <i class="fas fa-times"/>
-                    </div>
-                </Transition>
+                    <Transition name="fade">
+                        <div class="round-btn secondary-background" v-if="nameInputActive" @click="updateName">
+                            <i class="fas fa-check"/>
+                        </div>
 
-                <Transition name="fade">
-                    <div class="round-btn secondary-background" v-if="nameInputActive" @click="updateName">
-                        <i class="fas fa-check"/>
-                    </div>
-
-                    <div class="round-btn primary-background" v-if="!nameInputActive" @click="nameInputActive=true">
-                        <i class="fas fa-pen"/>
-                    </div>
-                </Transition>
+                        <div class="round-btn primary-background" v-if="!nameInputActive" @click="nameInputActive=true">
+                            <i class="fas fa-pen"/>
+                        </div>
+                    </Transition>
+                </div>
             </div>
         </div>
         <div id="group-info-members">
             <div class="section-header">Mitglieder</div>
-            <!--            <member v-for="member in members" :group="member"/>-->
-            <member></member>
-            <member></member>
-            <member></member>
-            <div class="button-container">
-                <div class="btn secondary-background">
-                    <p>Mehr</p>
+            <member v-for="member in showAll ? group.users : group.users.slice(0, 5)" :member="member"></member>
+            <div class="button-container" v-if="group.users.length > 5">
+                <div class="btn secondary-background" v-if="!showAll" @click="showAll=true">
+                    <p>{{ group.users.length - 5 }} weitere</p>
                     <i class="fas fa-angle-down"/>
                 </div>
-                <div class="btn secondary-background">
-                    <p>Statistik</p>
-                    <i class="fas fa-chart-bar"/>
+                <div class="btn secondary-background" v-if="showAll" @click="showAll=false">
+                    <p>weniger</p>
+                    <i class="fas fa-angle-up"/>
                 </div>
             </div>
         </div>
@@ -62,7 +60,7 @@
         <div id="group-info-invitation">
             <div class="section-header">Einladungslink</div>
             <div class="btn secondary-background" @click="dialogBus.$emit('open')">
-                Link generieren
+                Leute einladen
             </div>
         </div>
         <div id="group-info-delete" v-if="hasAdminPermissions && isEmpty">
@@ -82,7 +80,7 @@
 
 <script>
 import Vue from "vue";
-import Member from "@/Pages/Member";
+import Member from "@/Pages/Group/Member";
 import axios from "axios";
 import DialogWindow from "@/Pages/Dialog/dialog-window";
 import DialogContentJoinLink from "@/Pages/Dialog/dialog-content-join-link";
@@ -102,25 +100,37 @@ export default {
             groupName: this.group.name,
             dialogBus: new Vue(),
             link: route("group.join.show", {uuid: this.group.uuid}),
-            isEmpty: true,
+            isEmpty: this.group.users.length < 2,
             nameInputActive: false,
+            showAll: false,
         };
     },
     created() {
         this.bus.$on("toggleGroupInfo", () => {
-            this.toggleActive();
+            this.active = !this.active;
         });
+        this.group.users = this.group.users.sort((a, b) => {
+            if (a.isAdmin && !b.isAdmin) {
+                return -1;
+            }
+
+            if (b.isAdmin && !a.isAdmin) {
+                return 1;
+            }
+
+            return a.name.localeCompare(b.name);
+        })
     },
     methods: {
-        toggleActive() {
-            this.active = !this.active;
+        toggleGroupInfo() {
+            this.bus.$emit("toggleGroupInfo");
         },
         deleteGroup() {
             axios
                 .post(route("group.delete"), {
                     uuid: this.group.uuid,
                 })
-                .then(() => this.$inertia.visit(route("groups.show"), { only: ["groups"] }));
+                .then(() => this.$inertia.visit(route("groups.show"), {only: ["groups"]}));
         },
         leaveGroup() {
             axios
@@ -134,17 +144,17 @@ export default {
                 .then(() => this.$inertia.visit(route("groups.show")));
         },
         updateName() {
-            this.nameInputActive=false
+            this.nameInputActive = false
             axios.post(route("group.update"), {
                 groupId: this.group.id,
                 groupName: this.groupName
             }).then(res => {
                 console.log(res);
-                this.$inertia.visit(route("group.show", { url: this.urlFormat(this.groupName) }), { only: ["group"] });
+                this.$inertia.visit(route("group.show", {url: this.urlFormat(this.groupName)}), {only: ["group"]});
             });
         },
         cancelName() {
-            this.nameInputActive=false;
+            this.nameInputActive = false;
             this.groupName = this.group.name;
         },
 
@@ -159,7 +169,12 @@ export default {
 
 <style scoped>
 #group-info {
-    width: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+
+    width: 20vw;
+    height: 100%;
     color: var(--font-color);
     overflow: hidden;
     z-index: 100;
@@ -171,14 +186,13 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 1% 0 1% 0;
+    padding: 1%;
 
-    transition: 0.2s ease;
+    transform: translateX(100%);
 }
 
 #group-info.active {
-    width: 28%;
-    padding: 1%;
+    transform: translateX(0);
 }
 
 ::placeholder {
@@ -199,6 +213,17 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+}
+
+#group-info-name-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 7rem;
+    justify-content: flex-end;
+}
+
+#group-info-name-buttons .round-btn {
+    margin-left: 0.5rem;
 }
 
 #group-info-members {
@@ -227,11 +252,15 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 #group-info-members .btn {
-    width: 48%;
+    width: fit-content;
+}
+
+#group-info-members .btn .fas {
+    margin-left: 0.5rem;
 }
 
 #group-info-invitation .btn {
@@ -240,7 +269,11 @@ export default {
 }
 
 #group-info-delete .btn {
-    width: 80%;
+    width: 100%;
+}
+
+#group-info-leave .btn {
+    width: 100%;
 }
 
 .input-container {

@@ -1,15 +1,14 @@
 <template>
     <Transition name="fade-up">
-        <div v-if="mounted" class="group-card no-select" @mouseleave="showMenu=false" @click.self="linkToGroup">
-            <div class="group-card-icon" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
+        <div v-if="mounted" class="group-card no-select" v-bind:style="{borderColor: group.color}" @mouseleave="showMenu=false" @click.self="linkToGroup">
+            <div class="group-card-icon" v-bind:style="{backgroundColor: group.color}" @click.self="linkToGroup">{{ group.name.substring(0, 1) }}</div>
             <h1 class="group-card-name" @click.self="linkToGroup">{{ group.name }}</h1>
             <i class="fas fa-ellipsis-h group-card-menu" @click.self="showMenu=!showMenu"></i>
             <transition name="fade">
-                <context-menu v-if="showMenu" @delete="deleteGroup"/>
+                <context-menu v-if="showMenu" @delete="deleteGroup" @changeColor="colorPickerBus.$emit('open', {'group': group})"/>
             </transition>
         </div>
     </Transition>
-
 </template>
 
 <script>
@@ -22,28 +21,33 @@ export default {
     components: {ContextMenu},
     props: {
         group: Object,
-        delay: Number
+        delay: Number,
+        colorPickerBus: Object
     },
     data() {
         return {
             bus: new Vue(),
             showMenu: false,
-            mounted: false
+            mounted: false,
+
         }
     },
     mounted() {
+        // document.getElementsByClassName("group-card")[0].style.borderColor = this.group.color;
+        // console.log(document.getElementsByClassName("group-card")[0])
         setTimeout(() => {
             this.mounted = true
         }, this.delay)
-
     },
     methods: {
         deleteGroup() {
-            axios
-                .post(route("group.delete"), {
-                    uuid: this.group.uuid,
-                })
-                .then(() => this.$inertia.visit(route("groups.show"), { only: ["groups"] }));
+            this.$store.commit("deleteGroup", {"group": this.group})
+
+            // axios
+            //     .post(route("group.delete"), {
+            //         uuid: this.group.uuid,
+            //     })
+            //     .then(() => this.$inertia.visit(route("groups.show"), { only: ["groups"] }));
         },
         linkToGroup() {
             axios
@@ -85,12 +89,15 @@ export default {
 <style scoped>
 .group-card {
     cursor: pointer;
+    user-select: none;
 
     background-color: var(--background-color);
 
     width: 15vw;
     height: 15vw;
-    border: #ffa88e solid 5px;
+    /*border: #ffa88e solid 5px;*/
+    border-style: solid;
+    border-width: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -113,7 +120,7 @@ export default {
 .group-card-icon {
     width: 50%;
     height: 50%;
-    background-color: var(--primary);
+    /*background-color: var(--primary);*/
     color: white;
     font-size: 3rem;
     font-weight: 600;
@@ -193,7 +200,9 @@ export default {
         box-shadow: 1px 0px 8px 3px var(--shadow-color);
         -webkit-box-shadow: 1px 0px 8px 3px var(--shadow-color);
         -moz-box-shadow: 1px 0px 8px 3px var(--shadow-color);
-        border: #ffa88e solid 4px;
+        /* border: #ffa88e solid 4px; */
+        border-style: solid;
+        border-width: 4px;
 
         -webkit-tap-highlight-color: transparent;
     }

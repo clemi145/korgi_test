@@ -18,14 +18,14 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string("google_id")->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->uuid("uuid")->nullable();
             $table->foreignId('current_team_id')->nullable();
             $table->text('profile_photo_path')->nullable();
-            // $uuid = DB::raw('UUID()');
-            $table->uuid("uuid")->nullable();//default($uuid);
             $table->timestamp('last_message')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

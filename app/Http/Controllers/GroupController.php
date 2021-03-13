@@ -50,7 +50,10 @@ class GroupController extends Controller
 
         $team->users()->attach(
             $user->id,
-            ["role" => "admin"]
+            [
+                "role" => "admin",
+                "color" => $request->color
+            ]
         );
 
         $general_chat = Chat::create([
@@ -218,6 +221,10 @@ class GroupController extends Controller
                     "url" => $this->urlFormat($team->name),
                     "hasAdminPermissions" => $user->hasTeamRole($team, "admin"),
                     "events" => [],
+                    "color" => DB::table("team_user")->where([
+                        ["user_id", "=", $user->id],
+                        ["team_id", "=", $team->id]
+                    ])->pluck("color")->first(),
                     "channels" => [
                         "allgemein" => [
                             "name" => "Allgemein",
@@ -241,6 +248,16 @@ class GroupController extends Controller
     {
         $uuids = Chat::where("team_id", $team->id)->get(["uuid"]);
 
+        $users = [];
+
+        foreach ($team->allUsers() as $user) {
+            array_push($users, [
+                "id" => $user->id,
+                "name" => $user->name,
+                "isAdmin" => $user->hasTeamRole($team, "admin")
+            ]);
+        }
+
         return [
             $team->name => [
                 "id" => $team->id,
@@ -249,6 +266,10 @@ class GroupController extends Controller
                 "url" => $this->urlFormat($team->name),
                 "hasAdminPermissions" => $user->hasTeamRole($team, "admin"),
                 "events" => [],
+                "color" => DB::table("team_user")->where([
+                    ["user_id", "=", $user->id],
+                    ["team_id", "=", $team->id]
+                ])->pluck("color")->first(),
                 "channels" => [
                     "allgemein" => [
                         "name" => "Allgemein",
@@ -260,7 +281,8 @@ class GroupController extends Controller
                         "url" => "wichtig",
                         "uuid" => $uuids[1],
                     ]
-                ]
+                ],
+                "users" =>  $users
             ]
         ];
     }

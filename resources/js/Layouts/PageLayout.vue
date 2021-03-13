@@ -38,12 +38,16 @@ export default {
 }
 
 main {
-    width: 100vw;
+    width: 80vw;
     height: 100vh;
 }
 @media (max-width: 576px) {
     #wrapper {
         flex-direction: column;
+    }
+
+    main {
+        width: 100vw;
     }
 }
 </style>

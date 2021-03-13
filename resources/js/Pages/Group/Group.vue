@@ -1,7 +1,7 @@
 <template>
     <page-layout :user="user" :groups="groups">
         <div id="group">
-            <div id="group-content">
+            <div id="group-content" :class="{'active': active}">
                 <div id="group-header">
                     <div class="row">
                         <div style="display: flex; align-items: center; flex-grow: 1">
@@ -25,7 +25,7 @@
                             class="headline"
                         >
                             Users
-                        </inertia-link-->
+                        </inertia-link>
 
                         <inertia-link
                             :href="route('group.files.show', { url: this.group.url })"
@@ -33,7 +33,7 @@
                             class="headline"
                         >
                             Files
-                        </inertia-link>
+                        </inertia-link-->
                         <div class="btn primary-background" @click="toggleGroupInfo">Gruppeninfo</div>
                     </div>
                     <div id="chat-selection" class="no-select">
@@ -95,8 +95,8 @@
                     />
                 </transition-->
             </div>
-            <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
         </div>
+        <group-info :group="group" :bus="bus" :hasAdminPermissions="group.hasAdminPermissions"/>
     </page-layout>
 </template>
 
@@ -110,7 +110,7 @@ import PageLayout from "@/Layouts/PageLayout";
 import StoreInitializer from "@/Pages/store-initializer";
 
 import Swiper from 'swiper';
-import 'swiper/swiper-bundle.css';
+import 'swiper/swiper.min.css';
 
 export default {
     name: "Group",
@@ -134,15 +134,28 @@ export default {
             bus: new Vue(),
             chats: this.group.channels,
             current: 0,
+            active: false,
         };
+    },
+    computed: {
+        width() {
+            return document.getElementById('group-content').offsetWidth;
+        }
+    },
+    watcher: {
+        width() {
+            console.log(this.width)
+        }
     },
     mounted() {
         this.swiper = new Swiper('.swiper-container', {
-            slidesPerView: 1,
+            init:true,
+            slidesPerView:'auto',
             direction: 'horizontal',
             loop: false,
             allowSlidePrev: false,
-            allowTouchMove: window.matchMedia('(max-width: 576px)').matches
+            allowTouchMove: window.matchMedia('(max-width: 576px)').matches,
+            cssMode: true,
         });
 
         this.swiper.on('slideChange', e => {
@@ -156,9 +169,11 @@ export default {
             this.bus.$emit("toggleGroupInfo");
         },
         switchToGeneral() {
+            this.current = 0;
             this.swiper.slideTo(0);
         },
         switchToImportant() {
+            this.current = 1;
             this.swiper.slideTo(1);
         }
     },
@@ -167,6 +182,10 @@ export default {
         Vue.set(this.chats['allgemein'], "uuid", this.chats['allgemein'].uuid.uuid)
         this.$store.commit("setCurrentPage", {page: this.group.name});
         this.$store.commit("setShowArrow", {showArrow: true});
+
+        this.bus.$on("toggleGroupInfo", () => {
+            this.active = !this.active;
+        });
     },
 }
 </script>
@@ -187,6 +206,10 @@ export default {
     height: 100%;
 }
 
+#group-content.active {
+    width: 60vw;
+}
+
 #group-header {
     display: flex;
     flex-direction: column;
@@ -203,8 +226,11 @@ export default {
     width: 100%;
 }
 
+.swiper-wrapper {
+
+}
+
 .swiper-slide {
-    width: 100% !important;
 }
 
 .btn {

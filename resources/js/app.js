@@ -54,6 +54,10 @@ function setLastMessage(groupName) {
     });
 }
 
+function generateHEXColor() {
+    return Math.floor(Math.random()*16777215).toString(16);
+}
+
 const store = new Vuex.Store({
     state: {
         pubnub: {},
@@ -81,6 +85,9 @@ const store = new Vuex.Store({
             Vue.set(state, "pubnub", payload.pubnub);
             Vue.set(state, "user", payload.user);
             Vue.set(state, "groups", payload.groups);
+        },
+        changeGroupColor(state, payload) {
+            state.groups[payload.group].color = payload.color;
         },
         setShowArrow(state, payload) {
             state.showArrow = payload.showArrow;
@@ -282,11 +289,27 @@ const store = new Vuex.Store({
         },
         addGroup(state, payload) {
             axios.post("/gruppen", {
-                name: payload.name
+                name: payload.name,
+                color: "#FFC78E"
             }).then((response) => {
-                console.log(response)
+                Vue.set(
+                    state.groups,
+                    response.data[payload.name].url,
+                    response.data[payload.name]
+                );
             });
-        }
+        },
+        deleteGroup(state, payload) {
+            axios
+                .post(route("group.delete"), {
+                    uuid: payload.group.uuid,
+                });
+
+            Vue.delete(
+                state.groups,
+                payload.group.url
+            );
+        },
     },
     getters: {
         getUser: state => {

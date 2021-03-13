@@ -28,7 +28,7 @@ blockquote {
 }
 
 a {
-    color: #3869d4;
+    color: var(--secondary-darker);
 }
 
 a img {
@@ -38,7 +38,7 @@ a img {
 /* Typography */
 
 h1 {
-    color: #3d4852;
+    color: var(--primary);
     font-size: 18px;
     font-weight: bold;
     margin-top: 0;
@@ -103,7 +103,7 @@ img {
 }
 
 .header a {
-    color: #3d4852;
+    color: var(--primary);
     font-size: 19px;
     font-weight: bold;
     text-decoration: none;
