@@ -1,23 +1,34 @@
 <template>
     <div id="container">
-        <div id="member">
+        <div id="member" @mouseleave="showMenu=false">
             <div id="name">
                 <p class="role" v-if="member.isAdmin">Admin</p>
                 <p>{{member.name}}</p>
             </div>
-            <div class="round-btn primary-background">
-                <i class="fas fa-ellipsis-h"></i>
+            <div id="menu" @click="showMenu=!showMenu">
+                <i class="fas fa-chevron-right" :class="{active: showMenu}"></i>
             </div>
+            <transition name="fade">
+                <user-context-menu v-if="showMenu"/>
+            </transition>
         </div>
         <div id="line"/>
     </div>
 </template>
 
 <script>
+import Vue from "vue";
+import UserContextMenu from "@/Pages/Group/UserContextMenu";
 export default {
     name: "member",
+    components: {UserContextMenu},
     props: {
         member: Object,
+    },
+    data() {
+        return {
+            showMenu: false,
+        }
     }
 }
 </script>
@@ -32,11 +43,23 @@ export default {
     width: 100%;
 }
 
+.active {
+    transform: rotate(180deg);
+    transition: 0.25s;
+}
+
 #name {
     display: flex;
     flex-direction: column;
     justify-content: center;
     white-space: nowrap;
+}
+
+#menu {
+    font-size: 1.5rem;
+    height: fit-content;
+    cursor: pointer;
+    transition: 0.25s;
 }
 
 #container {
@@ -51,9 +74,9 @@ export default {
 }
 
 #line {
-    margin-top: 1vh;
-    border-top: 2px solid var(--font-color-light);
-    height: 2px;
+    margin-top: 0.3vh;
+    border-top: 2px solid var(--background-color-alternate);
+    height: 1px;
     width: 100%;
     flex: 1;
 }
