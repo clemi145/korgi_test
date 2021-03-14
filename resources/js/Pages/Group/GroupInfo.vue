@@ -1,8 +1,6 @@
 <template>
     <div id="group-info" :class="{ active: active }">
-        <dialog-window :title="'Einladungslink'" :bus="dialogBus" :info-only="true">
-            <dialog-content-join-link :link="link"/>
-        </dialog-window>
+
 
         <div id="group-info-header">
             <div>Gruppeninfo</div>
@@ -44,7 +42,7 @@
         </div>
         <div id="group-info-members">
             <div class="section-header">Mitglieder</div>
-            <member v-for="member in showAll ? group.users : group.users.slice(0, 5)" :member="member"></member>
+            <member v-for="member in showAll ? group.users : group.users.slice(0, 5)" :key="member.id" :member="member"></member>
             <div class="button-container" v-if="group.users.length > 5">
                 <div class="btn secondary-background" v-if="!showAll" @click="showAll=true">
                     <p>{{ group.users.length - 5 }} weitere</p>
@@ -79,16 +77,14 @@
 </template>
 
 <script>
-import Vue from "vue";
 import Member from "@/Pages/Group/Member";
 import axios from "axios";
-import DialogWindow from "@/Pages/Dialog/dialog-window";
-import DialogContentJoinLink from "@/Pages/Dialog/dialog-content-join-link";
 
 export default {
     name: "group-info",
-    components: {DialogContentJoinLink, DialogWindow, Member},
+    components: {Member},
     props: {
+        dialogBus: Object,
         bus: Object,
         group: Object,
         hasAdminPermissions: Boolean,
@@ -98,8 +94,6 @@ export default {
         return {
             active: false,
             groupName: this.group.name,
-            dialogBus: new Vue(),
-            link: route("group.join.show", {uuid: this.group.uuid}),
             isEmpty: this.group.users.length < 2,
             nameInputActive: false,
             showAll: false,
