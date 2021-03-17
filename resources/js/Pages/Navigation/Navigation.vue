@@ -320,13 +320,13 @@ export default {
 
 @media (max-width: 1200px) {
   #navigation {
-    width: 35%;
+    width: 35vw;
   }
 }
 
 @media (max-width: 768px) {
   #navigation {
-    width: 45%;
+    width: 45vw;
   }
   .greeting {
     font-size: 1.2rem;

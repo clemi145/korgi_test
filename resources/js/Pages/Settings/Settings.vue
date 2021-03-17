@@ -188,7 +188,7 @@ export default {
 }
 
 .settings-header {
-    padding: 2%;
+    padding: 4vh;
 }
 
 .settings-input {
@@ -317,6 +317,16 @@ a {
     flex-wrap: wrap;
 }
 
+@media (max-width: 1200px) {
+    #item-container {
+        flex-direction: column;
+    }
+    .item {
+        width: 100%;
+        padding: 2%;
+    }
+}
+
 @media (max-width: 576px) {
     .title {
         display: none;
@@ -350,6 +360,13 @@ a {
 
     a {
         margin-right: 3%;
+    }
+    .settings-header {
+        display: none;
+    }
+
+    #settings {
+        padding-top: 3vh;
     }
 }
 

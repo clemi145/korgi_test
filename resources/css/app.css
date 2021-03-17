@@ -363,12 +363,14 @@ input:checked ~ .radio:after {
 
 .alternate-input:focus {
     outline: 0;
+    box-shadow: none;
     border: 3px solid var(--primary);
     transition: 0.2s;
 }
 
 .alternate-input:active {
     outline: 0;
+    box-shadow: none;
 }
 
 .alternate-input.disabled {
@@ -377,6 +379,7 @@ input:checked ~ .radio:after {
     color: var(--font-color-light);
     cursor: default;
     pointer-events: none;
+    border: 3px solid #7a7a7a;
 }
 
 select option {
