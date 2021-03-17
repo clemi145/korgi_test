@@ -42,6 +42,7 @@ export default {
             axios
                 .post(route("group.join"), {
                     uuid: this.group.uuid,
+                    userId: this.user.id
                 })
                 .then((res) => console.log(res))
                 .then(this.$inertia.visit(route("groups.show")));

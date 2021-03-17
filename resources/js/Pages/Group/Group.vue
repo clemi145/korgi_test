@@ -188,7 +188,7 @@
                 </div>
             </div>
         </div>
-        <group-info :group="group" :bus="bus" :dialog-bus="inviteBus" :hasAdminPermissions="group.hasAdminPermissions"/>
+        <group-info :group="group" :bus="bus" :dialog-bus="inviteBus" :hasAdminPermissions="hasAdminPermissions"/>
         <dialog-window :title="'Einladungslink'" :bus="inviteBus" :info-only="true">
             <dialog-content-join-link :link="link"/>
         </dialog-window>
@@ -233,10 +233,11 @@ export default {
     props: {
         group: Object,
         groups: Array,
-        user: Object
+        user: Object,
     },
     data() {
         return {
+            hasAdminPermissions: this.getAdminStatus(),
             type: "allgemein",
             typeDelayed: "allgemein",
             bus: new Vue(),
@@ -272,6 +273,15 @@ export default {
         })
     },
     methods: {
+        getAdminStatus() {
+            let admin;
+            this.group.users.forEach(user => {
+                if (user.id == this.user.id) {
+                    admin = user.isAdmin; 
+                }
+            });
+            return admin;
+        },
         toggleGroupInfo() {
             this.bus.$emit("toggleGroupInfo");
         },
@@ -358,7 +368,7 @@ export default {
         },
         hasAccess() {
             if (this.current === 1) {
-                return this.group.hasAdminPermissions;
+                return this.hasAdminPermissions;
             } else {
                 return true;
             }

@@ -67,7 +67,7 @@
                 <i class="fas fa-trash-alt"/>
             </div>
         </div>
-        <div id="group-info-leave" v-if="!hasAdminPermissions || !isEmpty">
+        <div id="group-info-leave" v-else><!--v-if="!hasAdminPermissions || !isEmpty"-->
             <div class="btn warn-background" v-on:click="leaveGroup">
                 <p>Gruppe verlassen</p>
                 <i class="fas fa-sign-out-alt"></i>
@@ -100,6 +100,8 @@ export default {
         };
     },
     created() {
+
+        console.log(this.hasAdminPermissions);
         this.bus.$on("toggleGroupInfo", () => {
             this.active = !this.active;
         });
@@ -114,6 +116,9 @@ export default {
 
             return a.name.localeCompare(b.name);
         })
+    },
+    mounted() {
+        console.log(this.hasAdminPermissions);
     },
     methods: {
         toggleGroupInfo() {

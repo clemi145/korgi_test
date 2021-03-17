@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         Log::info("Adding user to team");
 
-        $user = Auth::user();
+        $user = User::find($request->userId);
         $team = Team::where("uuid", $request->uuid)->first();
 
         $team->users()->attach(

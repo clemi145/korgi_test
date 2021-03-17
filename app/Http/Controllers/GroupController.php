@@ -89,7 +89,7 @@ class GroupController extends Controller
 
         $teams = $user->allTeams()->where("personal_team", 0);
 
-        $groups = $groups = $this->formatGroupsEloquentCollection($user, $teams);
+        $groups = $this->formatGroupsEloquentCollection($user, $teams);
 
         // Log::info($team);
 
@@ -97,13 +97,15 @@ class GroupController extends Controller
             echo "Error finding group";
         } else {
             $group = $this->formatGroupTeam($user, $team);
+
             // Log::info($group);
+
             return Inertia::render(
                 "Group/Group",
                 [
                     "group" => $group[$team->name],
-                    "user" => User::find(Auth::user()->id),
-                    "groups" => $groups
+                    "groups" => $groups,
+                    "user" => $user,
                     // "chats" => $group[$team->name]["channels"],
                     // "user_is_admin" => $group[$team->name]["hasAdminPermissions"]
                 ]
@@ -219,7 +221,7 @@ class GroupController extends Controller
                     "uuid" => $team->uuid,
                     "name" => $team->name,
                     "url" => $this->urlFormat($team->name),
-                    "hasAdminPermissions" => $user->hasTeamRole($team, "admin"),
+                    "hasAdminPermissions" => $user->teamRole($team),
                     "events" => [],
                     "color" => DB::table("team_user")->where([
                         ["user_id", "=", $user->id],
@@ -249,14 +251,18 @@ class GroupController extends Controller
         $uuids = Chat::where("team_id", $team->id)->get(["uuid"]);
 
         $users = [];
+        $admins = [];
 
         foreach ($team->allUsers() as $user) {
             array_push($users, [
                 "id" => $user->id,
                 "name" => $user->name,
-                "isAdmin" => $user->hasTeamRole($team, "admin")
+                "isAdmin" => $user->hasTeamRole($team, "admin") || $user->hasTeamRole($team, "owner")
             ]);
         }
+
+        // Log::info("User Permissions: ");
+        // Log::info($user->teamRole($team));
 
         return [
             $team->name => [
@@ -264,7 +270,8 @@ class GroupController extends Controller
                 "uuid" => $team->uuid,
                 "name" => $team->name,
                 "url" => $this->urlFormat($team->name),
-                "hasAdminPermissions" => $user->hasTeamRole($team, "admin"),
+                "admins" => $admins,
+                "hasAdminPermissions" => $user->teamRole($team),
                 "events" => [],
                 "color" => DB::table("team_user")->where([
                     ["user_id", "=", $user->id],
