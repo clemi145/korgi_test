@@ -144,8 +144,8 @@ export default {
             loop: false,
             allowSlidePrev: false,
             allowTouchMove: window.matchMedia('(max-width: 576px)').matches,
-            cssMode: true,
-            speed: 150
+            // cssMode: true,
+            // speed: 150
         });
 
         this.swiper.on('slideChange', e => {
@@ -160,9 +160,11 @@ export default {
         },
         switchToGeneral() {
             this.swiper.slideTo(0);
+            // this.current = 0;
         },
         switchToImportant() {
             this.swiper.slideTo(1);
+            // this.current = 1;
         }
     },
     created() {
